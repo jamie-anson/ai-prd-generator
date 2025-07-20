@@ -1,0 +1,92 @@
+{
+  "nodes": [
+    {
+      "id": "n1",
+      "label": "Casual Gardener",
+      "type": "USER_PERSONA"
+    },
+    {
+      "id": "n2",
+      "label": "Expert Gardener",
+      "type": "USER_PERSONA"
+    },
+    {
+      "id": "n3",
+      "label": "Urban Farmer",
+      "type": "USER_PERSONA"
+    },
+    {
+      "id": "f1",
+      "label": "Profile Management",
+      "type": "FEATURE"
+    },
+    {
+      "id": "f2",
+      "label": "Trading Platform",
+      "type": "FEATURE"
+    },
+    {
+      "id": "f3",
+      "label": "Community Board",
+      "type": "FEATURE"
+    },
+    {
+      "id": "f4",
+      "label": "Rating System",
+      "type": "FEATURE"
+    },
+    {
+      "id": "us1",
+      "label": "US1",
+      "type": "USER_STORY"
+    },
+    {
+      "id": "us2",
+      "label": "US2",
+      "type": "USER_STORY"
+    },
+    {
+      "id": "us3",
+      "label": "US3",
+      "type": "USER_STORY"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "n1",
+      "target": "f1",
+      "label": "DESCRIBES_PERSONA"
+    },
+    {
+      "id": "e2",
+      "source": "n2",
+      "target": "f2",
+      "label": "DESCRIBES_PERSONA"
+    },
+    {
+      "id": "e3",
+      "source": "n3",
+      "target": "f4",
+      "label": "DESCRIBES_PERSONA"
+    },
+    {
+      "id": "e4",
+      "source": "us1",
+      "target": "f1",
+      "label": "HAS_STORY"
+    },
+    {
+      "id": "e5",
+      "source": "us2",
+      "target": "f2",
+      "label": "HAS_STORY"
+    },
+    {
+      "id": "e6",
+      "source": "us3",
+      "target": "f4",
+      "label": "HAS_STORY"
+    }
+  ]
+}

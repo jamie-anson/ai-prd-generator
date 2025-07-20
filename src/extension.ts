@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import fetch from 'node-fetch';
+import OpenAI from 'openai';
 
 // Define the structure of the expected output from the AI
 interface PrdOutput {
@@ -49,45 +49,46 @@ export function activate(context: vscode.ExtensionContext) {
                     }, async (progress) => {
                         progress.report({ increment: 0, message: "Calling AI..." });
 
-                        const apiKey = await context.secrets.get('geminiApiKey');
+                        const apiKey = await context.secrets.get('openAiApiKey');
+
                         if (!apiKey) {
-                            vscode.window.showErrorMessage('Gemini API key is not set. Please run the "Set Gemini API Key" command.');
+                            vscode.window.showErrorMessage('OpenAI API Key not set. Please set it using the command palette.');
                             panel.webview.postMessage({ command: 'error', text: 'API Key is not set.' });
                             return;
                         }
 
-                        const response = await callGeminiAPI(message.text, apiKey as string);
-                        progress.report({ increment: 50, message: "Saving files..." });
+                        const workspaceFolders = vscode.workspace.workspaceFolders;
+                        if (!workspaceFolders || workspaceFolders.length === 0) {
+                            vscode.window.showErrorMessage('No workspace folder found. Please open a folder to save PRD files.');
+                            panel.webview.postMessage({ command: 'error', text: 'No workspace folder selected.' });
+                            return;
+                        }
 
-                        if (response) {
-                            const workspaceFolders = vscode.workspace.workspaceFolders;
-                            if (workspaceFolders && workspaceFolders.length > 0) {
+                        try {
+                            const prdOutput = await callOpenAiAPI(message.text, apiKey);
+                            progress.report({ increment: 50, message: "Saving files..." });
+
+                            if (prdOutput) {
                                 const folderUri = workspaceFolders[0].uri;
                                 const timestamp = new Date().getTime();
                                 const mdPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.md`);
                                 const jsonPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.json`);
                                 const graphPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.graph.json`);
 
-                                try {
-                                    await vscode.workspace.fs.writeFile(mdPath, Buffer.from(response.markdown, 'utf8'));
-                                    await vscode.workspace.fs.writeFile(jsonPath, Buffer.from(JSON.stringify(response.json, null, 2), 'utf8'));
-                                    await vscode.workspace.fs.writeFile(graphPath, Buffer.from(JSON.stringify(response.graph, null, 2), 'utf8'));
+                                await vscode.workspace.fs.writeFile(mdPath, Buffer.from(prdOutput.markdown, 'utf8'));
+                                await vscode.workspace.fs.writeFile(jsonPath, Buffer.from(JSON.stringify(prdOutput.json, null, 2), 'utf8'));
+                                await vscode.workspace.fs.writeFile(graphPath, Buffer.from(JSON.stringify(prdOutput.graph, null, 2), 'utf8'));
 
-                                    vscode.window.showInformationMessage(`Successfully generated PRD files!`);
-                                    panel.webview.postMessage({ command: 'generationComplete', files: [mdPath.fsPath, jsonPath.fsPath, graphPath.fsPath] });
-                                    vscode.commands.executeCommand('vscode.open', mdPath);
-                                } catch (e) {
-                                    const errorMessage = e instanceof Error ? e.message : 'Unknown error';
-                                    vscode.window.showErrorMessage(`Failed to save PRD files: ${errorMessage}`);
-                                    panel.webview.postMessage({ command: 'error', text: `Failed to save files: ${errorMessage}` });
-                                }
+                                vscode.window.showInformationMessage(`Successfully generated PRD files!`);
+                                panel.webview.postMessage({ command: 'generationComplete', files: [mdPath.fsPath, jsonPath.fsPath, graphPath.fsPath] });
+                                vscode.commands.executeCommand('vscode.open', mdPath);
                             } else {
-                                // Error is already shown by callGeminiAPI, just update webview
-                                panel.webview.postMessage({ command: 'error', text: 'Failed to generate PRD from AI.' });
+                                panel.webview.postMessage({ command: 'error', text: 'Failed to generate PRD from AI. The response was empty.' });
                             }
-                        } else {
-                            vscode.window.showErrorMessage('No workspace folder found. Please open a folder to save PRD files.');
-                            panel.webview.postMessage({ command: 'error', text: 'No workspace folder selected.' });
+                        } catch (error: any) {
+                            console.error('Error during PRD generation or file saving:', error);
+                            const errorMessage = error.message || 'An unknown error occurred.';
+                            panel.webview.postMessage({ command: 'error', text: `Error: ${errorMessage}` });
                         }
                         progress.report({ increment: 100 });
                     });
@@ -147,64 +148,131 @@ export function activate(context: vscode.ExtensionContext) {
         });
     });
 
-        context.subscriptions.push(viewGraphPrdCommand);
+    context.subscriptions.push(viewGraphPrdCommand);
 
-    const setApiKeyCommand = vscode.commands.registerCommand('ai-prd-generator.setApiKey', async () => {
+    const setOpenAiApiKeyCommand = vscode.commands.registerCommand('ai-prd-generator.setOpenAiApiKey', async () => {
         const apiKey = await vscode.window.showInputBox({
-            prompt: 'Enter your Gemini API Key',
-            password: true, // Mask the input
-            ignoreFocusOut: true // Keep open even if focus moves
+            prompt: 'Enter your OpenAI API Key',
+            password: true,
+            ignoreFocusOut: true
         });
 
         if (apiKey) {
-            await context.secrets.store('geminiApiKey', apiKey);
-            vscode.window.showInformationMessage('Gemini API Key stored successfully.');
+            await context.secrets.store('openAiApiKey', apiKey);
+            vscode.window.showInformationMessage('OpenAI API Key saved successfully!');
         } else {
             vscode.window.showWarningMessage('API Key was not entered.');
         }
     });
 
-    context.subscriptions.push(setApiKeyCommand);
+    context.subscriptions.push(setOpenAiApiKeyCommand);
 }
 
-async function callGeminiAPI(prompt: string, apiKey: string): Promise<PrdOutput | null> {
-    const apiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput | null> {
+    const openai = new OpenAI({ apiKey });
 
-    const requestBody = {
-        "contents": [{
-            "parts": [{
-                "text": `You are a world-class product manager and system architect. Based on the following idea, generate a comprehensive Product Requirements Document (PRD) in three formats: markdown, a structured JSON, and graph data for visualization.\n\n**Product Idea:**\n${prompt}\n\n**Output MUST be a single JSON object with the following schema:**\n{\n  "type": "object",\n  "properties": {\n    "markdown": {\n      "type": "string",\n      "description": "A full PRD in Markdown format. Include sections like Introduction, User Personas, Features, User Stories, and Technical Considerations."\n    },\n    "json": {\n      "type": "object",\n      "description": "A structured JSON representation of the PRD. Use nested objects for clarity.",\n      "properties": {\n        "title": { "type": "string" },\n        "introduction": { "type": "string" },\n        "userPersonas": { \n          "type": "array",\n          "items": {\n            "type": "object",\n            "properties": {\n              "name": { "type": "string" },\n              "description": { "type": "string" }\n            }\n          }\n        },\n        "features": {\n          "type": "array",\n          "items": {\n            "type": "object",\n            "properties": {\n              "id": { "type": "string" },\n              "title": { "type": "string" },\n              "description": { "type": "string" }\n            }\n          }\n        },\n        "userStories": {\n          "type": "array",\n          "items": {\n            "type": "object",\n            "properties": {\n              "id": { "type": "string" },\n              "story": { "type": "string" },\n              "relatesToFeature": { "type": "string" }\n            }\n          }\n        }\n      }\n    },\n    "graph": {\n      "type": "object",\n      "description": "Data for a graph visualization.",\n      "properties": {\n        "nodes": {\n          "type": "array",\n          "items": {\n            "type": "object",\n            "properties": {\n              "id": { "type": "string" },\n              "label": { "type": "string" },\n              "type": { "type": "string", "enum": ["FEATURE", "USER_STORY", "USER_PERSONA"] }\n            }\n          }\n        },\n        "edges": {\n          "type": "array",\n          "items": {\n            "type": "object",\n            "properties": {\n              "id": { "type": "string" },\n              "source": { "type": "string" },\n              "target": { "type": "string" },\n              "label": { "type": "string", "enum": ["HAS_STORY", "DESCRIBES_PERSONA"] }\n            }\n          }\n        }\n      }\n    }\n  }\n}`
-            }]
-        }],
-        "generationConfig": {
-            "responseMimeType": "application/json"
+    const systemPrompt = `You are a world-class product manager and system architect. Based on the following idea, generate a comprehensive Product Requirements Document (PRD). The output MUST be a single, valid JSON object that adheres to the provided schema. Do not include any other text, markdown, or formatting outside of the JSON object.
+
+**JSON Schema:**
+{
+  "type": "object",
+  "properties": {
+    "markdown": {
+      "type": "string",
+      "description": "A full PRD in Markdown format. Include sections like Introduction, User Personas, Features, User Stories, and Technical Considerations."
+    },
+    "json": {
+      "type": "object",
+      "description": "A structured JSON representation of the PRD. Use nested objects for clarity.",
+      "properties": {
+        "title": { "type": "string" },
+        "introduction": { "type": "string" },
+        "userPersonas": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "userStories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "story": { "type": "string" },
+              "relatesToFeature": { "type": "string" }
+            }
+          }
         }
-    };
+      }
+    },
+    "graph": {
+      "type": "object",
+      "description": "Data for a graph visualization.",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "type": { "type": "string", "enum": ["FEATURE", "USER_STORY", "USER_PERSONA"] }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "source": { "type": "string" },
+              "target": { "type": "string" },
+              "label": { "type": "string", "enum": ["HAS_STORY", "DESCRIBES_PERSONA"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
 
     try {
-        const res = await fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4-turbo',
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: `**Product Idea:**\n${prompt}` }
+            ],
+            response_format: { type: 'json_object' },
         });
 
-        if (!res.ok) {
-            const errorBody = await res.text();
-            console.error('API Error:', errorBody);
-            vscode.window.showErrorMessage(`API request failed: ${res.statusText}`);
-            return null;
+        const jsonContent = response.choices[0].message.content;
+        if (!jsonContent) {
+            throw new Error('API returned empty content.');
         }
 
-        const responseData = await res.json() as GeminiResponse;
-        const jsonString = responseData.candidates[0].content.parts[0].text;
-        return JSON.parse(jsonString) as PrdOutput;
-    } catch (error) {
-        console.error('Error calling Gemini API:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        vscode.window.showErrorMessage(`Error calling Gemini API: ${errorMessage}`);
-        return null;
+        return JSON.parse(jsonContent) as PrdOutput;
+
+    } catch (error: any) {
+        console.error('Error calling OpenAI API:', error);
+        throw new Error(`API Error: ${error.message}`);
     }
 }
 
