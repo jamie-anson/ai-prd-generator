@@ -50,17 +50,38 @@ export function activate(context: vscode.ExtensionContext) {
                         const prdOutput = await callOpenAiAPI(message.text, apiKey);
                         progress.report({ increment: 50, message: "Saving files..." });
                         if (prdOutput) {
-                            const workspacePath = workspaceFolders[0].uri.fsPath;
-                            const timestamp = new Date().toISOString().replace(/:/g, '-');
-                            const mdFilePath = vscode.Uri.file(`${workspacePath}/PRD-${timestamp}.md`);
-                            const jsonFilePath = vscode.Uri.file(`${workspacePath}/PRD-${timestamp}.json`);
-                            const graphFilePath = vscode.Uri.file(`${workspacePath}/PRD-${timestamp}.graph.json`);
+                            const workspaceUri = workspaceFolders[0].uri;
+                            const planningDir = vscode.Uri.joinPath(workspaceUri, 'planning');
+                            await vscode.workspace.fs.createDirectory(planningDir);
+
+                            // Sanitize title for filename
+                            const prdData = prdOutput.json as { title?: string };
+                            const title = prdData.title || `PRD-${new Date().toISOString().replace(/:/g, '-')}`;
+                            const safeFilename = title.replace(/[\\/\?%\*:\|"<>\.]/g, '_');
+
+                            const mdFilePath = vscode.Uri.joinPath(planningDir, `${safeFilename}.md`);
+                            const jsonFilePath = vscode.Uri.joinPath(planningDir, `${safeFilename}.json`);
+                            const graphFilePath = vscode.Uri.joinPath(planningDir, `${safeFilename}.graph.json`);
+
                             await vscode.workspace.fs.writeFile(mdFilePath, Buffer.from(prdOutput.markdown));
-                            await vscode.workspace.fs.writeFile(jsonFilePath, Buffer.from(JSON.stringify(prdOutput, null, 4)));
+                            await vscode.workspace.fs.writeFile(jsonFilePath, Buffer.from(JSON.stringify(prdOutput.json, null, 4)));
                             await vscode.workspace.fs.writeFile(graphFilePath, Buffer.from(JSON.stringify({ graph: prdOutput.graph }, null, 4)));
-                            vscode.window.showInformationMessage('PRD files generated successfully!');
+
+                            // Update the AI manifest
+                            await updateAiManifest(context, {
+                                type: 'ProductRequirementsDocument',
+                                title: title,
+                                formats: {
+                                    markdown: vscode.workspace.asRelativePath(mdFilePath),
+                                    json: vscode.workspace.asRelativePath(jsonFilePath),
+                                    graph: vscode.workspace.asRelativePath(graphFilePath)
+                                }
+                            });
+
+                            vscode.window.showInformationMessage(`PRD '${title}' generated successfully!`);
                             await vscode.window.showTextDocument(mdFilePath);
-                            panel.webview.postMessage({ command: 'success' });
+                            panel.webview.postMessage({ command: 'generationComplete', files: [mdFilePath.fsPath, jsonFilePath.fsPath, graphFilePath.fsPath] });
+
                         } else {
                             throw new Error("Received no data from API.");
                         }
@@ -144,7 +165,7 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
 2.  **'json'**: A JSON object containing the structured data of the PRD. This should include keys like 'title', 'introduction', 'userPersonas' (an array of objects with 'name' and 'description'), 'features' (an array of objects with 'id', 'title', and 'description'), and 'userStories' (an array of objects with 'id', 'story', and 'relatesToFeature').
 3.  **'graph'**: A JSON object with two keys, 'nodes' and 'edges', formatted for a graph visualization library like Cytoscape.js. 
     *   'nodes' should be an array of objects, where each object has a 'data' key with 'id' and 'label'. Create nodes for each user persona and each feature.
-    *   'edges' should be an array of objects, where each object has a 'data' key with 'id', 'source' (a user persona ID), and 'target' (a feature ID), representing which persona uses which feature.`
+    *   'edges' should be an array of objects, where each object has a 'data' key with 'id', 'source' (a user persona ID), 'target' (a feature ID), and a 'label' (a short verb describing the interaction, e.g., 'manages', 'uses', 'views'), representing which persona uses which feature.`
                 },
                 {
                     role: "user",
@@ -233,7 +254,17 @@ function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, 
                                 },
                                 {
                                     selector: 'edge',
-                                    style: { 'width': 2, 'line-color': '#ccc', 'target-arrow-color': '#ccc', 'target-arrow-shape': 'triangle', 'curve-style': 'bezier' }
+                                    style: {
+                                        'width': 2,
+                                        'line-color': '#ccc',
+                                        'target-arrow-color': '#ccc',
+                                        'target-arrow-shape': 'triangle',
+                                        'curve-style': 'bezier',
+                                        'label': 'data(label)',
+                                        'color': '#ccc',
+                                        'font-size': '10px',
+                                        'text-rotation': 'autorotate'
+                                    }
                                 }
                             ],
                             layout: {
@@ -383,6 +414,38 @@ function getStyledMdViewerWebviewContent(markdownContent: string): string {
         ${htmlContent}
     </body>
     </html>`;
+}
+
+/**
+ * Creates or updates an AI manifest file in the workspace to track generated artifacts.
+ * @param context The extension context.
+ * @param newArtifact The artifact metadata to add to the manifest.
+ */
+async function updateAiManifest(context: vscode.ExtensionContext, newArtifact: any) {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders) { return; }
+
+    const workspaceUri = workspaceFolders[0].uri;
+    const aiDir = vscode.Uri.joinPath(workspaceUri, '.ai');
+    const manifestFile = vscode.Uri.joinPath(aiDir, 'manifest.json');
+
+    let manifest: { artifacts: any[] } = { artifacts: [] };
+
+    try {
+        await vscode.workspace.fs.createDirectory(aiDir);
+        const fileContent = await vscode.workspace.fs.readFile(manifestFile);
+        manifest = JSON.parse(Buffer.from(fileContent).toString('utf-8'));
+    } catch (error) {
+        // Manifest doesn't exist or is invalid, start with a fresh one.
+    }
+
+    manifest.artifacts.push({
+        agent: 'ai-prd-generator',
+        timestamp: new Date().toISOString(),
+        ...newArtifact
+    });
+
+    await vscode.workspace.fs.writeFile(manifestFile, Buffer.from(JSON.stringify(manifest, null, 4)));
 }
 
 export function deactivate() {}
