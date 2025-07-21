@@ -4,12 +4,20 @@
   "description": "AI-Powered PRD Generator",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.89.0"
   },
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johndoe/ai-prd-generator.git"
+  },
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:ai-prd-generator.generatePrd",
+    "onCommand:ai-prd-generator.viewPrd"
+  ],
   "contributes": {
     "commands": [
       {

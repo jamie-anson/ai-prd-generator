@@ -7,40 +7,50 @@ It's designed to streamline your product management workflow, saving you time an
 ## Features
 
 *   **AI-Powered PRD Generation:** Simply provide a product idea, and the extension will generate a detailed PRD.
-*   **Multiple Output Formats:** The generated PRD includes:
-    *   A full **Markdown** document.
-    *   A structured **JSON** object for easy machine-reading.
-    *   **Graph data** for visualizing relationships between product components.
-*   **Interactive Viewers:**
-    *   An interactive JSON viewer to explore the structured data.
-    *   An interactive Graph viewer (powered by Cytoscape.js) to visualize user personas, features, and user stories.
+*   **Multiple Output Formats:** The generated PRD includes a full **Markdown** document, a structured **JSON** object, and **Graph data** for visualization.
+*   **Rich, Interactive Viewers:** Custom, beautifully styled viewers for all three PRD formats, including an interactive graph powered by Cytoscape.js.
 *   **Secure API Key Storage:** Your OpenAI API key is stored securely using VS Code's SecretStorage API.
 
 ## How to Use
 
-1.  **Install the Extension:** Find and install the "AI-Powered PRD Generator" from the Visual Studio Code Marketplace.
-
-2.  **Set Your OpenAI API Key:**
+1.  **Set Your OpenAI API Key:**
     *   Open the Command Palette (`Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux).
-    *   Search for and select the command **`Set OpenAI API Key`**.
-    *   Enter your OpenAI API key when prompted. This is a one-time setup.
+    *   Run the **`AI PRD Generator: Set OpenAI API Key`** command.
 
-3.  **Generate a PRD:**
-    *   Open a workspace or folder in VS Code. This is required for saving the output files.
-    *   Open the Command Palette.
-    *   Search for and select the command **`Generate PRD with AI`**.
-    *   A new webview will open. Enter your product idea in the text area and click the "Generate PRD" button.
-    *   The extension will call the OpenAI API, and once complete, it will save the generated `'.md'`, `'.json'`, and `'.graph.json'` files in your workspace.
+2.  **Generate a PRD:**
+    *   Run the **`AI PRD Generator: Generate PRD`** command.
+    *   Enter your product idea in the webview that appears.
 
-4.  **View the Outputs:**
-    *   After generation, you can use the `View as Interactive PRD` and `View as Interactive Graph` commands to explore the generated JSON and graph data.
+3.  **View the Outputs:**
+    *   Right-click on any of the generated `prd-*.md`, `prd-*.json`, or `prd-*.graph.json` files in the explorer.
+    *   Select the **`View PRD`** command.
 
-## Available Commands
+## For Developers
 
-*   `Generate PRD with AI`: The main command to start the PRD generation process.
-*   `Set OpenAI API Key`: Securely saves your OpenAI API key.
-*   `View as Interactive PRD`: Opens the generated JSON file in an interactive viewer.
-*   `View as Interactive Graph`: Opens the generated graph data in an interactive visualization.
+### Running Locally
+
+1.  Clone the repository.
+2.  Run `npm install` to install dependencies.
+3.  Press `F5` to open a new **Extension Development Host** window with the extension running.
+
+### Packaging and Installation
+
+To package the extension into a `.vsix` file for local installation:
+
+1.  **Install vsce (once):**
+    ```bash
+    npm install -g vsce
+    ```
+
+2.  **Package the extension:**
+    ```bash
+    vsce package
+    ```
+
+3.  **Install in VS Code:**
+    *   Open the **Extensions** view (`Cmd+Shift+X`).
+    *   Click the **(...)** menu at the top-right.
+    *   Select **"Install from VSIX..."** and choose the generated `.vsix` file.
 
 ## Requirements
 
