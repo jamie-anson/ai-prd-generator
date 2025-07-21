@@ -1,0 +1,96 @@
+/**
+ * Stylesheet for the Styled PRD Viewer.
+ * This file provides a beautiful, human-readable layout for the PRD content,
+ * using cards, clear typography, and VS Code's theme variables for a native look.
+ */
+
+/* General body and container styles */
+body {
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Headings and typography */
+h1 {
+    color: var(--vscode-textLink-foreground);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--vscode-editorWidget-border);
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: var(--vscode-textLink-activeForeground);
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+p, li {
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+/* Section styling */
+.section {
+    margin-bottom: 30px;
+}
+
+/* Card layout for personas and features */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.persona-card, .feature-card {
+    background-color: var(--vscode-sideBar-background);
+    border: 1px solid var(--vscode-widget-shadow);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.persona-card:hover, .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* User stories list styling */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    background-color: var(--vscode-editorWidget-background);
+    padding: 15px;
+    border-left: 4px solid var(--vscode-textLink-foreground);
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+li strong {
+    color: var(--vscode-textLink-activeForeground);
+}
+
+li em {
+    color: var(--vscode-editor-foreground);
+    opacity: 0.8;
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
