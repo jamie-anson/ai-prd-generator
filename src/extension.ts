@@ -7,10 +7,31 @@ import MarkdownIt = require('markdown-it');
 /**
  * Defines the structure for the complete PRD output from the AI service.
  */
+interface PrdJson {
+    title: string;
+    purpose: string;
+    goals: string[];
+    userRoles: string[];
+    features: Array<{ id: string; title: string; requirements: string[]; }>;
+    technicalRequirements: {
+        frontend: { stack: string; notes: string; };
+        backend: { stack: string; notes: string; };
+        database: { stack: string; notes: string; };
+    };
+    nonFunctionalRequirements: {
+        security: string;
+        scalability: string;
+        performance: string;
+    };
+    userJourneys: Record<string, string[]>;
+    successMetrics: string[];
+    futureEnhancements: string[];
+}
+
 interface PrdOutput {
     markdown: string;
-    json: object;
-    graph: { nodes: object[], edges: object[] };
+    json: PrdJson;
+    graph: any;
 }
 
 /**
@@ -134,8 +155,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showInformationMessage('Opening styled PRD viewer...');
                 panel.title = 'Styled PRD';
                 const fileData = JSON.parse(Buffer.from(fileContent).toString('utf8'));
-                const styleUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'styled-prd-viewer.css'));
-                panel.webview.html = getStyledPrdWebviewContent(fileData, styleUri);
+                panel.webview.html = getStyledPrdWebviewContent(fileData);
             } else if (uri.fsPath.endsWith('.md')) {
                 vscode.window.showInformationMessage('Opening Markdown PRD viewer...');
                 panel.title = 'Markdown PRD';
@@ -155,17 +175,39 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
     const openai = new OpenAI({ apiKey });
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-4-turbo-2024-04-09",
+            model: "gpt-4o",
             messages: [
                 {
                     role: "system",
                     content: `You are an expert product manager. Based on the user's prompt, generate a comprehensive Product Requirements Document (PRD). The output must be a single, valid JSON object. Do not include any text, markdown, or explanations outside of the JSON object. The JSON object must have three top-level keys: 'markdown', 'json', and 'graph'.
 
-1.  **'markdown'**: A string containing the full PRD in well-structured Markdown format. Include sections for Introduction, User Personas, Features, and User Stories.
-2.  **'json'**: A JSON object containing the structured data of the PRD. This should include keys like 'title', 'introduction', 'userPersonas' (an array of objects with 'name' and 'description'), 'features' (an array of objects with 'id', 'title', and 'description'), and 'userStories' (an array of objects with 'id', 'story', and 'relatesToFeature').
-3.  **'graph'**: A JSON object with two keys, 'nodes' and 'edges', formatted for a graph visualization library like Cytoscape.js. 
-    *   'nodes' should be an array of objects, where each object has a 'data' key with 'id' and 'label'. Create nodes for each user persona and each feature.
-    *   'edges' should be an array of objects, where each object has a 'data' key with 'id', 'source' (a user persona ID), 'target' (a feature ID), and a 'label' (a short verb describing the interaction, e.g., 'manages', 'uses', 'views'), representing which persona uses which feature.`
+1.  **'markdown'**: A string containing the full PRD in well-structured Markdown format. It must include the following sections: 1. Purpose, 2. Goals and Objectives, 3. Features and Requirements (including User Roles and Core Features), 4. Technical Requirements (Frontend, Backend, Database), 5. Non-Functional Requirements (Security, Scalability, Performance), 6. User Journey Summary (for each key role), 7. Success Metrics, 8. Future Enhancements.
+
+2.  **'json'**: A JSON object containing the structured data of the PRD. The schema must be as follows:
+    {
+        "title": "String",
+        "purpose": "String",
+        "goals": ["String"],
+        "userRoles": ["String"],
+        "features": [{"id": "String", "title": "String", "requirements": ["String"]}],
+        "technicalRequirements": {
+            "frontend": {"stack": "String", "notes": "String"},
+            "backend": {"stack": "String", "notes": "String"},
+            "database": {"stack": "String", "notes": "String"}
+        },
+        "nonFunctionalRequirements": {
+            "security": "String",
+            "scalability": "String",
+            "performance": "String"
+        },
+        "userJourneys": {"role_name": ["String"]},
+        "successMetrics": ["String"],
+        "futureEnhancements": ["String"]
+    }
+
+3.  **'graph'**: A JSON object with two keys, 'nodes' and 'edges', formatted for a graph visualization library like Cytoscape.js.
+    *   'nodes': An array of objects. Create nodes for each User Role and each Core Feature. Each node's 'data' object must have 'id', 'label', and 'type' ('role' or 'feature').
+    *   'edges': An array of objects. Connect roles to the features they interact with. Each edge's 'data' object must have 'id', 'source' (role ID), 'target' (feature ID), and a 'label' (a short verb like 'manages', 'uses', 'views').`
                 },
                 {
                     role: "user",
@@ -253,6 +295,14 @@ function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, 
                                     style: { 'background-color': '#666', 'label': 'data(label)', 'color': '#fff', 'text-valign': 'center', 'text-halign': 'center', 'font-size': '12px' }
                                 },
                                 {
+                                    selector: 'node[type = "role"]',
+                                    style: { 'background-color': '#007acc' }
+                                },
+                                {
+                                    selector: 'node[type = "feature"]',
+                                    style: { 'background-color': '#5bc0de' }
+                                },
+                                {
                                     selector: 'edge',
                                     style: {
                                         'width': 2,
@@ -261,9 +311,12 @@ function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, 
                                         'target-arrow-shape': 'triangle',
                                         'curve-style': 'bezier',
                                         'label': 'data(label)',
-                                        'color': '#ccc',
+                                        'color': '#fff',
                                         'font-size': '10px',
-                                        'text-rotation': 'autorotate'
+                                        'text-background-color': '#555',
+                                        'text-background-opacity': 1,
+                                        'text-background-padding': '2px',
+                                        'text-margin-y': -10
                                     }
                                 }
                             ],
@@ -304,53 +357,98 @@ function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, 
     `;
 }
 
-function getStyledPrdWebviewContent(prdJson: any, styleUri: vscode.Uri): string {
-    const escapeHtml = (unsafe: string) => {
-        if (!unsafe) return '';
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    };
+function getStyledPrdWebviewContent(prdData: PrdJson): string {
+    const { title, purpose, goals, userRoles, features, technicalRequirements, nonFunctionalRequirements, userJourneys, successMetrics, futureEnhancements } = prdData;
 
-    const title = prdJson.title ? `<h1>${escapeHtml(prdJson.title)}</h1>` : '';
-    const introduction = prdJson.introduction ? `<div class="section"><h2>Introduction</h2><p>${escapeHtml(prdJson.introduction)}</p></div>` : '';
-    const userPersonas = prdJson.userPersonas?.map((persona: any) => `
-        <div class="persona-card">
-            <h3>${escapeHtml(persona.name)}</h3>
-            <p>${escapeHtml(persona.description)}</p>
-        </div>`).join('') || '';
-    const features = prdJson.features?.map((feature: any) => `
-        <div class="feature-card">
-            <h3>${escapeHtml(feature.title)} (ID: ${escapeHtml(feature.id)})</h3>
-            <p>${escapeHtml(feature.description)}</p>
-        </div>`).join('') || '';
-    const userStories = prdJson.userStories?.map((story: any) => `
-        <li>
-            <strong>${escapeHtml(story.id)}:</strong> ${escapeHtml(story.story)} 
-            <em>(Relates to: ${escapeHtml(story.relatesToFeature)})</em>
-        </li>`).join('') || '';
-
-    return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Styled PRD</title>
-        <link rel="stylesheet" href="${styleUri}">
-    </head>
-    <body>
-        <div class="container">
-            ${title}
-            ${introduction}
-            ${userPersonas ? `<div class="section"><h2>User Personas</h2><div class="card-container">${userPersonas}</div></div>` : ''}
-            ${features ? `<div class="section"><h2>Features</h2><div class="card-container">${features}</div></div>` : ''}
-            ${userStories ? `<div class="section"><h2>User Stories</h2><ul>${userStories}</ul></div>` : ''}
+    const goalsHtml = goals.map(g => `<li>${g}</li>`).join('');
+    const rolesHtml = userRoles.map(r => `<li>${r}</li>`).join('');
+    const featuresHtml = features.map(f => `
+        <div class="feature-section">
+            <h4>${f.title}</h4>
+            <ul>${f.requirements.map(r => `<li>${r}</li>`).join('')}</ul>
         </div>
-    </body>
-    </html>`;
+    `).join('');
+    const journeysHtml = Object.entries(userJourneys).map(([role, steps]) => `
+        <div class="feature-section">
+            <h4>${role.replace(/_/g, ' ')}</h4>
+            <ol>${steps.map(s => `<li>${s}</li>`).join('')}</ol>
+        </div>
+    `).join('');
+    const metricsHtml = successMetrics.map(m => `<li>${m}</li>`).join('');
+    const enhancementsHtml = futureEnhancements.map(e => `<li>${e}</li>`).join('');
+
+    return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${title}</title>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #1e1e1e; color: #d4d4d4; }
+                h1, h2, h3, h4 { color: #569cd6; }
+                h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+                h2 { border-bottom: 1px solid #333; padding-bottom: 5px; }
+                .container { max-width: 800px; margin: 0 auto; }
+                .section { background-color: #252526; border: 1px solid #333; border-radius: 5px; padding: 20px; margin-bottom: 20px; }
+                .feature-section { margin-bottom: 15px; }
+                ul, ol { padding-left: 20px; }
+                li { margin-bottom: 5px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>${title}</h1>
+
+                <div class="section">
+                    <h2>Purpose</h2>
+                    <p>${purpose}</p>
+                </div>
+
+                <div class="section">
+                    <h2>Goals and Objectives</h2>
+                    <ul>${goalsHtml}</ul>
+                </div>
+
+                <div class="section">
+                    <h2>Features and Requirements</h2>
+                    <h3>User Roles</h3>
+                    <ul>${rolesHtml}</ul>
+                    <h3>Core Features</h3>
+                    ${featuresHtml}
+                </div>
+
+                <div class="section">
+                    <h2>Technical Requirements</h2>
+                    <h4>Frontend</h4><p><strong>Stack:</strong> ${technicalRequirements.frontend.stack}<br><strong>Notes:</strong> ${technicalRequirements.frontend.notes}</p>
+                    <h4>Backend</h4><p><strong>Stack:</strong> ${technicalRequirements.backend.stack}<br><strong>Notes:</strong> ${technicalRequirements.backend.notes}</p>
+                    <h4>Database</h4><p><strong>Stack:</strong> ${technicalRequirements.database.stack}<br><strong>Notes:</strong> ${technicalRequirements.database.notes}</p>
+                </div>
+
+                <div class="section">
+                    <h2>Non-Functional Requirements</h2>
+                    <p><strong>Security:</strong> ${nonFunctionalRequirements.security}</p>
+                    <p><strong>Scalability:</strong> ${nonFunctionalRequirements.scalability}</p>
+                    <p><strong>Performance:</strong> ${nonFunctionalRequirements.performance}</p>
+                </div>
+                
+                <div class="section">
+                    <h2>User Journey Summary</h2>
+                    ${journeysHtml}
+                </div>
+
+                <div class="section">
+                    <h2>Success Metrics</h2>
+                    <ul>${metricsHtml}</ul>
+                </div>
+
+                <div class="section">
+                    <h2>Future Enhancements</h2>
+                    <ul>${enhancementsHtml}</ul>
+                </div>
+
+            </div>
+        </body>
+        </html>
+    `;
 }
 
 function getStyledMdViewerWebviewContent(markdownContent: string): string {
@@ -362,52 +460,17 @@ function getStyledMdViewerWebviewContent(markdownContent: string): string {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Styled PRD</title>
+        <title>Styled Markdown PRD</title>
         <style>
-            body {
-                font-family: var(--vscode-font-family);
-                background-color: var(--vscode-editor-background);
-                color: var(--vscode-editor-foreground);
-                font-size: 18px; /* Increased for readability */
-                padding: 20px;
-                line-height: 1.6;
-            }
-            h1, h2, h3, h4, h5, h6 {
-                color: var(--vscode-editor-foreground);
-                border-bottom: 1px solid var(--vscode-side-bar-border);
-                padding-bottom: 5px;
-            }
-            p {
-                margin-bottom: 10px;
-            }
-            code {
-                background-color: var(--vscode-text-block-quote-background);
-                padding: 2px 4px;
-                border-radius: 4px;
-                font-family: var(--vscode-editor-font-family);
-            }
-            pre {
-                background-color: var(--vscode-text-block-quote-background);
-                padding: 10px;
-                border-radius: 4px;
-                overflow-x: auto;
-            }
-            blockquote {
-                border-left: 4px solid var(--vscode-side-bar-border);
-                padding-left: 10px;
-                color: var(--vscode-text-separator-foreground);
-                margin-left: 0;
-            }
-            ul, ol {
-                padding-left: 20px;
-            }
-            a {
-                color: var(--vscode-text-link-foreground);
-                text-decoration: none;
-            }
-            a:hover {
-                text-decoration: underline;
-            }
+            body { font-family: var(--vscode-font-family); background-color: var(--vscode-editor-background); color: var(--vscode-editor-foreground); font-size: 18px; padding: 20px; line-height: 1.6; }
+            h1, h2, h3, h4, h5, h6 { color: var(--vscode-editor-foreground); border-bottom: 1px solid var(--vscode-side-bar-border); padding-bottom: 5px; }
+            p { margin-bottom: 10px; }
+            code { background-color: var(--vscode-text-block-quote-background); padding: 2px 4px; border-radius: 4px; font-family: var(--vscode-editor-font-family); }
+            pre { background-color: var(--vscode-text-block-quote-background); padding: 10px; border-radius: 4px; overflow-x: auto; }
+            blockquote { border-left: 4px solid var(--vscode-side-bar-border); padding-left: 10px; color: var(--vscode-text-separator-foreground); margin-left: 0; }
+            ul, ol { padding-left: 20px; }
+            a { color: var(--vscode-text-link-foreground); text-decoration: none; }
+            a:hover { text-decoration: underline; }
         </style>
     </head>
     <body>
