@@ -31,6 +31,10 @@
           "when": "resourceFilename =~ /\\.(json|md)$/ || resourceFilename =~ /\\.graph\\.json$/",
           "command": "ai-prd-generator.viewPrd",
           "group": "navigation@1"
+        },
+        {
+          "command": "-markdown.showPreview",
+          "when": "resourceExtname == .md"
         }
       ]
     },

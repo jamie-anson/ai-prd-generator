@@ -1,96 +1,109 @@
 /**
- * Stylesheet for the Styled PRD Viewer.
- * This file provides a beautiful, human-readable layout for the PRD content,
- * using cards, clear typography, and VS Code's theme variables for a native look.
+ * ShadCN-inspired stylesheet for the Styled PRD Viewer.
  */
 
-/* General body and container styles */
+:root {
+    --border-radius: 0.5rem;
+}
+
 body {
     background-color: var(--vscode-editor-background);
     color: var(--vscode-editor-foreground);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    padding: 20px;
+    font-family: var(--vscode-font-family);
+    font-size: 18px; /* Increased for readability */
+    padding: 2rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
 }
 
-/* Headings and typography */
+/* Typography */
 h1 {
-    color: var(--vscode-textLink-foreground);
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--vscode-editorWidget-border);
-    padding-bottom: 10px;
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--vscode-editorWidget-border);
+    padding-bottom: 0.75rem;
 }
 
 h2 {
-    font-size: 1.8em;
-    color: var(--vscode-textLink-activeForeground);
-    margin-top: 40px;
-    margin-bottom: 20px;
+    font-size: 1.5rem; /* 24px */
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--vscode-editorWidget-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 h3 {
-    font-size: 1.4em;
-    margin-bottom: 10px;
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
 }
 
 p, li {
-    line-height: 1.6;
-    font-size: 1em;
+    line-height: 1.75;
+    color: var(--vscode-descriptionForeground);
 }
 
 /* Section styling */
 .section {
-    margin-bottom: 30px;
+    width: 100%;
 }
 
 /* Card layout for personas and features */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 .persona-card, .feature-card {
     background-color: var(--vscode-sideBar-background);
-    border: 1px solid var(--vscode-widget-shadow);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease-in-out;
+    border: 1px solid var(--vscode-widget-border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.persona-card:hover, .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+.persona-card p, .feature-card p {
+    font-size: 0.9rem;
+    color: var(--vscode-descriptionForeground);
 }
 
 /* User stories list styling */
 ul {
     list-style-type: none;
     padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 li {
     background-color: var(--vscode-editorWidget-background);
-    padding: 15px;
-    border-left: 4px solid var(--vscode-textLink-foreground);
-    margin-bottom: 10px;
-    border-radius: 4px;
+    border: 1px solid var(--vscode-widget-border);
+    border-radius: var(--border-radius);
+    padding: 1rem 1.25rem;
 }
 
 li strong {
-    color: var(--vscode-textLink-activeForeground);
+    font-weight: 500;
+    color: var(--vscode-editor-foreground);
 }
 
 li em {
-    color: var(--vscode-editor-foreground);
-    opacity: 0.8;
+    color: var(--vscode-descriptionForeground);
+    opacity: 0.9;
     display: block;
-    margin-top: 5px;
-    font-size: 0.9em;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
 }

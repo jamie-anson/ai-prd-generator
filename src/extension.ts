@@ -382,6 +382,7 @@ function getStyledMdViewerWebviewContent(markdownContent: string): string {
                 font-family: var(--vscode-font-family);
                 background-color: var(--vscode-editor-background);
                 color: var(--vscode-editor-foreground);
+                font-size: 18px; /* Increased for readability */
                 padding: 20px;
                 line-height: 1.6;
             }
