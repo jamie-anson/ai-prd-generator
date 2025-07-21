@@ -1,26 +1,55 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.activate = activate;
+exports.deactivate = deactivate;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import OpenAI from 'openai';
-import MarkdownIt = require('markdown-it');
-
-/**
- * Defines the structure for the complete PRD output from the AI service.
- */
-interface PrdOutput {
-    markdown: string;
-    json: object;
-    graph: { nodes: object[], edges: object[] };
-}
-
+const vscode = __importStar(require("vscode"));
+const openai_1 = __importDefault(require("openai"));
+const MarkdownIt = require("markdown-it");
 /**
  * This method is called when the extension is activated.
  * It sets up the main command, registers event listeners, and initializes resources.
  * @param context The extension context provided by VS Code.
  */
-export function activate(context: vscode.ExtensionContext) {
+function activate(context) {
     console.log('Congratulations, your extension "ai-prd-generator" is now active!');
-
     // Register the main command to generate a PRD.
     const generatePrdCommand = vscode.commands.registerCommand('ai-prd-generator.generatePrd', async () => {
         const panel = vscode.window.createWebviewPanel('prdGenerator', 'PRD Generator', vscode.ViewColumn.One, {
@@ -29,8 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
         const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'main.js'));
         panel.webview.html = getWebviewContent(scriptUri);
-
-        panel.webview.onDidReceiveMessage(async message => {
+        panel.webview.onDidReceiveMessage(async (message) => {
             if (message.command === 'generate') {
                 vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Generating PRD...", cancellable: false }, async (progress) => {
                     progress.report({ increment: 0, message: "Calling AI..." });
@@ -61,10 +89,12 @@ export function activate(context: vscode.ExtensionContext) {
                             vscode.window.showInformationMessage('PRD files generated successfully!');
                             await vscode.window.showTextDocument(mdFilePath);
                             panel.webview.postMessage({ command: 'success' });
-                        } else {
+                        }
+                        else {
                             throw new Error("Received no data from API.");
                         }
-                    } catch (error: any) {
+                    }
+                    catch (error) {
                         console.error('Error generating PRD:', error);
                         const errorMessage = error.message || 'An unknown error occurred.';
                         vscode.window.showErrorMessage(`Failed to generate PRD: ${errorMessage}`);
@@ -74,31 +104,22 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }, undefined, context.subscriptions);
     });
-
-    const setApiKeyCommand = vscode.commands.registerCommand('ai-prd-generator.setOpenAiApiKey', async () => {
+    const setApiKeyCommand = vscode.commands.registerCommand('ai-prd-generator.setApiKey', async () => {
         const apiKey = await vscode.window.showInputBox({ prompt: 'Enter your OpenAI API Key', password: true });
         if (apiKey) {
             await context.secrets.store('openAiApiKey', apiKey);
             vscode.window.showInformationMessage('OpenAI API Key stored successfully.');
         }
     });
-
-    const viewPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewPrd', async (uri: vscode.Uri) => {
+    const viewPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewPrd', async (uri) => {
         if (!uri) {
             vscode.window.showErrorMessage('No file selected. Please right-click on a PRD file to view it.');
             return;
         }
-
-        const panel = vscode.window.createWebviewPanel(
-            'prdViewer',
-            'PRD Viewer',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'dist', 'media')]
-            }
-        );
-
+        const panel = vscode.window.createWebviewPanel('prdViewer', 'PRD Viewer', vscode.ViewColumn.One, {
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'dist', 'media')]
+        });
         try {
             const fileContent = await vscode.workspace.fs.readFile(uri);
             if (uri.fsPath.endsWith('.graph.json')) {
@@ -106,32 +127,31 @@ export function activate(context: vscode.ExtensionContext) {
                 panel.title = 'Graph PRD';
                 const fileData = JSON.parse(Buffer.from(fileContent).toString('utf8'));
                 const cytoscapeUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'cytoscape.min.js'));
-                const dagreUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'dagre.min.js'));
-                const cyDagreUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'cytoscape-dagre.js'));
-                panel.webview.html = getGraphViewerWebviewContent(fileData, cytoscapeUri, dagreUri, cyDagreUri);
-            } else if (uri.fsPath.endsWith('.json')) {
+                panel.webview.html = getGraphViewerWebviewContent(fileData, cytoscapeUri);
+            }
+            else if (uri.fsPath.endsWith('.json')) {
                 vscode.window.showInformationMessage('Opening styled PRD viewer...');
                 panel.title = 'Styled PRD';
                 const fileData = JSON.parse(Buffer.from(fileContent).toString('utf8'));
                 const styleUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'styled-prd-viewer.css'));
                 panel.webview.html = getStyledPrdWebviewContent(fileData, styleUri);
-            } else if (uri.fsPath.endsWith('.md')) {
+            }
+            else if (uri.fsPath.endsWith('.md')) {
                 vscode.window.showInformationMessage('Opening Markdown PRD viewer...');
                 panel.title = 'Markdown PRD';
                 const markdownContent = Buffer.from(fileContent).toString('utf8');
                 panel.webview.html = getStyledMdViewerWebviewContent(markdownContent);
             }
-        } catch (error: any) {
+        }
+        catch (error) {
             console.error('Error reading or parsing PRD file:', error);
             vscode.window.showErrorMessage(`Failed to open PRD viewer: ${error.message}`);
         }
     });
-
     context.subscriptions.push(generatePrdCommand, setApiKeyCommand, viewPrdCommand);
 }
-
-async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput | null> {
-    const openai = new OpenAI({ apiKey });
+async function callOpenAiAPI(prompt, apiKey) {
+    const openai = new openai_1.default({ apiKey });
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-4-turbo-2024-04-09",
@@ -153,21 +173,20 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
             ],
             response_format: { type: "json_object" },
         });
-
         if (response.choices && response.choices[0] && response.choices[0].message.content) {
             const content = response.choices[0].message.content;
             // The response is expected to be a stringified JSON object.
-            const parsedContent: PrdOutput = JSON.parse(content);
+            const parsedContent = JSON.parse(content);
             return parsedContent;
         }
         return null;
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error calling OpenAI API:', error);
         throw error; // Re-throw to be caught by the caller
     }
 }
-
-function getWebviewContent(scriptUri: vscode.Uri) {
+function getWebviewContent(scriptUri) {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -185,25 +204,22 @@ function getWebviewContent(scriptUri: vscode.Uri) {
     </body>
     </html>`;
 }
-
-function getJsonViewerWebviewContent(scriptUri: vscode.Uri, styleUri: vscode.Uri) {
+function getJsonViewerWebviewContent(scriptUri, styleUri) {
     // This function is currently not used as the styled PRD viewer is preferred.
     // It can be implemented to show a raw JSON tree if needed.
     return `<!DOCTYPE html><html><head><link rel="stylesheet" href="${styleUri}"></head><body>JSON Viewer Here</body></html>`;
 }
-
-function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, dagreUri: vscode.Uri, cyDagreUri: vscode.Uri): string {
+function getGraphViewerWebviewContent(graphData, cytoscapeUri) {
     const nodes = JSON.stringify(graphData.graph.nodes);
     const edges = JSON.stringify(graphData.graph.edges);
-
     return `
         <!DOCTYPE html>
         <html>
         <head>
             <title>Graph PRD</title>
             <script src="${cytoscapeUri}"></script>
-            <script src="${dagreUri}"></script>
-            <script src="${cyDagreUri}"></script>
+            <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+            <script src="https://unpkg.com/cytoscape-dagre@2.5.0/cytoscape-dagre.js"></script>
             <style>
                 body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
                 #cy { width: 100%; height: 100%; display: block; }
@@ -272,10 +288,10 @@ function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscode.Uri, 
         </html>
     `;
 }
-
-function getStyledPrdWebviewContent(prdJson: any, styleUri: vscode.Uri): string {
-    const escapeHtml = (unsafe: string) => {
-        if (!unsafe) return '';
+function getStyledPrdWebviewContent(prdJson, styleUri) {
+    const escapeHtml = (unsafe) => {
+        if (!unsafe)
+            return '';
         return unsafe
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -283,25 +299,23 @@ function getStyledPrdWebviewContent(prdJson: any, styleUri: vscode.Uri): string 
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     };
-
     const title = prdJson.title ? `<h1>${escapeHtml(prdJson.title)}</h1>` : '';
     const introduction = prdJson.introduction ? `<div class="section"><h2>Introduction</h2><p>${escapeHtml(prdJson.introduction)}</p></div>` : '';
-    const userPersonas = prdJson.userPersonas?.map((persona: any) => `
+    const userPersonas = prdJson.userPersonas?.map((persona) => `
         <div class="persona-card">
             <h3>${escapeHtml(persona.name)}</h3>
             <p>${escapeHtml(persona.description)}</p>
         </div>`).join('') || '';
-    const features = prdJson.features?.map((feature: any) => `
+    const features = prdJson.features?.map((feature) => `
         <div class="feature-card">
             <h3>${escapeHtml(feature.title)} (ID: ${escapeHtml(feature.id)})</h3>
             <p>${escapeHtml(feature.description)}</p>
         </div>`).join('') || '';
-    const userStories = prdJson.userStories?.map((story: any) => `
+    const userStories = prdJson.userStories?.map((story) => `
         <li>
             <strong>${escapeHtml(story.id)}:</strong> ${escapeHtml(story.story)} 
             <em>(Relates to: ${escapeHtml(story.relatesToFeature)})</em>
         </li>`).join('') || '';
-
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -321,11 +335,9 @@ function getStyledPrdWebviewContent(prdJson: any, styleUri: vscode.Uri): string 
     </body>
     </html>`;
 }
-
-function getStyledMdViewerWebviewContent(markdownContent: string): string {
+function getStyledMdViewerWebviewContent(markdownContent) {
     const md = new MarkdownIt();
     const htmlContent = md.render(markdownContent);
-
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -384,5 +396,5 @@ function getStyledMdViewerWebviewContent(markdownContent: string): string {
     </body>
     </html>`;
 }
-
-export function deactivate() {}
+function deactivate() { }
+//# sourceMappingURL=extension.js.map

@@ -1,4 +1,5 @@
 const esbuild = require("esbuild");
+const fs = require('fs-extra');
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
@@ -24,6 +25,9 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
+	// Copy media files
+	fs.copySync('src/media', 'dist/media', { overwrite: true });
+
 	const ctx = await esbuild.context({
 		entryPoints: [
 			'src/extension.ts'

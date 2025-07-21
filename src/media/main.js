@@ -3,7 +3,7 @@ const vscode = acquireVsCodeApi();
 
 // Get references to the HTML elements in the webview.
 const generateButton = document.getElementById('generate-btn'); // The button to trigger PRD generation.
-const promptInput = document.getElementById('product-idea'); // The textarea for user input.
+const promptInput = document.getElementById('prompt-input'); // The textarea for user input.
 const statusDiv = document.getElementById('status'); // The div to display status messages.
 
 /**
