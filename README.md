@@ -1,71 +1,50 @@
-# ai-prd-generator README
+# AI-Powered PRD Generator
 
-This is the README for your extension "ai-prd-generator". After writing up a brief description, we recommend including the following sections.
+Welcome to the AI-Powered PRD Generator for Visual Studio Code! This extension leverages the power of OpenAI's GPT models to instantly create comprehensive Product Requirements Documents (PRDs) from a simple product idea. 
+
+It's designed to streamline your product management workflow, saving you time and effort in the initial stages of product planning.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+*   **AI-Powered PRD Generation:** Simply provide a product idea, and the extension will generate a detailed PRD.
+*   **Multiple Output Formats:** The generated PRD includes:
+    *   A full **Markdown** document.
+    *   A structured **JSON** object for easy machine-reading.
+    *   **Graph data** for visualizing relationships between product components.
+*   **Interactive Viewers:**
+    *   An interactive JSON viewer to explore the structured data.
+    *   An interactive Graph viewer (powered by Cytoscape.js) to visualize user personas, features, and user stories.
+*   **Secure API Key Storage:** Your OpenAI API key is stored securely using VS Code's SecretStorage API.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to Use
 
-\!\[feature X\]\(images/feature-x.png\)
+1.  **Install the Extension:** Find and install the "AI-Powered PRD Generator" from the Visual Studio Code Marketplace.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+2.  **Set Your OpenAI API Key:**
+    *   Open the Command Palette (`Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux).
+    *   Search for and select the command **`Set OpenAI API Key`**.
+    *   Enter your OpenAI API key when prompted. This is a one-time setup.
+
+3.  **Generate a PRD:**
+    *   Open a workspace or folder in VS Code. This is required for saving the output files.
+    *   Open the Command Palette.
+    *   Search for and select the command **`Generate PRD with AI`**.
+    *   A new webview will open. Enter your product idea in the text area and click the "Generate PRD" button.
+    *   The extension will call the OpenAI API, and once complete, it will save the generated `'.md'`, `'.json'`, and `'.graph.json'` files in your workspace.
+
+4.  **View the Outputs:**
+    *   After generation, you can use the `View as Interactive PRD` and `View as Interactive Graph` commands to explore the generated JSON and graph data.
+
+## Available Commands
+
+*   `Generate PRD with AI`: The main command to start the PRD generation process.
+*   `Set OpenAI API Key`: Securely saves your OpenAI API key.
+*   `View as Interactive PRD`: Opens the generated JSON file in an interactive viewer.
+*   `View as Interactive Graph`: Opens the generated graph data in an interactive visualization.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+*   An active OpenAI API key.
+*   An open workspace folder in VS Code to save the generated files.
 
 **Enjoy!**

@@ -3,45 +3,47 @@
 import * as vscode from 'vscode';
 import OpenAI from 'openai';
 
-// Define the structure of the expected output from the AI
+/**
+ * Defines the structure for the complete PRD output from the AI service.
+ */
 interface PrdOutput {
     markdown: string;
     json: object;
     graph: { nodes: object[], edges: object[] };
 }
 
-// Define the structure of the Gemini API response
-interface GeminiResponse {
-    candidates: {
-        content: {
-            parts: {
-                text: string;
-            }[];
-        };
-    }[];
-}
-
+/**
+ * This method is called when the extension is activated.
+ * It sets up the main command, registers event listeners, and initializes resources.
+ * @param context The extension context provided by VS Code.
+ */
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "ai-prd-generator" is now active!');
 
+    // Register the main command to generate a PRD.
     const disposable = vscode.commands.registerCommand('ai-prd-generator.generatePrd', async () => {
+        // Create and show a new webview panel for the PRD generator UI.
         const panel = vscode.window.createWebviewPanel(
-            'prdGenerator',
-            'PRD Generator',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
+            'prdGenerator', // Identifies the type of the webview. Used internally.
+            'PRD Generator', // Title of the panel displayed to the user.
+            vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+            { // Webview options.
+                enableScripts: true, // Enable JavaScript in the webview.
+                // Restrict the webview to only loading content from our extension's `src/media` directory for security.
                 localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'src', 'media')]
             }
         );
 
+        // Get the URI for the webview's script and set the initial HTML content.
         const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'main.js'));
-				panel.webview.html = getWebviewContent(scriptUri);
+        panel.webview.html = getWebviewContent(scriptUri);
 
-        // Handle messages from the webview
+        // Listen for messages sent from the webview UI.
         panel.webview.onDidReceiveMessage(
             async message => {
+                // If the message command is 'generate', start the PRD generation process.
                 if (message.command === 'generate') {
+                    // Show a progress notification to the user while generating the PRD.
                     vscode.window.withProgress({
                         location: vscode.ProgressLocation.Notification,
                         title: "Generating PRD...",
@@ -49,14 +51,17 @@ export function activate(context: vscode.ExtensionContext) {
                     }, async (progress) => {
                         progress.report({ increment: 0, message: "Calling AI..." });
 
+                        // Retrieve the OpenAI API key from secure storage.
                         const apiKey = await context.secrets.get('openAiApiKey');
 
+                        // Ensure the API key is set.
                         if (!apiKey) {
                             vscode.window.showErrorMessage('OpenAI API Key not set. Please set it using the command palette.');
                             panel.webview.postMessage({ command: 'error', text: 'API Key is not set.' });
                             return;
                         }
 
+                        // Ensure a workspace folder is open to save the files.
                         const workspaceFolders = vscode.workspace.workspaceFolders;
                         if (!workspaceFolders || workspaceFolders.length === 0) {
                             vscode.window.showErrorMessage('No workspace folder found. Please open a folder to save PRD files.');
@@ -65,32 +70,34 @@ export function activate(context: vscode.ExtensionContext) {
                         }
 
                         try {
+                            // Call the OpenAI API with the user's prompt.
                             const prdOutput = await callOpenAiAPI(message.text, apiKey);
                             progress.report({ increment: 50, message: "Saving files..." });
 
                             if (prdOutput) {
+                                // Define file paths for the generated outputs.
                                 const folderUri = workspaceFolders[0].uri;
                                 const timestamp = new Date().getTime();
                                 const mdPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.md`);
                                 const jsonPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.json`);
                                 const graphPath = vscode.Uri.joinPath(folderUri, `PRD-${timestamp}.graph.json`);
 
+                                // Write the generated content to files.
                                 await vscode.workspace.fs.writeFile(mdPath, Buffer.from(prdOutput.markdown, 'utf8'));
                                 await vscode.workspace.fs.writeFile(jsonPath, Buffer.from(JSON.stringify(prdOutput.json, null, 2), 'utf8'));
                                 await vscode.workspace.fs.writeFile(graphPath, Buffer.from(JSON.stringify(prdOutput.graph, null, 2), 'utf8'));
 
                                 vscode.window.showInformationMessage(`Successfully generated PRD files!`);
+                                // Notify the webview that generation is complete.
                                 panel.webview.postMessage({ command: 'generationComplete', files: [mdPath.fsPath, jsonPath.fsPath, graphPath.fsPath] });
-                                vscode.commands.executeCommand('vscode.open', mdPath);
                             } else {
-                                panel.webview.postMessage({ command: 'error', text: 'Failed to generate PRD from AI. The response was empty.' });
+                                throw new Error('Received empty response from API.');
                             }
                         } catch (error: any) {
                             console.error('Error during PRD generation or file saving:', error);
-                            const errorMessage = error.message || 'An unknown error occurred.';
-                            panel.webview.postMessage({ command: 'error', text: `Error: ${errorMessage}` });
+                            // Display the specific error message to the user in the webview.
+                            panel.webview.postMessage({ command: 'error', text: error.message });
                         }
-                        progress.report({ increment: 100 });
                     });
                 }
             },
@@ -99,57 +106,54 @@ export function activate(context: vscode.ExtensionContext) {
         );
     });
 
-    context.subscriptions.push(disposable);
+    // Register the command to view the generated JSON PRD.
+    const viewJsonPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewJsonPrd', async () => {
+        const options: vscode.OpenDialogOptions = {
+            canSelectMany: false,
+            openLabel: 'Select PRD JSON File',
+            filters: { 'JSON files': ['json'] }
+        };
 
-    const viewJsonPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewJsonPrd', (uri: vscode.Uri) => {
-        const panel = vscode.window.createWebviewPanel(
-            'jsonPrdViewer',
-            'Interactive PRD Viewer',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'src', 'media')]
-            }
-        );
-
-        // Get the paths to the resources on disk
-        const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'json-viewer.js'));
-        const styleUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'json-viewer.css'));
-
-        // Read the file content and send it to the webview
-        vscode.workspace.fs.readFile(uri).then(document => {
+        const fileUri = await vscode.window.showOpenDialog(options);
+        if (fileUri && fileUri[0]) {
+            const fileContent = await vscode.workspace.fs.readFile(fileUri[0]);
+            const panel = vscode.window.createWebviewPanel(
+                'jsonPrdViewer',
+                'Interactive PRD Viewer',
+                vscode.ViewColumn.One,
+                { enableScripts: true }
+            );
+            const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'json-viewer.js'));
+            const styleUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'styles.css'));
             panel.webview.html = getJsonViewerWebviewContent(scriptUri, styleUri);
-            panel.webview.postMessage({ command: 'renderJson', data: JSON.parse(Buffer.from(document).toString('utf-8')) });
-        }).then(undefined, err => {
-            vscode.window.showErrorMessage(`Could not open JSON file: ${err}`);
-        });
+            panel.webview.postMessage({ command: 'renderJson', data: JSON.parse(fileContent.toString()) });
+        }
     });
 
-    context.subscriptions.push(viewJsonPrdCommand);
+    // Register the command to view the generated graph PRD.
+    const viewGraphPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewGraphPrd', async () => {
+        const options: vscode.OpenDialogOptions = {
+            canSelectMany: false,
+            openLabel: 'Select PRD Graph File',
+            filters: { 'Graph JSON files': ['graph.json'] }
+        };
 
-    const viewGraphPrdCommand = vscode.commands.registerCommand('ai-prd-generator.viewGraphPrd', (uri: vscode.Uri) => {
-        const panel = vscode.window.createWebviewPanel(
-            'graphPrdViewer',
-            'Interactive Graph PRD',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'src', 'media')]
-            }
-        );
-
-        const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'cytoscape.min.js'));
-
-        vscode.workspace.fs.readFile(uri).then(document => {
+        const fileUri = await vscode.window.showOpenDialog(options);
+        if (fileUri && fileUri[0]) {
+            const fileContent = await vscode.workspace.fs.readFile(fileUri[0]);
+            const panel = vscode.window.createWebviewPanel(
+                'graphPrdViewer',
+                'Interactive Graph Viewer',
+                vscode.ViewColumn.One,
+                { enableScripts: true }
+            );
+            const scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src', 'media', 'cytoscape.min.js'));
             panel.webview.html = getGraphViewerWebviewContent(scriptUri);
-            panel.webview.postMessage({ command: 'renderGraph', data: JSON.parse(Buffer.from(document).toString('utf-8')) });
-        }).then(undefined, err => {
-            vscode.window.showErrorMessage(`Could not open graph file: ${err}`);
-        });
+            panel.webview.postMessage({ command: 'renderGraph', data: JSON.parse(fileContent.toString()) });
+        }
     });
 
-    context.subscriptions.push(viewGraphPrdCommand);
-
+    // Register the command to set the OpenAI API key.
     const setOpenAiApiKeyCommand = vscode.commands.registerCommand('ai-prd-generator.setOpenAiApiKey', async () => {
         const apiKey = await vscode.window.showInputBox({
             prompt: 'Enter your OpenAI API Key',
@@ -158,6 +162,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         if (apiKey) {
+            // Store the API key securely.
             await context.secrets.store('openAiApiKey', apiKey);
             vscode.window.showInformationMessage('OpenAI API Key saved successfully!');
         } else {
@@ -165,12 +170,20 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(setOpenAiApiKeyCommand);
+    // Add all command subscriptions to the context.
+    context.subscriptions.push(disposable, viewJsonPrdCommand, viewGraphPrdCommand, setOpenAiApiKeyCommand);
 }
 
+/**
+ * Calls the OpenAI API to generate the PRD content.
+ * @param prompt The user's product idea.
+ * @param apiKey The user's OpenAI API key.
+ * @returns A promise that resolves to the structured PRD output, or null if an error occurs.
+ */
 async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput | null> {
     const openai = new OpenAI({ apiKey });
 
+    // System prompt to guide the AI's response, including the required JSON schema.
     const systemPrompt = `You are a world-class product manager and system architect. Based on the following idea, generate a comprehensive Product Requirements Document (PRD). The output MUST be a single, valid JSON object that adheres to the provided schema. Do not include any other text, markdown, or formatting outside of the JSON object.
 
 **JSON Schema:**
@@ -254,13 +267,14 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
 }`;
 
     try {
+        // Create the chat completion request.
         const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo',
+            model: 'gpt-4-turbo', // Specify the model.
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: `**Product Idea:**\n${prompt}` }
             ],
-            response_format: { type: 'json_object' },
+            response_format: { type: 'json_object' }, // Enforce JSON mode.
         });
 
         const jsonContent = response.choices[0].message.content;
@@ -268,6 +282,7 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
             throw new Error('API returned empty content.');
         }
 
+        // Parse and return the structured JSON content.
         return JSON.parse(jsonContent) as PrdOutput;
 
     } catch (error: any) {
@@ -276,6 +291,11 @@ async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput 
     }
 }
 
+/**
+ * Generates the HTML content for the main PRD generator webview.
+ * @param scriptUri The URI of the main JavaScript file for the webview.
+ * @returns The HTML content as a string.
+ */
 function getWebviewContent(scriptUri: vscode.Uri): string {
     return `<!DOCTYPE html>
     <html lang="en">
@@ -286,110 +306,72 @@ function getWebviewContent(scriptUri: vscode.Uri): string {
     </head>
     <body>
         <h1>AI-Powered PRD Generator</h1>
-        <textarea id="prompt-input" rows="10" cols="50" placeholder="Enter your product idea..."></textarea>
+        <textarea id="product-idea" rows="10" cols="80" placeholder="Enter your product idea here..."></textarea>
         <br>
-        <button id="generate-button">Generate PRD</button>
-        <div id="loader" style="display: none; margin-top: 10px;">Generating...</div>
-        <hr>
-        <h2>Status</h2>
-        <pre id="response-output"></pre>
-
+        <button id="generate-btn">Generate PRD</button>
+        <div id="status"></div>
         <script src="${scriptUri}"></script>
     </body>
     </html>`;
 }
 
+/**
+ * Generates the HTML content for the interactive JSON viewer webview.
+ * @param scriptUri The URI of the JavaScript file for the JSON viewer.
+ * @param styleUri The URI of the CSS file for the JSON viewer.
+ * @returns The HTML content as a string.
+ */
 function getJsonViewerWebviewContent(scriptUri: vscode.Uri, styleUri: vscode.Uri): string {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JSON PRD Viewer</title>
-        <link href="${styleUri}" rel="stylesheet" />
-        <script src="${scriptUri}"></script>
+        <title>Interactive PRD Viewer</title>
+        <link rel="stylesheet" href="${styleUri}">
     </head>
     <body>
         <div id="loader">Loading...</div>
-        <div id="json-container" style="display: none;"></div>
-        <script>
-            const vscode = acquireVsCodeApi();
-            const container = document.getElementById('json-container');
-            const loader = document.getElementById('loader');
-
-            window.addEventListener('message', event => {
-                const message = event.data;
-                if (message.command === 'renderJson') {
-                    const viewer = new JsonViewer({
-                        container: container,
-                        data: message.data,
-                        theme: 'dark',
-                        expand: true
-                    });
-                    loader.style.display = 'none';
-                    container.style.display = 'block';
-                }
-            });
-        </script>
+        <div id="json-viewer"></div>
+        <script src="${scriptUri}"></script>
     </body>
     </html>`;
 }
 
+/**
+ * Generates the HTML content for the interactive graph viewer webview.
+ * @param scriptUri The URI of the Cytoscape.js library.
+ * @returns The HTML content as a string.
+ */
 function getGraphViewerWebviewContent(scriptUri: vscode.Uri): string {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Graph PRD Viewer</title>
+        <title>Interactive Graph Viewer</title>
         <script src="${scriptUri}"></script>
         <style>
-            body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; }
+            body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: sans-serif; }
             #cy { width: 100%; height: 100%; display: block; }
-            #loader { padding: 20px; }
-            #properties-panel {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                width: 300px;
-                background: rgba(40, 40, 40, 0.9);
-                color: white;
-                border: 1px solid #555;
-                border-radius: 8px;
-                padding: 15px;
-                max-height: 90vh;
-                overflow-y: auto;
-                z-index: 10;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            }
-            #properties-panel h3 {
-                margin-top: 0;
-                border-bottom: 1px solid #666;
-                padding-bottom: 10px;
-            }
-            #properties-content ul { list-style: none; padding: 0; margin: 0; }
-            #properties-content li { margin-bottom: 8px; }
-            #properties-content strong { color: #00aaff; }
-            #close-panel-btn {
-                background: #555;
-                color: white;
-                border: none;
-                padding: 8px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-top: 15px;
-                width: 100%;
-            }
-            #close-panel-btn:hover { background: #777; }
+            #loader { font-size: 2em; text-align: center; padding-top: 20%; }
+            #properties-panel { position: absolute; top: 10px; right: 10px; width: 300px; max-height: 90%; overflow-y: auto; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; border-radius: 5px; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+            #properties-header { padding: 10px; background: #f0f0f0; border-bottom: 1px solid #ccc; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+            #properties-content { padding: 10px; }
+            #close-panel-btn { background: none; border: none; font-size: 1.2em; cursor: pointer; }
+            ul { list-style: none; padding: 0; margin: 0; }
+            li { margin-bottom: 5px; word-break: break-all; }
         </style>
     </head>
     <body>
         <div id="loader">Loading Graph...</div>
         <div id="cy" style="display: none;"></div>
-        <div id="properties-panel" style="display: none;">
-            <h3>Node Properties</h3>
+        <div id="properties-panel">
+            <div id="properties-header">
+                <span>Node Properties</span>
+                <button id="close-panel-btn">&times;</button>
+            </div>
             <div id="properties-content"></div>
-            <button id="close-panel-btn">Close</button>
         </div>
 
         <script>
@@ -486,4 +468,7 @@ function getGraphViewerWebviewContent(scriptUri: vscode.Uri): string {
     </html>`;
 }
 
+/**
+ * This method is called when your extension is deactivated.
+ */
 export function deactivate() {}

@@ -1,0 +1,100 @@
+/**
+ * Styles for the interactive JSON viewer webview.
+ * This stylesheet provides a clean, readable, and collapsible view for JSON data.
+ */
+
+/* Basic styles for the webview body */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding: 10px;
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+}
+
+/* Loader style */
+#loader {
+    font-size: 1.5em;
+    text-align: center;
+    padding: 20px;
+}
+
+/* General container for the JSON viewer */
+.jv-light-con {
+    font-family: Menlo, Monaco, 'Courier New', monospace;
+    font-size: 14px;
+}
+
+/* A single key-value pair row */
+.jv-light-current {
+    padding: 2px 0;
+}
+
+/* The wrapper for a basic key-value pair */
+.jv-wrap {
+    display: flex;
+}
+
+/* The left part of a row (the key) */
+.jv-light-left {
+    padding-right: 5px;
+    color: var(--vscode-editor-foreground);
+    white-space: nowrap;
+}
+
+/* The colon symbol between key and value */
+.jv-light-symbol {
+    color: var(--vscode-editor-foreground);
+}
+
+/* The right part of a row (the value) */
+.jv-light-rightString {
+    color: var(--vscode-symbolIcon-stringForeground);
+    white-space: pre-wrap;
+}
+
+.jv-light-rightNumber {
+    color: var(--vscode-symbolIcon-numberForeground);
+}
+
+.jv-light-rightBoolean {
+    color: var(--vscode-symbolIcon-booleanForeground);
+}
+
+.jv-light-rightNull {
+    color: var(--vscode-symbolIcon-nullForeground);
+}
+
+/* Styling for collapsible sections (objects/arrays) */
+.jv-folder {
+    cursor: pointer;
+}
+
+/* The folder icon (triangle) */
+.jv-light-folder {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--vscode-editor-foreground);
+    transition: transform 0.1s linear;
+    margin-right: 5px;
+}
+
+/* Rotated state for the folder icon when expanded */
+.jv-light-folder.rotate90 {
+    transform: rotate(90deg);
+}
+
+/* The container for child elements of a collapsed object/array */
+.jv-light-rightObj {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/* Expanded state for the child container */
+.jv-light-rightObj.add-height {
+    max-height: 10000px; /* A large value to accommodate content */
+    transition: max-height 0.3s ease-in;
+}
