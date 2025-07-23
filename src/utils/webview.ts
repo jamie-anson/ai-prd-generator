@@ -19,17 +19,38 @@ export function getWebviewContent(scriptContent: string, panel: vscode.WebviewPa
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${panel.webview.cspSource} 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>PRD Generator</title>
+        <style nonce="${nonce}">
+            .hidden {
+                display: none;
+            }
+            #api-key-input-container, #api-key-display {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            #api-key-input {
+                flex-grow: 1;
+            }
+        </style>
     </head>
     <body>
-        <h1>PRD Generator</h1>
+        <h1>AI PRD Generator</h1>
+        <div id="api-key-display" class="hidden">
+            <span id="api-key-obfuscated"></span>
+            <button id="change-api-key">Change</button>
+        </div>
+        <div id="api-key-input-container">
+            <input type="text" id="api-key-input" placeholder="Enter your OpenAI API Key..." size="50">
+            <button id="set-api-key">Set API Key</button>
+        </div>
         <textarea id="prd-prompt" rows="10" cols="50" placeholder="Enter your product requirements here..."></textarea>
         <br>
         <button id="generate-prd">Generate PRD</button>
-        <button id="set-api-key">Set API Key</button>
-        <div id="post-generation-controls" style="display: none;">
+        <div id="post-generation-controls" class="hidden">
             <hr>
             <button id="bulk-generate-context-cards">Generate Context Cards</button>
             <button id="view-context-cards">View Context Cards</button>

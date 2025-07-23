@@ -1,6 +1,6 @@
 // @ts-nocheck
 import * as vscode from 'vscode';
-import { registerCommands } from './commands';
+import { registerAllCommands } from './commands';
 
 /**
  * This method is called when the extension is activated.
@@ -9,7 +9,7 @@ import { registerCommands } from './commands';
  */
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "ai-prd-generator" is now active!');
-    registerCommands(context);
+    registerAllCommands(context);
 }
 
 export function deactivate() {}

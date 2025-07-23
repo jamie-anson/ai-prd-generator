@@ -42,7 +42,7 @@ export class MarkdownFormatter {
     if (classInfo.methods.length > 0) {
       lines.push('**Methods:**');
       lines.push('');
-      classInfo.methods.forEach(method => {
+      classInfo.methods.forEach((method: FunctionInfo) => {
         lines.push(...this.formatMethod(method));
       });
     }
@@ -50,7 +50,7 @@ export class MarkdownFormatter {
     if (classInfo.dependencies.length > 0) {
       lines.push(`**Dependencies:**`);
       lines.push('');
-      classInfo.dependencies.forEach(dep => {
+      classInfo.dependencies.forEach((dep: string) => {
         lines.push(`- \`${dep}\``);
       });
       lines.push('');
