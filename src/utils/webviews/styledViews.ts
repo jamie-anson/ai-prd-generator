@@ -95,6 +95,9 @@ export function getStyledPrdWebviewContent(prdData: PrdJson): string {
 }
 
 export function getStyledMdViewerWebviewContent(markdownContent: string): string {
+    const md = new MarkdownIt();
+    const htmlContent = md.render(markdownContent);
+
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -114,7 +117,7 @@ export function getStyledMdViewerWebviewContent(markdownContent: string): string
         </style>
     </head>
     <body>
-        ${markdownContent}
+        ${htmlContent}
     </body>
     </html>`;
 }

@@ -29,42 +29,37 @@ export function registerViewPrdCommand(context: vscode.ExtensionContext) {
             }
         }
 
-        const fileUri = vscode.Uri.file(filePath);
-        const fileContent = await vscode.workspace.fs.readFile(fileUri);
-        const prdData: PrdJson = JSON.parse(Buffer.from(fileContent).toString('utf-8'));
-
         const panel = vscode.window.createWebviewPanel(
             `prdView-${viewType}`,
-            `${prdData.title} - ${viewType.charAt(0).toUpperCase() + viewType.slice(1)}`,
+            `PRD View - ${viewType.charAt(0).toUpperCase() + viewType.slice(1)}`,
             vscode.ViewColumn.One,
-            { enableScripts: true, localResourceRoots: [context.extensionUri] }
+            { 
+                enableScripts: true, 
+                localResourceRoots: [context.extensionUri]
+            }
         );
 
         try {
-            if (viewType === 'styled') {
-                panel.webview.html = getStyledPrdWebviewContent(prdData);
-            } else if (viewType === 'markdown') {
-                const mdPath = fileUri.fsPath.replace(/\.json$/, '.md');
-                const mdContent = await vscode.workspace.fs.readFile(vscode.Uri.file(mdPath));
-                panel.webview.html = getStyledMdViewerWebviewContent(Buffer.from(mdContent).toString('utf-8'));
+            const fileUri = vscode.Uri.file(filePath);
+            const fileContent = await vscode.workspace.fs.readFile(fileUri);
+            const contentString = Buffer.from(fileContent).toString('utf-8');
+
+            if (viewType === 'markdown') {
+                panel.webview.html = getStyledMdViewerWebviewContent(contentString);
             } else if (viewType === 'graph') {
+                const graphData = JSON.parse(contentString);
                 const cytoscapeUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'cytoscape.min.js'));
                 const dagreUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'dagre.min.js'));
                 const cyDagreUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'cytoscape-dagre.js'));
-
-                const graphData = {
-                    nodes: [
-                        { data: { id: 'prd', label: prdData.title, type: 'prd' } },
-                        ...prdData.features.map(f => ({ data: { id: f.title.replace(/\s/g, ''), label: f.title, type: 'feature' } }))
-                    ],
-                    edges: [
-                        ...prdData.features.map(f => ({ data: { source: 'prd', target: f.title.replace(/\s/g, ''), label: 'contains' } }))
-                    ]
-                };
-
                 panel.webview.html = getGraphViewerWebviewContent(graphData, cytoscapeUri, dagreUri, cyDagreUri);
             } else {
-                panel.webview.html = `<pre>${JSON.stringify(prdData, null, 2)}</pre>`;
+                // Default to showing raw content for 'json' or 'styled' if filePath is provided directly
+                const prdData: PrdJson = JSON.parse(contentString);
+                if (viewType === 'styled') {
+                    panel.webview.html = getStyledPrdWebviewContent(prdData);
+                } else {
+                    panel.webview.html = `<pre>${JSON.stringify(prdData, null, 2)}</pre>`;
+                }
             }
         } catch (error: any) {
             console.error('Error reading or parsing PRD file:', error);

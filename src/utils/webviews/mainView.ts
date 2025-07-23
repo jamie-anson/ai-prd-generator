@@ -72,6 +72,15 @@ export function getWebviewContent(scriptContent: string, webview: vscode.Webview
                 color: var(--vscode-errorForeground);
                 margin-bottom: 10px;
             }
+            .controls-section {
+                margin-top: 20px;
+                border-top: 1px solid var(--vscode-editor-foreground);
+                padding-top: 20px;
+            }
+            .button-group {
+                display: flex;
+                gap: 10px;
+            }
         </style>
     </head>
     <body>
@@ -89,13 +98,26 @@ export function getWebviewContent(scriptContent: string, webview: vscode.Webview
 
         <div id="error-container" class="hidden"></div>
 
-        <textarea id="prd-prompt" placeholder="Enter your product requirements here..."></textarea>
-        <button id="generate-prd">Generate PRD</button>
+        <div id="generation-controls">
+            <textarea id="prd-prompt" placeholder="Enter your product requirements here..."></textarea>
+            <button id="generate-prd">Generate PRD</button>
+        </div>
 
         <div id="post-generation-controls" class="hidden">
-            <button id="view-prd">View Generated PRD</button>
-            <button id="bulk-generate-context-cards">Bulk Generate Context Cards</button>
-            <button id="view-context-cards">View Context Cards</button>
+            <div class="controls-section">
+                <h2>View Outputs</h2>
+                <div class="button-group">
+                    <button id="view-prd">View PRD</button>
+                    <button id="view-graph">View Graph</button>
+                </div>
+            </div>
+            <div class="controls-section">
+                <h2>Context Cards</h2>
+                <div class="button-group">
+                    <button id="bulk-generate-context-cards">Bulk Generate Context Cards</button>
+                    <button id="view-context-cards">View Context Cards</button>
+                </div>
+            </div>
         </div>
 
         <script nonce="${nonce}">

@@ -24,6 +24,7 @@ import { updateAiManifest } from '../utils/manifest';
 export function registerGeneratePrdCommand(context: vscode.ExtensionContext) {
     // Use a singleton pattern for the webview panel to avoid multiple instances.
     let currentPanel: vscode.WebviewPanel | undefined = undefined;
+    let lastGeneratedPaths: { md?: vscode.Uri, graph?: vscode.Uri } | undefined = undefined;
 
     // Logic Step: Register the command with VS Code's command palette.
     const command = vscode.commands.registerCommand('ai-prd-generator.generatePrd-dev', async () => {
@@ -77,6 +78,25 @@ export function registerGeneratePrdCommand(context: vscode.ExtensionContext) {
                 return;
             }
 
+            // Logic Step: Handle the 'viewPrd' message.
+            if (message.command === 'viewPrd') {
+                if (lastGeneratedPaths?.md) {
+                    // Execute the existing viewPrd command with the markdown file path and 'markdown' view type.
+                    vscode.commands.executeCommand('ai-prd-generator.viewPrd', lastGeneratedPaths.md.fsPath, 'markdown');
+                }
+                return;
+            }
+
+            // Logic Step: Handle the 'viewGraph' message.
+            if (message.command === 'viewGraph') {
+                if (lastGeneratedPaths?.graph) {
+                    // Execute the existing viewPrd command with the graph file path and 'graph' view type.
+                    // Note: The command is the same, but the viewType parameter tells it how to render.
+                    vscode.commands.executeCommand('ai-prd-generator.viewPrd', lastGeneratedPaths.graph.fsPath, 'graph');
+                }
+                return;
+            }
+
             // Logic Step: Handle the 'generate' PRD message.
             if (message.command === 'generate') {
                 // Use a progress indicator to give the user feedback during the long-running task.
@@ -113,9 +133,14 @@ export function registerGeneratePrdCommand(context: vscode.ExtensionContext) {
                             const safeTitle = prdOutput.json.title.replace(/[^a-z0-9_\\-]+/gi, '-').toLowerCase();
                             const jsonFilePath = vscode.Uri.joinPath(outputDir, `${safeTitle}.json`);
                             const mdFilePath = vscode.Uri.joinPath(outputDir, `${safeTitle}.md`);
+                            const graphFilePath = vscode.Uri.joinPath(outputDir, `${safeTitle}-graph.json`);
 
                             await vscode.workspace.fs.writeFile(jsonFilePath, Buffer.from(JSON.stringify(prdOutput.json, null, 2), 'utf-8'));
                             await vscode.workspace.fs.writeFile(mdFilePath, Buffer.from(prdOutput.markdown, 'utf-8'));
+                            await vscode.workspace.fs.writeFile(graphFilePath, Buffer.from(JSON.stringify(prdOutput.graph, null, 2), 'utf-8'));
+
+                            // Store the paths for the view buttons
+                            lastGeneratedPaths = { md: mdFilePath, graph: graphFilePath };
 
                             if (isWebviewReady && currentPanel) {
                                 await currentPanel.webview.postMessage({ command: 'prdGenerated', prd: prdOutput.json });

@@ -21,8 +21,8 @@ export function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscod
                 {
                     selector: 'node',
                     style: {
-                        'background-color': 'var(--vscode-button-background)',
-                        'color': 'var(--vscode-button-foreground)',
+                        'background-color': '#0D47A1', // A deep blue color
+                        'color': '#FFFFFF',
                         'label': 'data(label)',
                         'text-valign': 'center',
                         'text-halign': 'center',
@@ -32,17 +32,23 @@ export function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscod
                         'padding': '15px',
                         'shape': 'round-rectangle',
                         'border-width': 1,
-                        'border-color': 'var(--vscode-button-border, var(--vscode-button-background))'
+                        'border-color': '#BBDEFB' // A light blue border
                     }
                 },
                 {
                     selector: 'edge',
                     style: {
                         'width': 2,
-                        'line-color': 'var(--vscode-editor-foreground)',
-                        'target-arrow-color': 'var(--vscode-editor-foreground)',
+                        'line-color': '#42A5F5', // A medium blue color
+                        'target-arrow-color': '#42A5F5',
                         'target-arrow-shape': 'triangle',
-                        'curve-style': 'bezier'
+                        'curve-style': 'bezier',
+                        'label': 'data(label)',
+                        'color': '#E3F2FD', // A very light blue for text
+                        'font-size': '10px',
+                        'text-background-opacity': 1,
+                        'text-background-color': '#000000',
+                        'text-background-padding': '3px'
                     }
                 }
             ],

@@ -25,10 +25,15 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-	// Copy media files
-	fs.copySync('src/media', 'dist/media', { overwrite: true });
+	// --- Copy static assets ---
+	// This ensures that the necessary JS libraries for the graph view are available in the dist folder.
+	fs.copySync('node_modules/cytoscape/dist/cytoscape.min.js', 'dist/media/cytoscape.min.js');
+	fs.copySync('node_modules/dagre/dist/dagre.min.js', 'dist/media/dagre.min.js');
+	fs.copySync('node_modules/cytoscape-dagre/cytoscape-dagre.js', 'dist/media/cytoscape-dagre.js');
 
-	const ctx = await esbuild.context({
+	// --- Extension Build --- 
+	// This context bundles the main extension file (`extension.ts`) into a single CJS module.
+	const extensionCtx = await esbuild.context({
 		entryPoints: [
 			'src/extension.ts'
 		],
@@ -46,11 +51,31 @@ async function main() {
 			esbuildProblemMatcherPlugin,
 		],
 	});
+
+	// --- Webview Build ---
+	// This context bundles the webview's client-side JavaScript (`main.js`) into a single IIFE file.
+	// This allows us to use modern JavaScript modules in our webview code.
+	const webviewCtx = await esbuild.context({
+		entryPoints: ['src/media/main.js'],
+		bundle: true,
+		format: 'iife',
+		minify: production,
+		sourcemap: !production,
+		outfile: 'dist/media/main.js',
+		logLevel: 'silent',
+		plugins: [esbuildProblemMatcherPlugin],
+	});
+
 	if (watch) {
-		await ctx.watch();
+		// In watch mode, start watching both contexts for changes.
+		await extensionCtx.watch();
+		await webviewCtx.watch();
 	} else {
-		await ctx.rebuild();
-		await ctx.dispose();
+		// In a single build, rebuild both contexts and then dispose of them.
+		await extensionCtx.rebuild();
+		await webviewCtx.rebuild();
+		await extensionCtx.dispose();
+		await webviewCtx.dispose();
 	}
 }
 
