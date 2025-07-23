@@ -3,6 +3,7 @@
   "displayName": "Mise-en-Place",
   "description": "AI-Powered PRD Generator",
   "version": "0.0.8",
+  "publisher": "jammie-anson",
   "engines": {
     "vscode": "^1.89.0"
   },
@@ -14,43 +15,17 @@
     "url": "https://github.com/johndoe/ai-prd-generator.git"
   },
   "main": "./dist/extension.js",
-  "activationEvents": [
-    "onCommand:ai-prd-generator.generatePrd",
-    "onCommand:ai-prd-generator.viewPrd"
-  ],
   "contributes": {
     "commands": [
       {
-        "command": "ai-prd-generator.generatePrd",
-        "title": "Generate PRD with AI"
-      },
-      {
-        "command": "ai-prd-generator.setOpenAiApiKey",
-        "title": "Set OpenAI API Key"
-      },
-      {
-        "command": "ai-prd-generator.viewPrd",
-        "title": "View PRD"
+        "command": "ai-prd-generator.generatePrd-dev",
+        "title": "Mise-en-Place: Generate PRD"
       }
     ],
-    "menus": {
-      "explorer/context": [
-        {
-          "when": "resourceFilename =~ /\\.(json|md)$/ || resourceFilename =~ /\\.graph\\.json$/",
-          "command": "ai-prd-generator.viewPrd",
-          "group": "navigation@1"
-        }
-      ]
-    },
     "configuration": {
       "title": "AI PRD Generator",
       "properties": {
-        "aiPrdGenerator.geminiApiKey": {
-          "type": "string",
-          "default": "",
-          "description": "Your Google Gemini API Key for generating PRDs.",
-          "markdownDescription": "Your Google Gemini API Key for generating PRDs. You can get one from [Google AI Studio](https://aistudio.google.com/app/apikey)."
-        }
+
       }
     }
   },
@@ -66,8 +41,9 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "lint": "eslint src --ext .ts",
+    "test": "vscode-test",
+    "test:analyzer": "ts-node src/context-card-generator/analyzer.ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
@@ -79,11 +55,12 @@
     "@typescript-eslint/parser": "^8.31.1",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.25.8",
     "eslint": "^9.25.1",
     "fs-extra": "^11.3.0",
     "markdown-it": "^14.1.0",
     "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
@@ -92,6 +69,8 @@
     "cytoscape": "^3.32.1",
     "json-viewer-js": "^1.0.8",
     "node-fetch": "^2.7.0",
-    "openai": "^5.10.1"
+    "openai": "^5.10.1",
+    "tree-sitter": "^0.21.0",
+    "tree-sitter-typescript": "^0.23.2"
   }
 }
