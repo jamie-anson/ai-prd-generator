@@ -48,4 +48,11 @@ export function initializeEventHandlers(vscode) {
             vscode.postMessage({ command: 'viewGraph' });
         });
     }
+
+    // Bulk Generate Context Cards button
+    if (elements.bulkGenerateContextCardsButton) {
+        elements.bulkGenerateContextCardsButton.addEventListener('click', () => {
+            vscode.postMessage({ command: 'bulkGenerateContextCards' });
+        });
+    }
 }

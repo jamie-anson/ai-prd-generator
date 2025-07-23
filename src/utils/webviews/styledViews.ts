@@ -105,15 +105,60 @@ export function getStyledMdViewerWebviewContent(markdownContent: string): string
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Styled Markdown PRD</title>
         <style>
-            body { font-family: var(--vscode-font-family); background-color: var(--vscode-editor-background); color: var(--vscode-editor-foreground); font-size: 18px; padding: 20px; line-height: 1.6; }
-            h1, h2, h3, h4, h5, h6 { color: var(--vscode-editor-foreground); border-bottom: 1px solid var(--vscode-side-bar-border); padding-bottom: 5px; }
-            p { margin-bottom: 10px; }
-            code { background-color: var(--vscode-text-block-quote-background); padding: 2px 4px; border-radius: 4px; font-family: var(--vscode-editor-font-family); }
-            pre { background-color: var(--vscode-text-block-quote-background); padding: 10px; border-radius: 4px; overflow-x: auto; }
-            blockquote { border-left: 4px solid var(--vscode-side-bar-border); padding-left: 10px; color: var(--vscode-text-separator-foreground); margin-left: 0; }
-            ul, ol { padding-left: 20px; }
-            a { color: var(--vscode-text-link-foreground); text-decoration: none; }
-            a:hover { text-decoration: underline; }
+            body {
+                font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+                background-color: var(--vscode-editor-background);
+                color: var(--vscode-editor-foreground);
+                padding: 2rem;
+                line-height: 1.7;
+                font-size: 16px;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: var(--vscode-textLink-foreground);
+                font-weight: 600;
+                border-bottom: 1px solid var(--vscode-editorWidget-border);
+                padding-bottom: 0.5rem;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+            }
+            p {
+                margin-bottom: 1rem;
+            }
+            code {
+                background-color: var(--vscode-textBlockQuote-background);
+                padding: 0.2em 0.4em;
+                margin: 0;
+                font-size: 85%;
+                border-radius: 6px;
+                font-family: var(--vscode-editor-font-family, 'Courier New', Courier, monospace);
+            }
+            pre {
+                background-color: var(--vscode-textBlockQuote-background);
+                padding: 1rem;
+                border-radius: 6px;
+                overflow-x: auto;
+            }
+            pre code {
+                padding: 0;
+                margin: 0;
+                font-size: 100%;
+                background-color: transparent;
+            }
+            blockquote {
+                border-left: 0.25em solid var(--vscode-editorWidget-border);
+                padding: 0 1em;
+                color: var(--vscode-textSeparator-foreground);
+            }
+            ul, ol {
+                padding-left: 2em;
+            }
+            a {
+                color: var(--vscode-textLink-foreground);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body>

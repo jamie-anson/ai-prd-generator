@@ -14,6 +14,7 @@ export const elements = {
     postGenerationControls: document.getElementById('post-generation-controls'),
     viewPrdButton: document.getElementById('view-prd'),
     viewGraphButton: document.getElementById('view-graph'),
+    bulkGenerateContextCardsButton: document.getElementById('bulk-generate-context-cards'),
     apiKeyDisplay: document.getElementById('api-key-display'),
     apiKeyInputContainer: document.getElementById('api-key-input-container'),
     apiKeyObfuscated: document.getElementById('api-key-obfuscated'),

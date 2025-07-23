@@ -19,11 +19,10 @@ export class ContextCardGenerator {
         }
 
         const enricher = new CodeEnricher(apiKey);
-        const srcDir = vscode.Uri.joinPath(this.workspaceUri, 'src');
         const outputDir = vscode.Uri.joinPath(this.workspaceUri, 'mise-en-place-output', 'context-cards');
         await vscode.workspace.fs.createDirectory(outputDir);
 
-        const files = await vscode.workspace.findFiles(new vscode.RelativePattern(srcDir, '**/*.ts'), '**/node_modules/**');
+        const files = await vscode.workspace.findFiles('**/*.ts', '**/node_modules/**');
 
         await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Generating Context Cards...", cancellable: true }, async (progress, token) => {
             let filesProcessed = 0;
