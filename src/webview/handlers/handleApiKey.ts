@@ -19,5 +19,6 @@ export async function handleApiKey(message: any, context: vscode.ExtensionContex
         return true; // Command was handled
     }
 
+    // @intent: Return false if the message command is not an API key command
     return false; // Command was not an API key command
 }

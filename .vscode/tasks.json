@@ -13,6 +13,22 @@
 			"problemMatcher": [],
 			"label": "npm: compile",
 			"detail": "npm run check-types && npm run lint && node esbuild.js"
+		},
+		{
+			"type": "npm",
+			"script": "comment-index",
+			"label": "Generate Comment Index",
+			"problemMatcher": [],
+			"group": "none",
+			"detail": "Automatically generate comment-index.json for all structured comments."
+		},
+		{
+			"type": "npm",
+			"script": "codebase-graph",
+			"label": "Generate Codebase Graph",
+			"problemMatcher": [],
+			"group": "none",
+			"detail": "Automatically generate codebase-graph.json for file/class/function relationships."
 		}
 	]
 }

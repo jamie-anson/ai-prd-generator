@@ -12,6 +12,9 @@ export async function handleWebviewReady(
     context: vscode.ExtensionContext,
     webview: vscode.Webview
 ): Promise<void> {
+    console.log('handleWebviewReady called');
     const apiKey = await context.secrets.get('openAiApiKey');
-    webview.postMessage({ command: 'apiKeyStatus', apiKey: !!apiKey });
+    const hasApiKey = !!apiKey;
+    console.log('Sending apiKeyStatus message, hasApiKey:', hasApiKey);
+    webview.postMessage({ command: 'apiKeyStatus', hasApiKey });
 }

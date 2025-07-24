@@ -105,7 +105,8 @@ export function getGraphViewerWebviewContent(graphData: any, cytoscapeUri: vscod
                 border: 1px solid var(--vscode-editor-hover-border);
                 padding: 10px;
                 border-radius: 5px;
-                pointer-events: none; /* so the tooltip does not interfere with mouse events on the graph */
+                /* @intent: Prevent tooltip from interfering with mouse events on the graph
+                   @why: Ensures smooth user interaction with graph elements even when tooltip is visible */
                 z-index: 100;
                 max-width: 300px;
                 word-wrap: break-word;

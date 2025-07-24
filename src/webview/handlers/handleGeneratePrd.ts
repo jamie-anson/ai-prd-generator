@@ -60,13 +60,18 @@ export async function handleGeneratePrd(message: any, context: vscode.ExtensionC
 
                 vscode.window.showInformationMessage(`PRD "${prdOutput.json.title}" generated and saved.`);
             } else {
+        // @intent: Show error message to user when PRD generation fails due to no output from AI
                 vscode.window.showErrorMessage('Failed to generate PRD. No output from AI.');
+        // @intent: Notify webview about the PRD generation error
                 await webview.postMessage({ command: 'error', text: 'No output from AI.' });
             }
             
         } catch (error: any) {
+        // @intent: Log error details to console for debugging PRD generation issues
             console.error('Error generating PRD:', error);
+        // @intent: Show error message to user with details from the thrown error
             vscode.window.showErrorMessage(`Error generating PRD: ${error.message}`);
+        // @intent: Notify webview about the PRD generation error with error details
             await webview.postMessage({ command: 'error', text: `Error: ${error.message}` });
         }
     });

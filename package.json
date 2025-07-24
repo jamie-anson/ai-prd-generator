@@ -49,8 +49,11 @@
     }
   },
   "scripts": {
+    "comment-index": "node scripts/generate-comment-index.js",
+    "codebase-graph": "node scripts/generate-codebase-graph.js",
     "vscode:prepublish": "npm run build",
-    "clean": "rm -rf dist out",
+    "clean": "rm -rf dist",
+    "clean-all": "rm -rf dist out",
     "build": "npm run clean && node esbuild.js",
     "compile": "npm run clean && npm run check-types && npm run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
@@ -59,7 +62,7 @@
     "package": "npm run check-types && npm run lint && node esbuild.js --production",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "pretest": "npm run compile-tests && npm run check-types && npm run lint && node esbuild.js",
     "check-types": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "test": "vscode-test",

@@ -13,6 +13,7 @@ export async function handleContextCards(message: any, context: vscode.Extension
         if (!workspaceFolders || workspaceFolders.length === 0) {
             vscode.window.showErrorMessage('No workspace folder found. Please open a folder to generate context cards.');
             await webview.postMessage({ command: 'error', text: 'No workspace folder selected.' });
+            // @intent: Return true to indicate the workspace folder error was handled
             return true; // Command was handled
         }
         try {
@@ -27,5 +28,6 @@ export async function handleContextCards(message: any, context: vscode.Extension
         return true; // Command was handled
     }
 
+    // @intent: Return false if the message command is not a context cards command
     return false; // Command was not a context cards command
 }

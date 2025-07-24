@@ -14,15 +14,21 @@ declare global {
         [key: string]: any;
     }
 
-    const vscode: {
+    var vscode: {
         postMessage(message: any): void;
         getState(): VscodeState;
         setState(state: VscodeState): void;
     };
 }
 
+// Ensure vscode API is available
+const vscode = (window as any).acquireVsCodeApi();
+
 (function() {
+    console.log('Webview main.ts loaded');
+    
     // Notify the extension that the webview is ready.
+    console.log('Sending webviewReady message');
     vscode.postMessage({ command: COMMANDS.WEBVIEW_READY });
 
     // Set up all event listeners for user interactions.
@@ -31,9 +37,11 @@ declare global {
     // Handle messages received from the extension.
     window.addEventListener('message', (event: MessageEvent) => {
         const message = event.data;
+        console.log('Received message:', message);
         switch (message.command) {
             case 'apiKeyStatus': // This is sent from the extension, not a shared command
-                updateApiKeyDisplay(message.apiKey);
+                console.log('Received apiKeyStatus:', message.hasApiKey);
+                updateApiKeyDisplay(message.hasApiKey);
                 break;
             case 'prdGenerated': // This is also sent from the extension
                 showPostGenerationControls();

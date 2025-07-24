@@ -1,0 +1,92 @@
+[
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleGeneratePrd.ts",
+    "line": 60,
+    "text": "Log error details to console for debugging PRD generation issues"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleGeneratePrd.ts",
+    "line": 62,
+    "text": "Show error message to user with details from the thrown error"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleGeneratePrd.ts",
+    "line": 64,
+    "text": "Notify webview about the PRD generation error with error details"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleViewCommands.ts",
+    "line": 26,
+    "text": "Return false if the message command is not a view command"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/utils/webviews/graphView.ts",
+    "line": 103,
+    "text": "Prevent tooltip from interfering with mouse events on the graph"
+  },
+  {
+    "tag": "@why",
+    "file": "src/utils/webviews/graphView.ts",
+    "line": 104,
+    "text": "Ensures smooth user interaction with graph elements even when tooltip is visible"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleContextCards.ts",
+    "line": 30,
+    "text": "Return false if the message command is not a context cards command"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/webview/handlers/handleApiKey.ts",
+    "line": 26,
+    "text": "Return false if the message command is not an API key command"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 170,
+    "text": "Find the original method object in classInfo to add dependencies"
+  },
+  {
+    "tag": "@why",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 171,
+    "text": "Ensures that method dependency information is accurately associated with the correct method in the class summary"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 210,
+    "text": "Provide a test harness to run the analyzer directly from the command line"
+  },
+  {
+    "tag": "@why",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 211,
+    "text": "Allows developers to test the analyzer logic in isolation without integrating into the extension"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 230,
+    "text": "Log and skip enrichment step if OPENAI_API_KEY is not set"
+  },
+  {
+    "tag": "@why",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 231,
+    "text": "Prevents errors when API key is missing and makes test output clear"
+  },
+  {
+    "tag": "@intent",
+    "file": "src/context-card-generator/analyzer.ts",
+    "line": 260,
+    "text": "Log errors that occur during the analyzer test run for debugging purposes"
+  }
+]

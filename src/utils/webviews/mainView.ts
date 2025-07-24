@@ -91,7 +91,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
             <button id="change-api-key">Change</button>
         </div>
 
-        <div id="api-key-input-container" class="hidden">
+        <div id="api-key-input-container"> // Visible by default; JS will toggle visibility based on API Key status
             <input type="text" id="api-key-input" placeholder="Enter your OpenAI API Key..." size="50">
             <button id="set-api-key">Set API Key</button>
         </div>
@@ -126,7 +126,14 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
             </div>
         </div>
 
-        <script nonce="${nonce}" src="${scriptUri}"></script>
+        <script nonce="${nonce}">
+            console.log('Inline script executing');
+            console.log('Script URI:', '${scriptUri}');
+            window.addEventListener('error', function(e) {
+                console.error('Script error:', e.error, e.filename, e.lineno);
+            });
+        </script>
+        <script nonce="${nonce}" src="${scriptUri}" onerror="console.error('Failed to load script:', '${scriptUri}')"></script>
     </body>
     </html>`;
 }

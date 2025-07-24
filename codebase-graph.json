@@ -1,0 +1,1122 @@
+{
+  "nodes": [
+    {
+      "id": "src/commands/generateContextCards.ts",
+      "type": "file",
+      "label": "generateContextCards.ts"
+    },
+    {
+      "id": "src/commands/generateContextCards.ts::func::registerGenerateContextCardsCommand",
+      "type": "function",
+      "label": "registerGenerateContextCardsCommand",
+      "file": "src/commands/generateContextCards.ts",
+      "line": 4
+    },
+    {
+      "id": "src/commands/generatePrd.ts",
+      "type": "file",
+      "label": "generatePrd.ts"
+    },
+    {
+      "id": "src/commands/generatePrd.ts::func::sets",
+      "type": "function",
+      "label": "sets",
+      "file": "src/commands/generatePrd.ts",
+      "line": 11
+    },
+    {
+      "id": "src/commands/generatePrd.ts::func::registerGeneratePrdCommand",
+      "type": "function",
+      "label": "registerGeneratePrdCommand",
+      "file": "src/commands/generatePrd.ts",
+      "line": 14
+    },
+    {
+      "id": "src/commands/index.ts",
+      "type": "file",
+      "label": "index.ts"
+    },
+    {
+      "id": "src/commands/index.ts::func::registerAllCommands",
+      "type": "function",
+      "label": "registerAllCommands",
+      "file": "src/commands/index.ts",
+      "line": 7
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts",
+      "type": "file",
+      "label": "messageHandlers.ts"
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts::func::to",
+      "type": "function",
+      "label": "to",
+      "file": "src/commands/prdGeneration/messageHandlers.ts",
+      "line": 11
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts::func::encapsulates",
+      "type": "function",
+      "label": "encapsulates",
+      "file": "src/commands/prdGeneration/messageHandlers.ts",
+      "line": 12
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts::func::createPrdMessageHandler",
+      "type": "function",
+      "label": "createPrdMessageHandler",
+      "file": "src/commands/prdGeneration/messageHandlers.ts",
+      "line": 18
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts::func::to",
+      "type": "function",
+      "label": "to",
+      "file": "src/commands/prdGeneration/messageHandlers.ts",
+      "line": 29
+    },
+    {
+      "id": "src/commands/prdGeneration/messageHandlers.ts::func::returns",
+      "type": "function",
+      "label": "returns",
+      "file": "src/commands/prdGeneration/messageHandlers.ts",
+      "line": 41
+    },
+    {
+      "id": "src/commands/prdGeneration/panelManager.ts",
+      "type": "file",
+      "label": "panelManager.ts"
+    },
+    {
+      "id": "src/commands/prdGeneration/panelManager.ts::class::is",
+      "type": "class",
+      "label": "is",
+      "file": "src/commands/prdGeneration/panelManager.ts",
+      "line": 7
+    },
+    {
+      "id": "src/commands/prdGeneration/panelManager.ts::class::PanelManager",
+      "type": "class",
+      "label": "PanelManager",
+      "file": "src/commands/prdGeneration/panelManager.ts",
+      "line": 10
+    },
+    {
+      "id": "src/commands/viewContextCards.ts",
+      "type": "file",
+      "label": "viewContextCards.ts"
+    },
+    {
+      "id": "src/commands/viewContextCards.ts::func::registerViewContextCardsCommand",
+      "type": "function",
+      "label": "registerViewContextCardsCommand",
+      "file": "src/commands/viewContextCards.ts",
+      "line": 3
+    },
+    {
+      "id": "src/commands/viewPrd.ts",
+      "type": "file",
+      "label": "viewPrd.ts"
+    },
+    {
+      "id": "src/commands/viewPrd.ts::func::registerViewPrdCommand",
+      "type": "function",
+      "label": "registerViewPrdCommand",
+      "file": "src/commands/viewPrd.ts",
+      "line": 5
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts",
+      "type": "file",
+      "label": "analyzer.ts"
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::func::or",
+      "type": "function",
+      "label": "or",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 7
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::interface::FunctionInfo",
+      "type": "interface",
+      "label": "FunctionInfo",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 9
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::interface::ClassInfo",
+      "type": "interface",
+      "label": "ClassInfo",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 19
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::interface::AnalysisResult",
+      "type": "interface",
+      "label": "AnalysisResult",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 30
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::class::CodeAnalyzer",
+      "type": "class",
+      "label": "CodeAnalyzer",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 38
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::class::summary",
+      "type": "class",
+      "label": "summary",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 177
+    },
+    {
+      "id": "src/context-card-generator/analyzer.ts::func::runTest",
+      "type": "function",
+      "label": "runTest",
+      "file": "src/context-card-generator/analyzer.ts",
+      "line": 222
+    },
+    {
+      "id": "src/context-card-generator/enricher.ts",
+      "type": "file",
+      "label": "enricher.ts"
+    },
+    {
+      "id": "src/context-card-generator/enricher.ts::class::takes",
+      "type": "class",
+      "label": "takes",
+      "file": "src/context-card-generator/enricher.ts",
+      "line": 6
+    },
+    {
+      "id": "src/context-card-generator/enricher.ts::class::CodeEnricher",
+      "type": "class",
+      "label": "CodeEnricher",
+      "file": "src/context-card-generator/enricher.ts",
+      "line": 9
+    },
+    {
+      "id": "src/context-card-generator/formatAsMarkdown.ts",
+      "type": "file",
+      "label": "formatAsMarkdown.ts"
+    },
+    {
+      "id": "src/context-card-generator/formatAsMarkdown.ts::func::formatAsMarkdown",
+      "type": "function",
+      "label": "formatAsMarkdown",
+      "file": "src/context-card-generator/formatAsMarkdown.ts",
+      "line": 10
+    },
+    {
+      "id": "src/context-card-generator/formatter.ts",
+      "type": "file",
+      "label": "formatter.ts"
+    },
+    {
+      "id": "src/context-card-generator/formatter.ts::class::MarkdownFormatter",
+      "type": "class",
+      "label": "MarkdownFormatter",
+      "file": "src/context-card-generator/formatter.ts",
+      "line": 3
+    },
+    {
+      "id": "src/context-card-generator/index.ts",
+      "type": "file",
+      "label": "index.ts"
+    },
+    {
+      "id": "src/context-card-generator/index.ts::class::coordinates",
+      "type": "class",
+      "label": "coordinates",
+      "file": "src/context-card-generator/index.ts",
+      "line": 10
+    },
+    {
+      "id": "src/context-card-generator/index.ts::class::ContextCardGenerator",
+      "type": "class",
+      "label": "ContextCardGenerator",
+      "file": "src/context-card-generator/index.ts",
+      "line": 13
+    },
+    {
+      "id": "src/extension.ts",
+      "type": "file",
+      "label": "extension.ts"
+    },
+    {
+      "id": "src/extension.ts::func::activate",
+      "type": "function",
+      "label": "activate",
+      "file": "src/extension.ts",
+      "line": 9
+    },
+    {
+      "id": "src/extension.ts::func::deactivate",
+      "type": "function",
+      "label": "deactivate",
+      "file": "src/extension.ts",
+      "line": 14
+    },
+    {
+      "id": "src/prompts/prdGeneration.ts",
+      "type": "file",
+      "label": "prdGeneration.ts"
+    },
+    {
+      "id": "src/test/extension.test.ts",
+      "type": "file",
+      "label": "extension.test.ts"
+    },
+    {
+      "id": "src/test/suite/extension.test.ts",
+      "type": "file",
+      "label": "extension.test.ts"
+    },
+    {
+      "id": "src/test/suite/webview.test.ts",
+      "type": "file",
+      "label": "webview.test.ts"
+    },
+    {
+      "id": "src/types.d.ts",
+      "type": "file",
+      "label": "types.d.ts"
+    },
+    {
+      "id": "src/utils/manifest.ts",
+      "type": "file",
+      "label": "manifest.ts"
+    },
+    {
+      "id": "src/utils/manifest.ts::func::updateAiManifest",
+      "type": "function",
+      "label": "updateAiManifest",
+      "file": "src/utils/manifest.ts",
+      "line": 8
+    },
+    {
+      "id": "src/utils/openai.ts",
+      "type": "file",
+      "label": "openai.ts"
+    },
+    {
+      "id": "src/utils/openai.ts::class::abstracts",
+      "type": "class",
+      "label": "abstracts",
+      "file": "src/utils/openai.ts",
+      "line": 8
+    },
+    {
+      "id": "src/utils/openai.ts::class::OpenAiService",
+      "type": "class",
+      "label": "OpenAiService",
+      "file": "src/utils/openai.ts",
+      "line": 11
+    },
+    {
+      "id": "src/utils/types.ts",
+      "type": "file",
+      "label": "types.ts"
+    },
+    {
+      "id": "src/utils/types.ts::interface::PrdJson",
+      "type": "interface",
+      "label": "PrdJson",
+      "file": "src/utils/types.ts",
+      "line": 4
+    },
+    {
+      "id": "src/utils/types.ts::interface::PrdOutput",
+      "type": "interface",
+      "label": "PrdOutput",
+      "file": "src/utils/types.ts",
+      "line": 25
+    },
+    {
+      "id": "src/utils/webview.ts",
+      "type": "file",
+      "label": "webview.ts"
+    },
+    {
+      "id": "src/utils/webviews/graphView.ts",
+      "type": "file",
+      "label": "graphView.ts"
+    },
+    {
+      "id": "src/utils/webviews/graphView.ts::func::getGraphViewerWebviewContent",
+      "type": "function",
+      "label": "getGraphViewerWebviewContent",
+      "file": "src/utils/webviews/graphView.ts",
+      "line": 4
+    },
+    {
+      "id": "src/utils/webviews/mainView.ts",
+      "type": "file",
+      "label": "mainView.ts"
+    },
+    {
+      "id": "src/utils/webviews/mainView.ts::func::returns",
+      "type": "function",
+      "label": "returns",
+      "file": "src/utils/webviews/mainView.ts",
+      "line": 15
+    },
+    {
+      "id": "src/utils/webviews/mainView.ts::func::getWebviewContent",
+      "type": "function",
+      "label": "getWebviewContent",
+      "file": "src/utils/webviews/mainView.ts",
+      "line": 20
+    },
+    {
+      "id": "src/utils/webviews/mainView.ts::func::getNonce",
+      "type": "function",
+      "label": "getNonce",
+      "file": "src/utils/webviews/mainView.ts",
+      "line": 138
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts",
+      "type": "file",
+      "label": "styledViews.ts"
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts::func::getStyledPrdWebviewContent",
+      "type": "function",
+      "label": "getStyledPrdWebviewContent",
+      "file": "src/utils/webviews/styledViews.ts",
+      "line": 5
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts::func::getStyledMdViewerWebviewContent",
+      "type": "function",
+      "label": "getStyledMdViewerWebviewContent",
+      "file": "src/utils/webviews/styledViews.ts",
+      "line": 97
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts::func::getPrdMarkdownViewContent",
+      "type": "function",
+      "label": "getPrdMarkdownViewContent",
+      "file": "src/utils/webviews/styledViews.ts",
+      "line": 170
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts::func::getPrdJsonViewContent",
+      "type": "function",
+      "label": "getPrdJsonViewContent",
+      "file": "src/utils/webviews/styledViews.ts",
+      "line": 176
+    },
+    {
+      "id": "src/utils/webviews/styledViews.ts::func::getContextCardViewContent",
+      "type": "function",
+      "label": "getContextCardViewContent",
+      "file": "src/utils/webviews/styledViews.ts",
+      "line": 180
+    },
+    {
+      "id": "src/webview/commands.ts",
+      "type": "file",
+      "label": "commands.ts"
+    },
+    {
+      "id": "src/webview/eventHandlers.ts",
+      "type": "file",
+      "label": "eventHandlers.ts"
+    },
+    {
+      "id": "src/webview/eventHandlers.ts::func::initializeEventHandlers",
+      "type": "function",
+      "label": "initializeEventHandlers",
+      "file": "src/webview/eventHandlers.ts",
+      "line": 14
+    },
+    {
+      "id": "src/webview/handlers/handleApiKey.ts",
+      "type": "file",
+      "label": "handleApiKey.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleApiKey.ts::func::handleApiKey",
+      "type": "function",
+      "label": "handleApiKey",
+      "file": "src/webview/handlers/handleApiKey.ts",
+      "line": 9
+    },
+    {
+      "id": "src/webview/handlers/handleContextCards.ts",
+      "type": "file",
+      "label": "handleContextCards.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleContextCards.ts::func::handleContextCards",
+      "type": "function",
+      "label": "handleContextCards",
+      "file": "src/webview/handlers/handleContextCards.ts",
+      "line": 10
+    },
+    {
+      "id": "src/webview/handlers/handleContextTemplates.ts",
+      "type": "file",
+      "label": "handleContextTemplates.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleContextTemplates.ts::func::handleGenerateContextTemplates",
+      "type": "function",
+      "label": "handleGenerateContextTemplates",
+      "file": "src/webview/handlers/handleContextTemplates.ts",
+      "line": 10
+    },
+    {
+      "id": "src/webview/handlers/handleContextTemplates.ts::func::extractFeaturesFromPrd",
+      "type": "function",
+      "label": "extractFeaturesFromPrd",
+      "file": "src/webview/handlers/handleContextTemplates.ts",
+      "line": 64
+    },
+    {
+      "id": "src/webview/handlers/handleContextTemplates.ts::func::generateTemplateForFeature",
+      "type": "function",
+      "label": "generateTemplateForFeature",
+      "file": "src/webview/handlers/handleContextTemplates.ts",
+      "line": 77
+    },
+    {
+      "id": "src/webview/handlers/handleGeneratePrd.ts",
+      "type": "file",
+      "label": "handleGeneratePrd.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleGeneratePrd.ts::func::handleGeneratePrd",
+      "type": "function",
+      "label": "handleGeneratePrd",
+      "file": "src/webview/handlers/handleGeneratePrd.ts",
+      "line": 12
+    },
+    {
+      "id": "src/webview/handlers/handleViewCommands.ts",
+      "type": "file",
+      "label": "handleViewCommands.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleViewCommands.ts::func::handleViewCommands",
+      "type": "function",
+      "label": "handleViewCommands",
+      "file": "src/webview/handlers/handleViewCommands.ts",
+      "line": 8
+    },
+    {
+      "id": "src/webview/handlers/handleWebviewReady.ts",
+      "type": "file",
+      "label": "handleWebviewReady.ts"
+    },
+    {
+      "id": "src/webview/handlers/handleWebviewReady.ts::func::handleWebviewReady",
+      "type": "function",
+      "label": "handleWebviewReady",
+      "file": "src/webview/handlers/handleWebviewReady.ts",
+      "line": 10
+    },
+    {
+      "id": "src/webview/main.ts",
+      "type": "file",
+      "label": "main.ts"
+    },
+    {
+      "id": "src/webview/main.ts::interface::VscodeState",
+      "type": "interface",
+      "label": "VscodeState",
+      "file": "src/webview/main.ts",
+      "line": 13
+    },
+    {
+      "id": "src/webview/router.ts",
+      "type": "file",
+      "label": "router.ts"
+    },
+    {
+      "id": "src/webview/router.ts::class::decouples",
+      "type": "class",
+      "label": "decouples",
+      "file": "src/webview/router.ts",
+      "line": 20
+    },
+    {
+      "id": "src/webview/router.ts::class::MessageRouter",
+      "type": "class",
+      "label": "MessageRouter",
+      "file": "src/webview/router.ts",
+      "line": 24
+    },
+    {
+      "id": "src/webview/router.ts::func::that",
+      "type": "function",
+      "label": "that",
+      "file": "src/webview/router.ts",
+      "line": 31
+    },
+    {
+      "id": "src/webview/ui.ts",
+      "type": "file",
+      "label": "ui.ts"
+    },
+    {
+      "id": "src/webview/ui.ts::func::updateApiKeyDisplay",
+      "type": "function",
+      "label": "updateApiKeyDisplay",
+      "file": "src/webview/ui.ts",
+      "line": 29
+    },
+    {
+      "id": "src/webview/ui.ts::func::showPostGenerationControls",
+      "type": "function",
+      "label": "showPostGenerationControls",
+      "file": "src/webview/ui.ts",
+      "line": 42
+    },
+    {
+      "id": "src/webview/ui.ts::func::displayError",
+      "type": "function",
+      "label": "displayError",
+      "file": "src/webview/ui.ts",
+      "line": 49
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/commands/generateContextCards.ts",
+      "target": "src/context-card-generator.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/generateContextCards.ts",
+      "target": "src/commands/generateContextCards.ts::func::registerGenerateContextCardsCommand",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/generatePrd.ts",
+      "target": "src/commands/prdGeneration/panelManager.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/generatePrd.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/generatePrd.ts",
+      "target": "src/commands/generatePrd.ts::func::sets",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/generatePrd.ts",
+      "target": "src/commands/generatePrd.ts::func::registerGeneratePrdCommand",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/index.ts",
+      "target": "src/commands/generatePrd.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/index.ts",
+      "target": "src/commands/viewPrd.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/index.ts",
+      "target": "src/commands/generateContextCards.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/index.ts",
+      "target": "src/commands/viewContextCards.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/index.ts",
+      "target": "src/commands/index.ts::func::registerAllCommands",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/router.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleApiKey.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleViewCommands.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleContextCards.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleGeneratePrd.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleContextTemplates.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/handlers/handleWebviewReady.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/webview/commands.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts::func::to",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts::func::encapsulates",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts::func::createPrdMessageHandler",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts::func::to",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/messageHandlers.ts",
+      "target": "src/commands/prdGeneration/messageHandlers.ts::func::returns",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/panelManager.ts",
+      "target": "src/utils/webview.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/panelManager.ts",
+      "target": "src/webview/router.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/prdGeneration/panelManager.ts",
+      "target": "src/commands/prdGeneration/panelManager.ts::class::is",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/prdGeneration/panelManager.ts",
+      "target": "src/commands/prdGeneration/panelManager.ts::class::PanelManager",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/viewContextCards.ts",
+      "target": "src/commands/viewContextCards.ts::func::registerViewContextCardsCommand",
+      "type": "contains"
+    },
+    {
+      "source": "src/commands/viewPrd.ts",
+      "target": "src/utils/types.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/viewPrd.ts",
+      "target": "src/utils/webview.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/commands/viewPrd.ts",
+      "target": "src/commands/viewPrd.ts::func::registerViewPrdCommand",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/enricher.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/utils/openai.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::func::or",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::interface::FunctionInfo",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::interface::ClassInfo",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::interface::AnalysisResult",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::class::CodeAnalyzer",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::class::summary",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/analyzer.ts",
+      "target": "src/context-card-generator/analyzer.ts::func::runTest",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/enricher.ts",
+      "target": "src/utils/openai.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/enricher.ts",
+      "target": "src/context-card-generator/analyzer.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/enricher.ts",
+      "target": "src/context-card-generator/enricher.ts::class::takes",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/enricher.ts",
+      "target": "src/context-card-generator/enricher.ts::class::CodeEnricher",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/formatAsMarkdown.ts",
+      "target": "src/context-card-generator/formatter.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/formatAsMarkdown.ts",
+      "target": "src/context-card-generator/analyzer.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/formatAsMarkdown.ts",
+      "target": "src/context-card-generator/formatAsMarkdown.ts::func::formatAsMarkdown",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/formatter.ts",
+      "target": "src/context-card-generator/analyzer.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/formatter.ts",
+      "target": "src/context-card-generator/formatter.ts::class::MarkdownFormatter",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/context-card-generator/analyzer.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/context-card-generator/enricher.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/utils/openai.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/context-card-generator/formatAsMarkdown.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/context-card-generator/index.ts::class::coordinates",
+      "type": "contains"
+    },
+    {
+      "source": "src/context-card-generator/index.ts",
+      "target": "src/context-card-generator/index.ts::class::ContextCardGenerator",
+      "type": "contains"
+    },
+    {
+      "source": "src/extension.ts",
+      "target": "src/commands.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/extension.ts",
+      "target": "src/extension.ts::func::activate",
+      "type": "contains"
+    },
+    {
+      "source": "src/extension.ts",
+      "target": "src/extension.ts::func::deactivate",
+      "type": "contains"
+    },
+    {
+      "source": "src/test/extension.test.ts",
+      "target": "extension.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/test/suite/webview.test.ts",
+      "target": "src/webview/commands.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/test/suite/webview.test.ts",
+      "target": "src/commands/prdGeneration/panelManager.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/test/suite/webview.test.ts",
+      "target": "src/webview/router.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/test/suite/webview.test.ts",
+      "target": "src/webview/handlers/handleWebviewReady.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/utils/manifest.ts",
+      "target": "src/utils/manifest.ts::func::updateAiManifest",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/openai.ts",
+      "target": "src/utils/types.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/utils/openai.ts",
+      "target": "src/prompts/prdGeneration.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/utils/openai.ts",
+      "target": "src/utils/openai.ts::class::abstracts",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/openai.ts",
+      "target": "src/utils/openai.ts::class::OpenAiService",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/types.ts",
+      "target": "src/utils/types.ts::interface::PrdJson",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/types.ts",
+      "target": "src/utils/types.ts::interface::PrdOutput",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/graphView.ts",
+      "target": "src/utils/webviews/graphView.ts::func::getGraphViewerWebviewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/mainView.ts",
+      "target": "src/utils/webviews/mainView.ts::func::returns",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/mainView.ts",
+      "target": "src/utils/webviews/mainView.ts::func::getWebviewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/mainView.ts",
+      "target": "src/utils/webviews/mainView.ts::func::getNonce",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/types.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/webviews/styledViews.ts::func::getStyledPrdWebviewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/webviews/styledViews.ts::func::getStyledMdViewerWebviewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/webviews/styledViews.ts::func::getPrdMarkdownViewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/webviews/styledViews.ts::func::getPrdJsonViewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/utils/webviews/styledViews.ts",
+      "target": "src/utils/webviews/styledViews.ts::func::getContextCardViewContent",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/eventHandlers.ts",
+      "target": "src/webview/ui.js.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/eventHandlers.ts",
+      "target": "src/webview/commands.js.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/eventHandlers.ts",
+      "target": "src/webview/eventHandlers.ts::func::initializeEventHandlers",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleApiKey.ts",
+      "target": "src/webview/handlers/handleApiKey.ts::func::handleApiKey",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleContextCards.ts",
+      "target": "src/context-card-generator.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/handlers/handleContextCards.ts",
+      "target": "src/webview/handlers/handleContextCards.ts::func::handleContextCards",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleContextTemplates.ts",
+      "target": "src/utils/openai.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/handlers/handleContextTemplates.ts",
+      "target": "src/webview/handlers/handleContextTemplates.ts::func::handleGenerateContextTemplates",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleContextTemplates.ts",
+      "target": "src/webview/handlers/handleContextTemplates.ts::func::extractFeaturesFromPrd",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleContextTemplates.ts",
+      "target": "src/webview/handlers/handleContextTemplates.ts::func::generateTemplateForFeature",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleGeneratePrd.ts",
+      "target": "src/utils/openai.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/handlers/handleGeneratePrd.ts",
+      "target": "src/utils/manifest.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/handlers/handleGeneratePrd.ts",
+      "target": "src/webview/handlers/handleGeneratePrd.ts::func::handleGeneratePrd",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleViewCommands.ts",
+      "target": "src/webview/handlers/handleViewCommands.ts::func::handleViewCommands",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/handlers/handleWebviewReady.ts",
+      "target": "src/webview/handlers/handleWebviewReady.ts::func::handleWebviewReady",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/main.ts",
+      "target": "src/webview/ui.js.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/main.ts",
+      "target": "src/webview/eventHandlers.js.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/main.ts",
+      "target": "src/webview/commands.js.ts",
+      "type": "import"
+    },
+    {
+      "source": "src/webview/main.ts",
+      "target": "src/webview/main.ts::interface::VscodeState",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/router.ts",
+      "target": "src/webview/router.ts::class::decouples",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/router.ts",
+      "target": "src/webview/router.ts::class::MessageRouter",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/router.ts",
+      "target": "src/webview/router.ts::func::that",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/ui.ts",
+      "target": "src/webview/ui.ts::func::updateApiKeyDisplay",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/ui.ts",
+      "target": "src/webview/ui.ts::func::showPostGenerationControls",
+      "type": "contains"
+    },
+    {
+      "source": "src/webview/ui.ts",
+      "target": "src/webview/ui.ts::func::displayError",
+      "type": "contains"
+    }
+  ]
+}

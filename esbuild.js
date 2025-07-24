@@ -25,16 +25,17 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-  // --- Copy static assets ---
+  // @intent: Copy static assets needed by the webview and extension to the dist/media directory for bundling and runtime use
   fs.copySync('node_modules/cytoscape/dist/cytoscape.min.js', 'dist/media/cytoscape.min.js');
   fs.copySync('node_modules/dagre/dist/dagre.min.js', 'dist/media/dagre.min.js');
   fs.copySync('node_modules/cytoscape-dagre/cytoscape-dagre.js', 'dist/media/cytoscape-dagre.js');
 
-  // --- Tree-sitter native module ---
+  // @intent: Copy native modules required by tree-sitter for syntax analysis into the build output
   fs.copySync('node_modules/tree-sitter', 'dist/node_modules/tree-sitter');
   fs.copySync('node_modules/tree-sitter-typescript', 'dist/node_modules/tree-sitter-typescript');
 
-  // --- Extension Build --- 
+  // @intent: Build the extension code using esbuild context API
+  // @why: This step prepares the extension for use in VSCode by bundling and applying plugins
   const extensionCtx = await esbuild.context({
     entryPoints: ['src/extension.ts'],
     bundle: true,
@@ -49,7 +50,8 @@ async function main() {
     plugins: [esbuildProblemMatcherPlugin],
   });
 
-  // --- Webview Build ---
+  // @intent: Build the webview code using esbuild context API
+  // @why: Bundles and minifies the webview's main.ts for efficient loading in the extension
   const webviewCtx = await esbuild.context({
             entryPoints: ['src/webview/main.ts'],
     bundle: true,
@@ -61,10 +63,14 @@ async function main() {
     plugins: [esbuildProblemMatcherPlugin],
   });
 
+  // @intent: If watch mode is enabled, start watching both extension and webview for changes
+  // @why: Enables hot-reloading during development for faster iteration
   if (watch) {
     await extensionCtx.watch();
     await webviewCtx.watch();
   } else {
+    // @intent: If not in watch mode, perform a one-time build and cleanup of build contexts
+    // @why: Used for production or CI builds where watching is unnecessary
     await extensionCtx.rebuild();
     await webviewCtx.rebuild();
     await extensionCtx.dispose();

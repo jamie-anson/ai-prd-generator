@@ -20,5 +20,6 @@ export function handleViewCommands(message: any, lastGeneratedPaths: { md?: vsco
         return true; // Command was handled
     }
 
+    // @intent: Return false if the message command is not a view command
     return false; // Command was not a view command
 }

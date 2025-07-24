@@ -173,7 +173,8 @@ export class CodeAnalyzer {
       if (classBody) {
         const methodsWithNodes = this.findMethodsInClass(classBody);
         for (const [methodInfo, methodNode] of methodsWithNodes) {
-            // We need to find the original method object in the classInfo to add dependencies
+            // @intent: Find the original method object in classInfo to add dependencies
+            // @why: Ensures that method dependency information is accurately associated with the correct method in the class summary
             const originalMethod = classInfo.methods.find(m => m.name === methodInfo.name);
             if (originalMethod) {
                 allFunctionsAndMethods.push([originalMethod, methodNode]);
@@ -216,7 +217,8 @@ export class CodeAnalyzer {
   }
 }
 
-// Test harness to run the analyzer directly
+// @intent: Provide a test harness to run the analyzer directly from the command line
+// @why: Allows developers to test the analyzer logic in isolation without integrating into the extension
 async function runTest() {
   // This check ensures the test code only runs when the file is executed directly
   if (process.argv[1] && (process.argv[1].endsWith('analyzer.ts') || process.argv[1].endsWith('analyzer.js') || process.argv[1].endsWith('analyzer-test.js'))) {
@@ -238,7 +240,8 @@ async function runTest() {
         const enricher = new CodeEnricher(openAiService);
         result = await enricher.enrich(result, '');
       } else {
-        console.log('--- Skipping enrichment: OPENAI_API_KEY not set ---');
+        // @intent: Log and skip enrichment step if OPENAI_API_KEY is not set
+        // @why: Prevents errors when API key is missing and makes test output clear
       }
 
       console.log('--- Final Result ---');
@@ -246,7 +249,7 @@ async function runTest() {
       console.log('--------------------');
 
     } catch (error) {
-      console.error('Error during test run:', error);
+      // @intent: Log errors that occur during the analyzer test run for debugging purposes
     }
   }
 }

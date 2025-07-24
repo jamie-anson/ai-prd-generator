@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Codebase Relationship Graph</title>
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        #cy { width: 100vw; height: 100vh; display: block; }
+        .cy-tooltip {
+            position: absolute;
+            background: #222;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 10;
+            max-width: 400px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="cy"></div>
+    <div id="tooltip" class="cy-tooltip"></div>
+    <script>
+    // Load graph data
+    fetch('../codebase-graph.json')
+      .then(r => r.json())
+      .then(graph => {
+        const cy = cytoscape({
+          container: document.getElementById('cy'),
+          elements: [
+            ...graph.nodes.map(n => ({ data: n })),
+            ...graph.edges.map(e => ({ data: e }))
+          ],
+          style: [
+            { selector: 'node[type="file"]', style: { 'background-color': '#1976d2', 'label': 'data(label)', 'shape': 'rectangle', 'color': '#fff', 'text-valign': 'center', 'text-halign': 'center', 'font-size': 16 } },
+            { selector: 'node[type="class"]', style: { 'background-color': '#43a047', 'label': 'data(label)', 'shape': 'ellipse', 'color': '#fff', 'font-size': 15 } },
+            { selector: 'node[type="interface"]', style: { 'background-color': '#fbc02d', 'label': 'data(label)', 'shape': 'diamond', 'color': '#333', 'font-size': 15 } },
+            { selector: 'node[type="function"]', style: { 'background-color': '#8e24aa', 'label': 'data(label)', 'shape': 'hexagon', 'color': '#fff', 'font-size': 14 } },
+            { selector: 'edge[type="import"]', style: { 'width': 3, 'line-color': '#1976d2', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#1976d2', 'curve-style': 'bezier' } },
+            { selector: 'edge[type="contains"]', style: { 'width': 2, 'line-color': '#bdbdbd', 'target-arrow-shape': 'vee', 'target-arrow-color': '#bdbdbd', 'curve-style': 'bezier', 'line-style': 'dashed' } },
+            { selector: 'edge[type="extends"]', style: { 'width': 2, 'line-color': '#43a047', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#43a047', 'curve-style': 'bezier' } },
+            { selector: 'edge[type="implements"]', style: { 'width': 2, 'line-color': '#fbc02d', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#fbc02d', 'curve-style': 'bezier', 'line-style': 'dotted' } }
+          ],
+          layout: {
+            name: 'cose',
+            animate: true,
+            fit: true,
+            padding: 80,
+            nodeRepulsion: 12000,
+            idealEdgeLength: 120,
+            edgeElasticity: 0.2
+          }
+        });
+        // Tooltip logic
+        const tooltip = document.getElementById('tooltip');
+        cy.on('tap', 'node', function(evt){
+          const node = evt.target;
+          const data = node.data();
+          let html = `<b>${data.label}</b><br>Type: ${data.type}`;
+          if (data.file) html += `<br>File: <code>${data.file}</code>`;
+          if (data.line) html += `<br>Line: ${data.line}`;
+          tooltip.innerHTML = html;
+          tooltip.style.display = 'block';
+          tooltip.style.left = evt.originalEvent.pageX + 10 + 'px';
+          tooltip.style.top = evt.originalEvent.pageY + 10 + 'px';
+        });
+        cy.on('tap', function(evt){
+          if (evt.target === cy) tooltip.style.display = 'none';
+        });
+      });
+    </script>
+</body>
+</html>
