@@ -7,6 +7,6 @@ suite('Extension Test Suite', () => {
 	test('Should register generatePrd command', async () => {
 		await vscode.extensions.getExtension('jammie-anson.ai-prd-generator')?.activate();
 		const commands = await vscode.commands.getCommands(true);
-		assert.ok(commands.includes('ai-prd-generator.generatePrd-dev'), 'Command not registered');
+		assert.ok(commands.includes('ai-prd-generator.generatePrd'), 'Command not registered');
 	});
 });

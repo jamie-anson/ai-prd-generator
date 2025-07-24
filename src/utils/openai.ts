@@ -1,61 +1,88 @@
 import OpenAI from 'openai';
+import * as vscode from 'vscode';
 import { PrdOutput } from './types';
+import { getPrdSystemPrompt } from '../prompts/prdGeneration';
 
-export async function callOpenAiAPI(prompt: string, apiKey: string): Promise<PrdOutput | null> {
-    const openai = new OpenAI({ apiKey });
-    try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-                {
-                    role: "system",
-                    content: `You are an expert product manager. Based on the user's prompt, generate a comprehensive Product Requirements Document (PRD). The output must be a single, valid JSON object. Do not include any text, markdown, or explanations outside of the JSON object. The JSON object must have three top-level keys: 'markdown', 'json', and 'graph'.
+/**
+ * A centralized service for interacting with the OpenAI API.
+ * This class abstracts the direct API calls, handles configuration management (e.g., model selection),
+ * and provides standardized error handling for all AI-powered features.
+ */
+export class OpenAiService {
+    private client: OpenAI;
 
-1.  **'markdown'**: A string containing the full PRD in well-structured Markdown format. It must include the following sections: 1. Purpose, 2. Goals and Objectives, 3. Features and Requirements (including User Roles and Core Features), 4. Technical Requirements (Frontend, Backend, Database), 5. Non-Functional Requirements (Security, Scalability, Performance), 6. User Journey Summary (for each key role), 7. Success Metrics, 8. Future Enhancements.
-
-2.  **'json'**: A JSON object containing the structured data of the PRD. The schema must be as follows:
-    {
-        "title": "String",
-        "purpose": "String",
-        "goals": ["String"],
-        "userRoles": ["String"],
-        "features": [{"id": "String", "title": "String", "requirements": ["String"]}],
-        "technicalRequirements": {
-            "frontend": {"stack": "String", "notes": "String"},
-            "backend": {"stack": "String", "notes": "String"},
-            "database": {"stack": "String", "notes": "String"}
-        },
-        "nonFunctionalRequirements": {
-            "security": "String",
-            "scalability": "String",
-            "performance": "String"
-        },
-        "userJourneys": {"role_name": ["String"]},
-        "successMetrics": ["String"],
-        "futureEnhancements": ["String"]
+        /**
+     * Initializes a new instance of the OpenAiService.
+     * @param apiKey The OpenAI API key used for authentication.
+     */
+    constructor(apiKey: string) {
+        this.client = new OpenAI({ apiKey });
     }
 
-3.  **'graph'**: A JSON object with two keys, 'nodes' and 'edges', formatted for a graph visualization library like Cytoscape.js.
-    *   'nodes': An array of objects. Create nodes for each User Role and each Core Feature. Each node's 'data' object must have 'id', 'label', and 'type' ('role' or 'feature').
-    *   'edges': An array of objects. Connect roles to the features they interact with. Each edge's 'data' object must have 'id', 'source' (role ID), 'target' (feature ID), and a 'label' (a short verb like 'manages', 'uses', 'views').`
-                },
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ],
-            response_format: { type: "json_object" },
-        });
+        /**
+     * A private base method for making chat completion requests to the OpenAI API.
+     * It handles model configuration, message formatting, and error handling.
+     * 
+     * @param prompt The main user-facing prompt for the AI.
+     * @param systemPrompt An optional system-level instruction to guide the AI's behavior.
+     * @param jsonMode If true, configures the API to return a response in JSON format.
+     * @returns A promise that resolves with the string content of the AI's response, or null if no content is received.
+     * @throws An error if the API call fails, which is then caught and displayed to the user.
+     */
+    private async baseApiCall(prompt: string, systemPrompt?: string, jsonMode: boolean = false): Promise<string | null> {
+        const model = vscode.workspace.getConfiguration('aiPrdGenerator').get<string>('openAiModel', 'gpt-4o');
+        
+        const messages: any[] = [{ role: 'user', content: prompt }];
+        if (systemPrompt) {
+            messages.unshift({ role: 'system', content: systemPrompt });
+        }
 
-        if (response.choices && response.choices[0] && response.choices[0].message.content) {
-            const content = response.choices[0].message.content;
-            // The response is expected to be a stringified JSON object.
-            const parsedContent: PrdOutput = JSON.parse(content);
-            return parsedContent;
+        try {
+            const response = await this.client.chat.completions.create({
+                model: model,
+                messages: messages,
+                response_format: jsonMode ? { type: 'json_object' } : { type: 'text' },
+            });
+            return response.choices?.[0]?.message?.content ?? null;
+        } catch (error) {
+            console.error('Error calling OpenAI API:', error);
+            vscode.window.showErrorMessage(`Error calling OpenAI API: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw error;
+        }
+    }
+
+        /**
+     * Generates a Product Requirements Document (PRD) by calling the OpenAI API.
+     * This method uses a specific system prompt for PRD generation and expects a JSON response.
+     * 
+     * @param prompt The user's high-level description of the product or feature.
+     * @returns A promise that resolves with the structured PrdOutput object, or null if the API call or parsing fails.
+     */
+    public async generatePrd(prompt: string): Promise<PrdOutput | null> {
+        const systemPrompt = getPrdSystemPrompt();
+        const responseContent = await this.baseApiCall(prompt, systemPrompt, true);
+        if (responseContent) {
+            try {
+                return JSON.parse(responseContent) as PrdOutput;
+            } catch (error) {
+                console.error('Failed to parse PRD response from OpenAI:', error);
+                vscode.window.showErrorMessage('Failed to parse the response from OpenAI. Please try again.');
+                return null;
+            }
         }
         return null;
-    } catch (error) {
-        console.error('Error calling OpenAI API:', error);
-        throw error; // Re-throw to be caught by the caller
+    }
+
+        /**
+     * Generates a simple text completion for a given prompt.
+     * This is a general-purpose method for tasks that don't require a specific system prompt or JSON output.
+     * 
+     * @param prompt The prompt to send to the AI.
+     * @returns A promise that resolves with the generated text, or an empty string if the API returns no content.
+     */
+    public async generateText(prompt: string): Promise<string> {
+        const response = await this.baseApiCall(prompt);
+        return response ?? '';
     }
 }
+

@@ -18,21 +18,41 @@
   "contributes": {
     "commands": [
       {
-        "command": "ai-prd-generator.generatePrd-dev",
+        "command": "ai-prd-generator.generatePrd",
         "title": "Mise-en-Place: Generate PRD"
       }
     ],
     "configuration": {
       "title": "AI PRD Generator",
       "properties": {
-
+        "aiPrdGenerator.openAiModel": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "The OpenAI model to use for generating content."
+        },
+        "aiPrdGenerator.prdOutput.prdPath": {
+          "type": "string",
+          "default": "mise-en-place-output/prd",
+          "description": "The output path for generated PRD files, relative to the workspace root."
+        },
+        "aiPrdGenerator.contextCardOutput.contextCardPath": {
+          "type": "string",
+          "default": "mise-en-place-output/context-cards",
+          "description": "The output path for generated context cards, relative to the workspace root."
+        },
+        "aiPrdGenerator.contextTemplateOutput.contextTemplatePath": {
+          "type": "string",
+          "default": "mise-en-place-output/context-templates",
+          "description": "The output path for generated context templates, relative to the workspace root."
+        }
       }
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run build",
-    "build": "node esbuild.js",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "clean": "rm -rf dist out",
+    "build": "npm run clean && node esbuild.js",
+    "compile": "npm run clean && npm run check-types && npm run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
@@ -50,6 +70,7 @@
     "@types/markdown-it": "^14.1.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/sinon": "^17.0.4",
     "@types/vscode": "^1.89.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
@@ -60,6 +81,7 @@
     "fs-extra": "^11.3.0",
     "markdown-it": "^14.1.0",
     "npm-run-all": "^4.1.5",
+    "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

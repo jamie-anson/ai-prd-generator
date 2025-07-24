@@ -1,5 +1,6 @@
 import Parser from 'tree-sitter';
 import { CodeEnricher } from './enricher';
+import { OpenAiService } from '../utils/openai';
 const TypeScript = require('tree-sitter-typescript');
 
 /**
@@ -233,8 +234,9 @@ async function runTest() {
       const apiKey = process.env.OPENAI_API_KEY;
       if (apiKey) {
         console.log('--- Enriching analysis with summaries ---');
-        const enricher = new CodeEnricher(apiKey);
-        result = await enricher.enrich(result);
+                const openAiService = new OpenAiService(apiKey);
+        const enricher = new CodeEnricher(openAiService);
+        result = await enricher.enrich(result, '');
       } else {
         console.log('--- Skipping enrichment: OPENAI_API_KEY not set ---');
       }
@@ -249,4 +251,4 @@ async function runTest() {
   }
 }
 
-runTest();
+// runTest();

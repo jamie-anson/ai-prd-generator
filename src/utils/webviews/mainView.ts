@@ -17,7 +17,7 @@ import * as vscode from 'vscode';
  * @param webview The webview panel instance.
  * @returns A string of the complete HTML for the webview.
  */
-export function getWebviewContent(scriptContent: string, webview: vscode.WebviewPanel): string {
+export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.WebviewPanel): string {
     // Logic Step: Generate a unique nonce for the Content Security Policy.
     // This is a security measure to allowlist specific inline scripts and styles.
     const nonce = getNonce();
@@ -118,11 +118,15 @@ export function getWebviewContent(scriptContent: string, webview: vscode.Webview
                     <button id="view-context-cards">View Context Cards</button>
                 </div>
             </div>
+            <div class="controls-section">
+                <h2>Context Templates</h2>
+                <div class="button-group">
+                    <button id="generate-context-templates">Generate Context Templates</button>
+                </div>
+            </div>
         </div>
 
-        <script nonce="${nonce}">
-            ${scriptContent}
-        </script>
+        <script nonce="${nonce}" src="${scriptUri}"></script>
     </body>
     </html>`;
 }

@@ -1,27 +1,28 @@
 /**
- * @file eventHandlers.js
+ * @file eventHandlers.ts
  * @description This module is responsible for setting up all event listeners for the webview's interactive elements.
- * It imports the DOM elements from ui.js and uses the vscode API to post messages to the extension.
+ * It imports the DOM elements from ui.ts and uses the vscode API to post messages to the extension.
  */
 
 import { elements } from './ui.js';
+import { COMMANDS } from './commands.js';
 
 /**
  * Initializes all event listeners for the webview.
- * @param {object} vscode - The VS Code API object for posting messages.
+ * @param vscode - The VS Code API object for posting messages.
  */
-export function initializeEventHandlers(vscode) {
+export function initializeEventHandlers(vscode: any): void {
     // Generate PRD button
     if (elements.generatePrdButton && elements.prdPrompt) {
         elements.generatePrdButton.addEventListener('click', () => {
-            vscode.postMessage({ command: 'generate', text: elements.prdPrompt.value });
+            vscode.postMessage({ command: COMMANDS.GENERATE_PRD, text: elements.prdPrompt.value });
         });
     }
 
     // Set API Key button
     if (elements.setApiKeyButton && elements.apiKeyInput) {
         elements.setApiKeyButton.addEventListener('click', () => {
-            vscode.postMessage({ command: 'saveApiKey', apiKey: elements.apiKeyInput.value });
+            vscode.postMessage({ command: COMMANDS.SAVE_API_KEY, apiKey: elements.apiKeyInput.value });
         });
     }
 
@@ -38,21 +39,28 @@ export function initializeEventHandlers(vscode) {
     // View PRD button
     if (elements.viewPrdButton) {
         elements.viewPrdButton.addEventListener('click', () => {
-            vscode.postMessage({ command: 'viewPrd' });
+            vscode.postMessage({ command: COMMANDS.VIEW_PRD });
         });
     }
 
     // View Graph button
     if (elements.viewGraphButton) {
         elements.viewGraphButton.addEventListener('click', () => {
-            vscode.postMessage({ command: 'viewGraph' });
+            vscode.postMessage({ command: COMMANDS.VIEW_GRAPH });
         });
     }
 
     // Bulk Generate Context Cards button
     if (elements.bulkGenerateContextCardsButton) {
         elements.bulkGenerateContextCardsButton.addEventListener('click', () => {
-            vscode.postMessage({ command: 'bulkGenerateContextCards' });
+            vscode.postMessage({ command: COMMANDS.GENERATE_CONTEXT_CARDS });
+        });
+    }
+
+    // Generate Context Templates button
+    if (elements.generateContextTemplatesButton) {
+        elements.generateContextTemplatesButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_CONTEXT_TEMPLATES });
         });
     }
 }

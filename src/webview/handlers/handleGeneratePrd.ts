@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { callOpenAiAPI } from '../../utils/openai';
+import { OpenAiService } from '../../utils/openai';
 import { updateAiManifest } from '../../utils/manifest';
 
 /**
@@ -10,7 +10,7 @@ import { updateAiManifest } from '../../utils/manifest';
  * @returns An object containing the URIs of the generated markdown and graph files, or undefined if generation fails.
  */
 export async function handleGeneratePrd(message: any, context: vscode.ExtensionContext, webview: vscode.Webview): Promise<{ md?: vscode.Uri, graph?: vscode.Uri } | undefined> {
-    if (message.command !== 'generate') {
+        if (message.command !== 'generate-prd') {
         return undefined;
     }
 
@@ -34,12 +34,16 @@ export async function handleGeneratePrd(message: any, context: vscode.ExtensionC
         }
 
         try {
-            const prdOutput = await callOpenAiAPI(message.text, apiKey);
+                        const openAiService = new OpenAiService(apiKey);
+            const prdOutput = await openAiService.generatePrd(message.text);
             progress.report({ increment: 50, message: "Saving files..." });
 
             if (prdOutput) {
+                const config = vscode.workspace.getConfiguration('aiPrdGenerator.prdOutput');
+                const prdPath = config.get<string>('prdPath') || 'mise-en-place-output/prd';
+
                 const workspaceUri = workspaceFolders[0].uri;
-                const outputDir = vscode.Uri.joinPath(workspaceUri, 'mise-en-place-output', 'prd');
+                const outputDir = vscode.Uri.joinPath(workspaceUri, prdPath);
                 await vscode.workspace.fs.createDirectory(outputDir);
 
                 const safeTitle = prdOutput.json.title.replace(/[^a-z0-9_\-]+/gi, '-').toLowerCase();
@@ -59,6 +63,7 @@ export async function handleGeneratePrd(message: any, context: vscode.ExtensionC
                 vscode.window.showErrorMessage('Failed to generate PRD. No output from AI.');
                 await webview.postMessage({ command: 'error', text: 'No output from AI.' });
             }
+            
         } catch (error: any) {
             console.error('Error generating PRD:', error);
             vscode.window.showErrorMessage(`Error generating PRD: ${error.message}`);
