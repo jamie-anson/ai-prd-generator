@@ -111,17 +111,27 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <button id="view-graph">View Graph</button>
                 </div>
             </div>
-            <div class="controls-section">
-                <h2>Context Cards</h2>
-                <div class="button-group">
-                    <button id="bulk-generate-context-cards">Bulk Generate Context Cards</button>
-                    <button id="view-context-cards">View Context Cards</button>
-                </div>
-            </div>
-            <div class="controls-section">
+            <!-- Logic Step: Context Templates section with unique ID for context-aware visibility control -->
+            <div id="context-templates-section" class="controls-section">
                 <h2>Context Templates</h2>
                 <div class="button-group">
                     <button id="generate-context-templates">Generate Context Templates</button>
+                </div>
+            </div>
+            <!-- Logic Step: Context Cards section with unique ID for context-aware visibility control -->
+            <div id="context-cards-section" class="controls-section">
+                <h2>Context Cards</h2>
+                <div class="button-group">
+                    <button id="bulk-generate-context-cards">Bulk Generate Context Cards</button>
+                </div>
+            </div>
+            <div class="controls-section">
+                <h2>Further Options</h2>
+                <div class="button-group">
+                    <button id="generate-data-flow-diagram">Generate Data Flow Diagram</button>
+                    <button id="view-data-flow-diagram" style="display: none;">View Data Flow Diagram</button>
+                    <button id="generate-component-hierarchy">Generate Component Hierarchy</button>
+                    <button id="view-component-hierarchy" style="display: none;">View Component Hierarchy</button>
                 </div>
             </div>
         </div>

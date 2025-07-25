@@ -44,20 +44,29 @@ export class CodeAnalyzer {
   }
 
   public analyze(sourceCode: string): AnalysisResult {
-    const tree = this.parser.parse(sourceCode);
-    const rootNode = tree.rootNode;
+    try {
+      const tree = this.parser.parse(sourceCode);
+      const rootNode = tree.rootNode;
 
-    const functionsWithNodes = this.findFunctions(rootNode);
-    const classesWithNodes = this.findClasses(rootNode);
+      const functionsWithNodes = this.findFunctions(rootNode);
+      const classesWithNodes = this.findClasses(rootNode);
 
     const result: AnalysisResult = {
       functions: functionsWithNodes.map(([info]) => info),
       classes: classesWithNodes.map(([info]) => info),
     };
 
-    this.analyzeDependencies(functionsWithNodes, classesWithNodes);
+      this.analyzeDependencies(functionsWithNodes, classesWithNodes);
 
-    return result;
+      return result;
+    } catch (error) {
+      console.error('Tree-sitter parsing error:', error);
+      // Return empty result if parsing fails
+      return {
+        functions: [],
+        classes: []
+      };
+    }
   }
 
   private findFunctions(node: Parser.SyntaxNode): [FunctionInfo, Parser.SyntaxNode][] {

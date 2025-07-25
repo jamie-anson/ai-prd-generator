@@ -63,4 +63,32 @@ export function initializeEventHandlers(vscode: any): void {
             vscode.postMessage({ command: COMMANDS.GENERATE_CONTEXT_TEMPLATES });
         });
     }
+
+    // Generate Data Flow Diagram button
+    if (elements.generateDataFlowDiagramButton) {
+        elements.generateDataFlowDiagramButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_DATA_FLOW_DIAGRAM });
+        });
+    }
+
+    // Generate Component Hierarchy button
+    if (elements.generateComponentHierarchyButton) {
+        elements.generateComponentHierarchyButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_COMPONENT_HIERARCHY });
+        });
+    }
+
+    // View Data Flow Diagram button
+    if (elements.viewDataFlowDiagramButton) {
+        elements.viewDataFlowDiagramButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.VIEW_DATA_FLOW_DIAGRAM });
+        });
+    }
+
+    // View Component Hierarchy button
+    if (elements.viewComponentHierarchyButton) {
+        elements.viewComponentHierarchyButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.VIEW_COMPONENT_HIERARCHY });
+        });
+    }
 }

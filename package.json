@@ -15,6 +15,9 @@
     "url": "https://github.com/johndoe/ai-prd-generator.git"
   },
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:ai-prd-generator.generatePrd"
+  ],
   "contributes": {
     "commands": [
       {

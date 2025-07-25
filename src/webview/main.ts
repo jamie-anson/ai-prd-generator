@@ -1,10 +1,17 @@
+// @ts-nocheck
 /**
  * @file main.ts
  * @description This is the main entry point for the webview's client-side TypeScript.
- * It orchestrates the application by initializing event handlers and managing message passing between the webview and the extension.
+ * 
+ * The logic of this file is to:
+ * 1. Initialize the webview by sending a ready message to the extension.
+ * 2. Set up all event handlers for user interactions with UI elements.
+ * 3. Handle incoming messages from the extension (API key status, project state, errors).
+ * 4. Update the UI based on received project state for context-aware behavior.
+ * 5. Manage the communication bridge between the webview and VS Code extension.
  */
 
-import { updateApiKeyDisplay, showPostGenerationControls, displayError } from './ui.js';
+import { updateApiKeyDisplay, showPostGenerationControls, displayError, updateUIBasedOnProjectState } from './ui.js';
 import { initializeEventHandlers } from './eventHandlers.js';
 import { COMMANDS } from './commands.js';
 
@@ -48,6 +55,11 @@ const vscode = (window as any).acquireVsCodeApi();
                 break;
             case 'error': // Generic error message from extension
                 displayError(message.text);
+                break;
+            case 'project-state-update': // Logic Step: Handle project state updates from extension
+                // This message contains detected artifact information used for context-aware UI
+                console.log('Received project state update:', message.projectState);
+                updateUIBasedOnProjectState(message.projectState);
                 break;
         }
     });

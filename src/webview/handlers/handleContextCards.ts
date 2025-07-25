@@ -8,7 +8,7 @@ import { ContextCardGenerator } from '../../context-card-generator';
  * @param webview The webview instance to post messages back to.
  */
 export async function handleContextCards(message: any, context: vscode.ExtensionContext, webview: vscode.Webview) {
-    if (message.command === 'bulkGenerateContextCards') {
+    if (message.command === 'generate-context-cards') {
         const workspaceFolders = vscode.workspace.workspaceFolders;
         if (!workspaceFolders || workspaceFolders.length === 0) {
             vscode.window.showErrorMessage('No workspace folder found. Please open a folder to generate context cards.');
