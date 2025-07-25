@@ -72,17 +72,17 @@ export function createPrdMessageHandler(): MessageRouter {
     /**
      * Logic Step: Register View PRD and View Graph command handlers.
      * These handlers restore the functionality for viewing previously generated PRD files
-     * in markdown format and graph format using the existing handleViewCommands logic.
-     * Both handlers delegate to handleViewCommands which uses VS Code commands to open
-     * the appropriate viewers based on the lastGeneratedPaths context.
+     * in markdown format and graph format using the updated handleViewCommands logic.
+     * Both handlers delegate to handleViewCommands which now includes fallback file
+     * discovery when lastGeneratedPaths context is unavailable.
      */
     router.register(COMMANDS.VIEW_PRD, async (message, context, webview, lastGeneratedPaths) => {
-        handleViewCommands(message, lastGeneratedPaths);
+        await handleViewCommands(message, lastGeneratedPaths);
         return Promise.resolve();
     });
 
     router.register(COMMANDS.VIEW_GRAPH, async (message, context, webview, lastGeneratedPaths) => {
-        handleViewCommands(message, lastGeneratedPaths);
+        await handleViewCommands(message, lastGeneratedPaths);
         return Promise.resolve();
     });
 
