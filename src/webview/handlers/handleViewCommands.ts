@@ -12,33 +12,26 @@
  */
 
 import * as vscode from 'vscode';
+import { ProjectStateDetector } from '../../utils/projectStateDetector';
+import { getPrdOutputPath } from '../../utils/configManager';
 
 /**
  * Logic Step: Handle view-related messages from the webview.
  * This function processes view commands and opens PRD files in the appropriate format.
- * It includes fallback logic to find PRD files when lastGeneratedPaths context is unavailable,
- * ensuring View buttons work even after extension restarts or when context is lost.
+ * Uses ProjectStateDetector to find available PRD files dynamically.
  * @param message The message object from the webview containing the command
- * @param lastGeneratedPaths Optional context with URIs of last generated files
  * @returns Boolean indicating whether the command was handled
  */
-export async function handleViewCommands(message: any, lastGeneratedPaths: { md?: vscode.Uri, graph?: vscode.Uri } | undefined): Promise<boolean> {
+export async function handleViewCommands(message: any): Promise<boolean> {
+    // Logic Step: Get current project state to find available files
+    const projectState = await ProjectStateDetector.detectProjectState();
     if (message.command === 'view-prd') {
         /**
-         * Logic Step: Handle view-prd command with fallback file discovery.
-         * First tries to use lastGeneratedPaths context, then falls back to
-         * finding the most recent PRD file in the workspace if context is unavailable.
+         * Logic Step: Handle view-prd command using ProjectStateDetector.
+         * Uses the first available PRD file from the detected project state.
          */
-        let prdPath: string | undefined;
-        
-        if (lastGeneratedPaths?.md) {
-            prdPath = lastGeneratedPaths.md.fsPath;
-        } else {
-            // Fallback: Find most recent PRD file
-            prdPath = await findMostRecentPrdFile();
-        }
-        
-        if (prdPath) {
+        if (projectState.hasPRD && projectState.prdFiles.length > 0) {
+            const prdPath = projectState.prdFiles[0].fsPath;
             vscode.commands.executeCommand('ai-prd-generator.viewPrd', prdPath, 'markdown');
         } else {
             vscode.window.showInformationMessage('No PRD files found. Please generate a PRD first.');
@@ -48,23 +41,21 @@ export async function handleViewCommands(message: any, lastGeneratedPaths: { md?
 
     if (message.command === 'view-graph') {
         /**
-         * Logic Step: Handle view-graph command with fallback file discovery.
-         * First tries to use lastGeneratedPaths context, then falls back to
-         * finding the most recent graph file in the workspace if context is unavailable.
+         * Logic Step: Handle view-graph command using ProjectStateDetector.
+         * Looks for corresponding graph files based on detected PRD files.
          */
-        let graphPath: string | undefined;
-        
-        if (lastGeneratedPaths?.graph) {
-            graphPath = lastGeneratedPaths.graph.fsPath;
+        if (projectState.hasPRD && projectState.prdFiles.length > 0) {
+            // Logic Step: Find corresponding graph file for the first PRD
+            const prdFile = projectState.prdFiles[0];
+            const graphPath = await findCorrespondingGraphFile(prdFile);
+            
+            if (graphPath) {
+                vscode.commands.executeCommand('ai-prd-generator.viewPrd', graphPath, 'graph');
+            } else {
+                vscode.window.showInformationMessage('No graph file found for this PRD.');
+            }
         } else {
-            // Fallback: Find most recent graph file
-            graphPath = await findMostRecentGraphFile();
-        }
-        
-        if (graphPath) {
-            vscode.commands.executeCommand('ai-prd-generator.viewPrd', graphPath, 'graph');
-        } else {
-            vscode.window.showInformationMessage('No graph files found. Please generate a PRD first.');
+            vscode.window.showInformationMessage('No PRD files found. Please generate a PRD first.');
         }
         return true;
     }
@@ -73,51 +64,34 @@ export async function handleViewCommands(message: any, lastGeneratedPaths: { md?
 }
 
 /**
- * Logic Step: Find the most recent PRD markdown file in the workspace.
- * This fallback function searches the PRD output directory for .md files
- * and returns the path to the most recently modified one.
- * @returns Promise resolving to the file path or undefined if no files found
+ * Logic Step: Find the corresponding graph file for a given PRD file.
+ * Looks for a .json file with the same base name as the PRD file.
+ * @param prdFile The URI of the PRD file
+ * @returns Promise resolving to the graph file path or undefined if not found
  */
-async function findMostRecentPrdFile(): Promise<string | undefined> {
+async function findCorrespondingGraphFile(prdFile: vscode.Uri): Promise<string | undefined> {
     try {
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) return undefined;
+        const prdFileName = prdFile.path.split('/').pop();
+        if (!prdFileName) return undefined;
         
-        const prdDir = vscode.Uri.joinPath(workspaceFolders[0].uri, 'mise-en-place-output', 'prd');
-        const files = await vscode.workspace.fs.readDirectory(prdDir);
-        const mdFiles = files.filter(f => f[1] === vscode.FileType.File && f[0].endsWith('.md'));
+        // Logic Step: Generate expected graph file name
+        const baseName = prdFileName.replace('.md', '');
+        const graphFileName = `${baseName}-graph.json`;
         
-        if (mdFiles.length === 0) return undefined;
+        const prdDir = vscode.Uri.joinPath(prdFile, '..');
+        const graphFile = vscode.Uri.joinPath(prdDir, graphFileName);
         
-        // Return the first .md file found (could be enhanced to find most recent)
-        return vscode.Uri.joinPath(prdDir, mdFiles[0][0]).fsPath;
-    } catch (error) {
-        console.error('Error finding PRD file:', error);
-        return undefined;
-    }
-}
-
-/**
- * Logic Step: Find the most recent PRD graph file in the workspace.
- * This fallback function searches the PRD output directory for .json files
- * and returns the path to the most recently modified one for graph visualization.
- * @returns Promise resolving to the file path or undefined if no files found
- */
-async function findMostRecentGraphFile(): Promise<string | undefined> {
-    try {
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) return undefined;
-        
-        const prdDir = vscode.Uri.joinPath(workspaceFolders[0].uri, 'mise-en-place-output', 'prd');
-        const files = await vscode.workspace.fs.readDirectory(prdDir);
-        const jsonFiles = files.filter(f => f[1] === vscode.FileType.File && f[0].endsWith('.json'));
-        
-        if (jsonFiles.length === 0) return undefined;
-        
-        // Return the first .json file found (could be enhanced to find most recent)
-        return vscode.Uri.joinPath(prdDir, jsonFiles[0][0]).fsPath;
+        // Logic Step: Check if the graph file exists
+        try {
+            await vscode.workspace.fs.stat(graphFile);
+            return graphFile.fsPath;
+        } catch {
+            return undefined;
+        }
     } catch (error) {
         console.error('Error finding graph file:', error);
         return undefined;
     }
 }
+
+

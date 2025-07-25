@@ -5,14 +5,12 @@ import * as vscode from 'vscode';
  * @param message The message received from the webview.
  * @param context The extension context.
  * @param webview The webview instance.
- * @param lastGeneratedPaths Optional paths to the last generated files.
  * @returns A promise that resolves with the result of the handler.
  */
 export type MessageHandler = (
     message: any,
     context: vscode.ExtensionContext,
-    webview: vscode.Webview,
-    lastGeneratedPaths?: { md?: vscode.Uri, graph?: vscode.Uri }
+    webview: vscode.Webview
 ) => Promise<any>;
 
 /**
@@ -42,18 +40,16 @@ export class MessageRouter {
      * @param message The message object received from the webview. Must contain a 'command' property.
      * @param context The extension's context, passed to the handler.
      * @param webview The webview instance, passed to the handler.
-     * @param lastGeneratedPaths Optional data from previous commands, passed to the handler.
      * @returns A promise that resolves with the return value of the executed handler, or null if no handler is found.
      */
     public async route(
         message: any,
         context: vscode.ExtensionContext,
-        webview: vscode.Webview,
-        lastGeneratedPaths?: { md?: vscode.Uri, graph?: vscode.Uri }
+        webview: vscode.Webview
     ): Promise<any> {
         const handler = this.handlers.get(message.command);
         if (handler) {
-            return handler(message, context, webview, lastGeneratedPaths);
+            return handler(message, context, webview);
         }
         console.warn(`No handler registered for command: ${message.command}`);
         return null;

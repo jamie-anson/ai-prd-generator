@@ -1,63 +1,85 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { OpenAiService } from '../../utils/openai';
+import { handleGenerationError, handleApiError, handleFileError, withErrorHandling } from '../../utils/errorHandler';
+import { getContextTemplateOutputPath, ensureOutputDirectory } from '../../utils/configManager';
+import { ProjectStateDetector } from '../../utils/projectStateDetector';
 
 /**
  * Handles the generation of context templates based on a PRD.
  * @param context The extension context.
- * @param lastGeneratedPaths Paths to the previously generated PRD files.
+ * @param webview Optional webview instance for error communication.
  */
-export async function handleGenerateContextTemplates(context: vscode.ExtensionContext, lastGeneratedPaths: { md?: vscode.Uri } | undefined) {
-    if (!lastGeneratedPaths?.md) {
-        vscode.window.showErrorMessage('Please generate a PRD first.');
+export async function handleGenerateContextTemplates(context: vscode.ExtensionContext, webview?: vscode.Webview) {
+    // Logic Step: Use ProjectStateDetector to find existing PRDs
+    const projectState = await ProjectStateDetector.detectProjectState();
+    
+    if (!projectState.hasPRD || projectState.prdFiles.length === 0) {
+        handleGenerationError(
+            new Error('No PRD available for context template generation'),
+            'context template generation',
+            webview
+        );
         return;
     }
+    
+    // Use the first available PRD file
+    const prdFile = projectState.prdFiles[0];
 
-        const apiKey = await context.secrets.get('openAiApiKey');
+    const apiKey = await context.secrets.get('openAiApiKey');
     if (!apiKey) {
-        vscode.window.showErrorMessage('API key not set. Please set it using the command palette.');
+        handleApiError(
+            new Error('OpenAI API Key not set'),
+            'OpenAI',
+            'authentication',
+            webview
+        );
         return;
     }
 
     const openAiService = new OpenAiService(apiKey);
 
-    try {
+    // Logic Step: Use error handling wrapper for the entire generation process
+    const result = await withErrorHandling(async () => {
         await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: 'Generating Context Templates...', cancellable: false }, async (progress) => {
-            const prdContent = Buffer.from(await vscode.workspace.fs.readFile(lastGeneratedPaths.md!)).toString('utf-8');
+            const prdContent = Buffer.from(await vscode.workspace.fs.readFile(prdFile)).toString('utf-8');
 
             progress.report({ message: 'Extracting features from PRD...', increment: 20 });
-                        const features = await extractFeaturesFromPrd(prdContent, openAiService);
+            const features = await extractFeaturesFromPrd(prdContent, openAiService);
 
             if (!features.length) {
-                vscode.window.showErrorMessage('No features found in the PRD.');
-                return;
+                throw new Error('No features found in the PRD');
             }
 
-            const config = vscode.workspace.getConfiguration('aiPrdGenerator.contextTemplateOutput');
-            const contextTemplatePath = config.get<string>('contextTemplatePath') || 'mise-en-place-output/context-templates';
+            // Logic Step: Use configuration manager for output path
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (!workspaceFolders) {
-                vscode.window.showErrorMessage('No workspace folder found.');
-                return;
+                throw new Error('No workspace folder found');
             }
-            const outputDir = vscode.Uri.joinPath(workspaceFolders[0].uri, contextTemplatePath);
-            await vscode.workspace.fs.createDirectory(outputDir);
+            
+            const outputDir = getContextTemplateOutputPath(workspaceFolders[0].uri);
+            await ensureOutputDirectory(outputDir);
 
             const increment = 80 / features.length;
             for (const feature of features) {
                 progress.report({ message: `Generating template for: ${feature}`, increment });
                 const templateContent = await generateTemplateForFeature(feature, prdContent, openAiService);
                 const fileName = `${feature.replace(/\s+/g, '_').toLowerCase()}_context.md`;
-                                const filePath = vscode.Uri.joinPath(outputDir, fileName);
+                const filePath = vscode.Uri.joinPath(outputDir, fileName);
                 await vscode.workspace.fs.writeFile(filePath, Buffer.from(templateContent, 'utf-8'));
             }
         });
 
         vscode.window.showInformationMessage('Context templates generated successfully!');
+        return true;
+    }, {
+        operation: 'generate context templates',
+        component: 'ContextTemplateGenerator'
+    }, webview);
 
-    } catch (error: any) {
-        console.error('Error generating context templates:', error);
-        vscode.window.showErrorMessage(`Failed to generate context templates: ${error.message}`);
+    // Logic Step: Return early if generation failed
+    if (!result) {
+        return;
     }
 }
 

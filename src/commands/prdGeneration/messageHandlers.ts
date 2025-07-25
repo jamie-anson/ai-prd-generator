@@ -28,15 +28,12 @@ export function createPrdMessageHandler(): MessageRouter {
         router.register(COMMANDS.GET_API_KEY, handleApiKey);
     router.register(COMMANDS.SAVE_API_KEY, handleApiKey);
 
-        // The 'handleViewCommands' handler has a different signature (it's not async and doesn't use all parameters).
-    // We wrap it in a new function to make it compatible with the MessageHandler type.
-        router.register(COMMANDS.VIEW_PRD, (message, context, webview, lastGeneratedPaths) => {
-        handleViewCommands(message, lastGeneratedPaths);
-        return Promise.resolve(true);
+        // Register view commands using the updated handler signature
+    router.register(COMMANDS.VIEW_PRD, (message, context, webview) => {
+        return handleViewCommands(message);
     });
-        router.register(COMMANDS.VIEW_GRAPH, (message, context, webview, lastGeneratedPaths) => {
-        handleViewCommands(message, lastGeneratedPaths);
-        return Promise.resolve(true);
+    router.register(COMMANDS.VIEW_GRAPH, (message, context, webview) => {
+        return handleViewCommands(message);
     });
 
         router.register(COMMANDS.GENERATE_CONTEXT_CARDS, handleContextCards);
@@ -46,45 +43,30 @@ export function createPrdMessageHandler(): MessageRouter {
         return handleGeneratePrd(message, context, webview);
     });
 
-        // Adapt the context template generation handler, which doesn't use all the standard parameters.
-        router.register(COMMANDS.GENERATE_CONTEXT_TEMPLATES, (message, context, webview, lastGeneratedPaths) => {
-        return handleGenerateContextTemplates(context, lastGeneratedPaths);
+    // Register context template generation handler with updated signature
+    router.register(COMMANDS.GENERATE_CONTEXT_TEMPLATES, (message, context, webview) => {
+        return handleGenerateContextTemplates(context, webview);
     });
 
-    // Register the new diagram generation handlers
-    router.register(COMMANDS.GENERATE_DATA_FLOW_DIAGRAM, (message, context, webview, lastGeneratedPaths) => {
-        return handleGenerateDataFlowDiagram(context, lastGeneratedPaths, webview);
+    // Register the diagram generation handlers with updated signatures
+    router.register(COMMANDS.GENERATE_DATA_FLOW_DIAGRAM, (message, context, webview) => {
+        return handleGenerateDataFlowDiagram(context, undefined, webview);
     });
 
-    router.register(COMMANDS.GENERATE_COMPONENT_HIERARCHY, (message, context, webview, lastGeneratedPaths) => {
-        return handleGenerateComponentHierarchy(context, lastGeneratedPaths, webview);
+    router.register(COMMANDS.GENERATE_COMPONENT_HIERARCHY, (message, context, webview) => {
+        return handleGenerateComponentHierarchy(context, undefined, webview);
     });
 
     // Register the diagram viewing handlers
-    router.register(COMMANDS.VIEW_DATA_FLOW_DIAGRAM, (message, context, webview, lastGeneratedPaths) => {
+    router.register(COMMANDS.VIEW_DATA_FLOW_DIAGRAM, (message, context, webview) => {
         return handleViewDataFlowDiagram(context);
     });
 
-    router.register(COMMANDS.VIEW_COMPONENT_HIERARCHY, (message, context, webview, lastGeneratedPaths) => {
+    router.register(COMMANDS.VIEW_COMPONENT_HIERARCHY, (message, context, webview) => {
         return handleViewComponentHierarchy(context);
     });
 
-    /**
-     * Logic Step: Register View PRD and View Graph command handlers.
-     * These handlers restore the functionality for viewing previously generated PRD files
-     * in markdown format and graph format using the updated handleViewCommands logic.
-     * Both handlers delegate to handleViewCommands which now includes fallback file
-     * discovery when lastGeneratedPaths context is unavailable.
-     */
-    router.register(COMMANDS.VIEW_PRD, async (message, context, webview, lastGeneratedPaths) => {
-        await handleViewCommands(message, lastGeneratedPaths);
-        return Promise.resolve();
-    });
 
-    router.register(COMMANDS.VIEW_GRAPH, async (message, context, webview, lastGeneratedPaths) => {
-        await handleViewCommands(message, lastGeneratedPaths);
-        return Promise.resolve();
-    });
 
     return router;
 }

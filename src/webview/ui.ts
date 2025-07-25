@@ -1,211 +1,249 @@
 /**
  * @file ui.ts
- * @description This module is responsible for all direct DOM manipulations and UI updates.
- * It exports DOM elements and functions to keep the UI logic separate from event handling and state management.
+ * @description Type-safe UI management module for webview DOM manipulations and state updates.
+ * 
+ * The logic of this file is to:
+ * 1. Provide type-safe access to all DOM elements with proper null checking
+ * 2. Implement context-aware UI updates based on project state
+ * 3. Ensure consistent error handling and user feedback
+ * 4. Maintain separation between UI logic and business logic
  */
 
-// --- DOM Element Exports ---
-// We export a single object containing all required DOM elements to avoid cluttering the global namespace.
-export const elements = {
-    generatePrdButton: document.getElementById('generate-prd') as HTMLButtonElement,
-    prdPrompt: document.getElementById('prd-prompt') as HTMLTextAreaElement,
-    errorContainer: document.getElementById('error-container') as HTMLDivElement,
-    generationControls: document.getElementById('generation-controls') as HTMLDivElement,
-    postGenerationControls: document.getElementById('post-generation-controls') as HTMLDivElement,
-    viewPrdButton: document.getElementById('view-prd') as HTMLButtonElement,
-    viewGraphButton: document.getElementById('view-graph') as HTMLButtonElement,
-    bulkGenerateContextCardsButton: document.getElementById('bulk-generate-context-cards') as HTMLButtonElement,
-    apiKeyDisplay: document.getElementById('api-key-display') as HTMLDivElement,
-    apiKeyInputContainer: document.getElementById('api-key-input-container') as HTMLDivElement,
-    apiKeyObfuscated: document.getElementById('api-key-obfuscated') as HTMLSpanElement,
-    apiKeyInput: document.getElementById('api-key-input') as HTMLInputElement,
-    setApiKeyButton: document.getElementById('set-api-key') as HTMLButtonElement,
-    changeApiKeyButton: document.getElementById('change-api-key') as HTMLButtonElement,
-    generateContextTemplatesButton: document.getElementById('generate-context-templates') as HTMLButtonElement,
-    generateDataFlowDiagramButton: document.getElementById('generate-data-flow-diagram') as HTMLButtonElement,
-    generateComponentHierarchyButton: document.getElementById('generate-component-hierarchy') as HTMLButtonElement,
-    viewDataFlowDiagramButton: document.getElementById('view-data-flow-diagram') as HTMLButtonElement,
-    viewComponentHierarchyButton: document.getElementById('view-component-hierarchy') as HTMLButtonElement,
-};
+import { ProjectState, UIElements, UIError, ButtonConfig } from './types';
+import { 
+    initializeUIElements, 
+    updateButton, 
+    updateSection, 
+    displayError, 
+    clearError, 
+    toggleVisibility, 
+    safeSetText, 
+    isValidProjectState 
+} from './uiUtils';
 
-// --- UI Update Functions ---
+// --- Type-Safe DOM Element Management ---
 
+/**
+ * Logic Step: Initialize UI elements with type safety and null checking.
+ * Uses the type-safe initialization utility to prevent runtime errors.
+ */
+export const elements: Partial<UIElements> = initializeUIElements();
+
+// --- Type-Safe UI Update Functions ---
+
+/**
+ * Logic Step: Update API key display with type safety and proper error handling.
+ * Uses type-safe utilities to manage element visibility and content updates.
+ * @param hasApiKey Whether an API key is currently set
+ */
 export function updateApiKeyDisplay(hasApiKey: boolean): void {
-    if (elements.apiKeyDisplay && elements.apiKeyInputContainer && elements.apiKeyObfuscated) {
-        if (hasApiKey) {
-            elements.apiKeyObfuscated.textContent = `sk-******************key-saved`;
-            elements.apiKeyDisplay.classList.remove('hidden');
-            elements.apiKeyInputContainer.classList.add('hidden');
-        } else {
-            elements.apiKeyDisplay.classList.add('hidden');
-            elements.apiKeyInputContainer.classList.remove('hidden');
-        }
-    }
-}
-
-export function showPostGenerationControls(): void {
-    if (elements.generationControls && elements.postGenerationControls) {
-        elements.generationControls.classList.add('hidden');
-        elements.postGenerationControls.classList.remove('hidden');
-    }
-}
-
-export function displayError(errorMessage: string): void {
-    if (elements.errorContainer) {
-        elements.errorContainer.textContent = errorMessage;
-        elements.errorContainer.style.display = 'block';
+    const { apiKeyDisplay, apiKeyInputContainer, apiKeyObfuscated } = elements;
+    
+    if (hasApiKey) {
+        safeSetText(apiKeyObfuscated, 'sk-******************key-saved');
+        toggleVisibility(apiKeyDisplay, true);
+        toggleVisibility(apiKeyInputContainer, false);
+    } else {
+        toggleVisibility(apiKeyDisplay, false);
+        toggleVisibility(apiKeyInputContainer, true);
     }
 }
 
 /**
- * Logic Step: Update the UI sections based on the current project state.
+ * Logic Step: Show post-generation controls with type safety.
+ * Transitions from generation input to post-generation action buttons.
+ */
+export function showPostGenerationControls(): void {
+    toggleVisibility(elements.generationControls, false);
+    toggleVisibility(elements.postGenerationControls, true);
+}
+
+/**
+ * Logic Step: Display error message with proper typing and error categorization.
+ * Uses the type-safe error display utility for consistent error presentation.
+ * @param errorMessage Error message to display
+ * @param errorType Optional error type for styling (defaults to 'generation')
+ */
+export function displayErrorMessage(errorMessage: string, errorType: UIError['type'] = 'generation'): void {
+    const error: UIError = {
+        message: errorMessage,
+        type: errorType
+    };
+    displayError(error, elements.errorContainer);
+}
+
+/**
+ * Logic Step: Clear any displayed error messages.
+ * Hides error container and clears its content safely.
+ */
+export function clearErrorMessage(): void {
+    clearError(elements.errorContainer);
+}
+
+/**
+ * Logic Step: Update the UI sections based on the current project state with full type safety.
  * This function implements the core context-aware UI logic by showing/hiding sections
  * based on detected artifacts in the project. The logic ensures users only see relevant
  * options for their current workflow stage.
- * @param projectState Object containing boolean flags for detected artifacts
+ * @param projectState Typed object containing project artifact detection results
  */
-export function updateUIBasedOnProjectState(projectState: any): void {
-    // If any artifacts exist (PRD, context cards, or context templates), 
-    // hide the generation controls and show post-generation controls
-    // Logic: If context cards/templates exist, a PRD must have been used to generate them
+export function updateUIBasedOnProjectState(projectState: ProjectState): void {
+    // Logic Step: Validate project state structure before processing
+    if (!isValidProjectState(projectState)) {
+        console.error('Invalid project state received:', projectState);
+        displayErrorMessage('Invalid project state data received', 'validation');
+        return;
+    }
+    
+    // Logic Step: Clear any existing error messages
+    clearErrorMessage();
+    
+    // Logic Step: Determine if any artifacts exist to control main UI flow
     const hasAnyArtifacts = projectState.hasPRD || projectState.hasContextCards || projectState.hasContextTemplates;
     
     if (hasAnyArtifacts) {
-        if (elements.generationControls) {
-            elements.generationControls.classList.add('hidden');
-        }
-        if (elements.postGenerationControls) {
-            elements.postGenerationControls.classList.remove('hidden');
-        }
+        showPostGenerationControls();
     } else {
         // Show PRD generation controls only if no artifacts exist
-        if (elements.generationControls) {
-            elements.generationControls.classList.remove('hidden');
-        }
-        if (elements.postGenerationControls) {
-            elements.postGenerationControls.classList.add('hidden');
-        }
+        toggleVisibility(elements.generationControls, true);
+        toggleVisibility(elements.postGenerationControls, false);
     }
 
-    // Update individual sections within post-generation controls
+    // Logic Step: Update each section based on project state with type safety
     updateContextTemplatesSection(projectState);
     updateContextCardsSection(projectState);
     updateDiagramSection(projectState);
 }
 
 /**
- * Logic Step: Update the Context Templates section visibility and button text.
+ * Logic Step: Update the Context Templates section visibility and button text with type safety.
  * Shows the section only if a PRD exists (required to generate templates).
  * Updates button text to indicate regeneration if templates already exist.
- * @param projectState Object containing project artifact detection results
+ * @param projectState Typed object containing project artifact detection results
  */
-function updateContextTemplatesSection(projectState: any): void {
-    const contextTemplatesSection = document.getElementById('context-templates-section');
-    if (contextTemplatesSection) {
-        if (projectState.hasPRD && !projectState.hasContextTemplates) {
-            // Show if PRD exists but context templates don't
-            contextTemplatesSection.classList.remove('hidden');
-        } else if (projectState.hasContextTemplates) {
-            // Update button text if context templates already exist
-            const button = elements.generateContextTemplatesButton;
-            if (button) {
-                button.textContent = 'Regenerate Context Templates';
-                button.title = 'Context templates already exist. Click to regenerate them.';
-            }
-            contextTemplatesSection.classList.remove('hidden');
-        } else {
-            // Hide if PRD doesn't exist
-            contextTemplatesSection.classList.add('hidden');
-        }
+function updateContextTemplatesSection(projectState: ProjectState): void {
+    if (projectState.hasPRD) {
+        const buttonConfig: ButtonConfig = {
+            text: projectState.hasContextTemplates ? 'Regenerate Context Templates' : 'Generate Context Templates',
+            title: projectState.hasContextTemplates ? 'Context templates already exist. Click to regenerate them.' : 'Generate context templates from PRD',
+            enabled: true,
+            visible: true
+        };
+        
+        updateButton(elements.generateContextTemplatesButton, buttonConfig);
+        updateSection('context-templates-section', {
+            sectionId: 'context-templates-section',
+            visible: true
+        });
+    } else {
+        updateSection('context-templates-section', {
+            sectionId: 'context-templates-section',
+            visible: false
+        });
     }
 }
 
 /**
- * Logic Step: Update the Context Cards section visibility and button text.
+ * Logic Step: Update the Context Cards section visibility and button text with type safety.
  * Shows the section only if a PRD exists (required to generate context cards).
  * Updates button text to indicate regeneration if context cards already exist.
- * @param projectState Object containing project artifact detection results
+ * @param projectState Typed object containing project artifact detection results
  */
-function updateContextCardsSection(projectState: any): void {
-    const contextCardsSection = document.getElementById('context-cards-section');
-    if (contextCardsSection) {
-        if (projectState.hasPRD && !projectState.hasContextCards) {
-            // Show if PRD exists but context cards don't
-            contextCardsSection.classList.remove('hidden');
-        } else if (projectState.hasContextCards) {
-            // Update button text if context cards already exist
-            const button = elements.bulkGenerateContextCardsButton;
-            if (button) {
-                button.textContent = 'Regenerate Context Cards';
-                button.title = 'Context cards already exist. Click to regenerate them.';
-            }
-            contextCardsSection.classList.remove('hidden');
-        } else {
-            // Hide if PRD doesn't exist
-            contextCardsSection.classList.add('hidden');
-        }
+function updateContextCardsSection(projectState: ProjectState): void {
+    if (projectState.hasPRD) {
+        const buttonConfig: ButtonConfig = {
+            text: projectState.hasContextCards ? 'Regenerate Context Cards' : 'Bulk Generate Context Cards',
+            title: projectState.hasContextCards ? 'Context cards already exist. Click to regenerate them.' : 'Generate context cards from PRD',
+            enabled: true,
+            visible: true
+        };
+        
+        updateButton(elements.bulkGenerateContextCardsButton, buttonConfig);
+        updateSection('context-cards-section', {
+            sectionId: 'context-cards-section',
+            visible: true
+        });
+    } else {
+        updateSection('context-cards-section', {
+            sectionId: 'context-cards-section',
+            visible: false
+        });
     }
 }
 
 /**
- * Logic Step: Update the diagram buttons section visibility and button types.
+ * Logic Step: Update the diagram buttons section visibility and button types with type safety.
  * Shows generate buttons if PRD exists but diagrams don't, or view buttons if diagrams exist.
- * @param projectState Object containing project artifact detection results
+ * @param projectState Typed object containing project artifact detection results
  */
-function updateDiagramSection(projectState: any): void {
-    // Only show diagram options if PRD exists
+function updateDiagramSection(projectState: ProjectState): void {
+    // Logic Step: Only show diagram options if PRD exists
     if (!projectState.hasPRD) {
-        // Hide both generate and view buttons if no PRD
-        if (elements.generateDataFlowDiagramButton) {
-            elements.generateDataFlowDiagramButton.style.display = 'none';
-        }
-        if (elements.generateComponentHierarchyButton) {
-            elements.generateComponentHierarchyButton.style.display = 'none';
-        }
-        if (elements.viewDataFlowDiagramButton) {
-            elements.viewDataFlowDiagramButton.style.display = 'none';
-        }
-        if (elements.viewComponentHierarchyButton) {
-            elements.viewComponentHierarchyButton.style.display = 'none';
-        }
+        // Hide all diagram buttons if no PRD
+        const hiddenConfig: ButtonConfig = {
+            text: '',
+            enabled: false,
+            visible: false
+        };
+        
+        updateButton(elements.generateDataFlowDiagramButton, hiddenConfig);
+        updateButton(elements.generateComponentHierarchyButton, hiddenConfig);
+        updateButton(elements.viewDataFlowDiagramButton, hiddenConfig);
+        updateButton(elements.viewComponentHierarchyButton, hiddenConfig);
         return;
     }
 
-    // Handle Data Flow Diagram button
+    // Logic Step: Handle Data Flow Diagram buttons
     if (projectState.hasDataFlowDiagram) {
-        // Show view button, hide generate button
-        if (elements.generateDataFlowDiagramButton) {
-            elements.generateDataFlowDiagramButton.style.display = 'none';
-        }
-        if (elements.viewDataFlowDiagramButton) {
-            elements.viewDataFlowDiagramButton.style.display = 'inline-block';
-        }
+        updateButton(elements.generateDataFlowDiagramButton, {
+            text: 'Generate Data Flow Diagram',
+            enabled: false,
+            visible: false
+        });
+        updateButton(elements.viewDataFlowDiagramButton, {
+            text: 'View Data Flow Diagram',
+            title: 'Open the generated data flow diagram',
+            enabled: true,
+            visible: true
+        });
     } else {
-        // Show generate button, hide view button
-        if (elements.generateDataFlowDiagramButton) {
-            elements.generateDataFlowDiagramButton.style.display = 'inline-block';
-        }
-        if (elements.viewDataFlowDiagramButton) {
-            elements.viewDataFlowDiagramButton.style.display = 'none';
-        }
+        updateButton(elements.generateDataFlowDiagramButton, {
+            text: 'Generate Data Flow Diagram',
+            title: 'Create a data flow diagram from PRD',
+            enabled: true,
+            visible: true
+        });
+        updateButton(elements.viewDataFlowDiagramButton, {
+            text: 'View Data Flow Diagram',
+            enabled: false,
+            visible: false
+        });
     }
 
-    // Handle Component Hierarchy button
+    // Logic Step: Handle Component Hierarchy buttons
     if (projectState.hasComponentHierarchy) {
-        // Show view button, hide generate button
-        if (elements.generateComponentHierarchyButton) {
-            elements.generateComponentHierarchyButton.style.display = 'none';
-        }
-        if (elements.viewComponentHierarchyButton) {
-            elements.viewComponentHierarchyButton.style.display = 'inline-block';
-        }
+        updateButton(elements.generateComponentHierarchyButton, {
+            text: 'Generate Component Hierarchy',
+            enabled: false,
+            visible: false
+        });
+        updateButton(elements.viewComponentHierarchyButton, {
+            text: 'View Component Hierarchy',
+            title: 'Open the generated component hierarchy diagram',
+            enabled: true,
+            visible: true
+        });
     } else {
-        // Show generate button, hide view button
-        if (elements.generateComponentHierarchyButton) {
-            elements.generateComponentHierarchyButton.style.display = 'inline-block';
-        }
-        if (elements.viewComponentHierarchyButton) {
-            elements.viewComponentHierarchyButton.style.display = 'none';
-        }
+        updateButton(elements.generateComponentHierarchyButton, {
+            text: 'Generate Component Hierarchy',
+            title: 'Create a component hierarchy diagram from PRD',
+            enabled: true,
+            visible: true
+        });
+        updateButton(elements.viewComponentHierarchyButton, {
+            text: 'View Component Hierarchy',
+            enabled: false,
+            visible: false
+        });
     }
 }

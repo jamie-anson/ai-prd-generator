@@ -9,7 +9,6 @@ import { MessageRouter } from '../../webview/router';
  */
 export class PanelManager {
     private currentPanel: vscode.WebviewPanel | undefined = undefined;
-    private lastGeneratedPaths: { md?: vscode.Uri, graph?: vscode.Uri } | undefined = undefined;
 
     constructor(
         private readonly context: vscode.ExtensionContext,
@@ -59,11 +58,7 @@ export class PanelManager {
         }, null, this.context.subscriptions);
 
         this.currentPanel.webview.onDidReceiveMessage(async message => {
-            const result = await this.router.route(message, this.context, this.currentPanel!.webview, this.lastGeneratedPaths);
-            // If the router returns generated paths, we store them for later use.
-            if (message.command === 'generate-prd' && result) {
-                this.lastGeneratedPaths = result;
-            }
+            await this.router.route(message, this.context, this.currentPanel!.webview);
         });
     }
 }

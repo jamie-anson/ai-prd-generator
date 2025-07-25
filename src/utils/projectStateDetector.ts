@@ -11,6 +11,7 @@
  */
 
 import * as vscode from 'vscode';
+import { getPrdOutputPath, getContextCardOutputPath, getContextTemplateOutputPath, getDiagramOutputPath } from './configManager';
 
 /**
  * Interface representing the current state of generated artifacts in the project.
@@ -109,8 +110,8 @@ export class ProjectStateDetector {
         const prdFiles: vscode.Uri[] = [];
 
         try {
-            // Check mise-en-place-output directory and its subdirectories
-            const outputDir = vscode.Uri.joinPath(workspaceUri, 'mise-en-place-output');
+            // Check configured PRD output directory and its subdirectories
+            const outputDir = getPrdOutputPath(workspaceUri);
             const outputFiles = await vscode.workspace.findFiles(
                 new vscode.RelativePattern(outputDir, '**/*.md'),  // Search recursively
                 null,
@@ -148,11 +149,9 @@ export class ProjectStateDetector {
      */
     private static async findContextCardFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         try {
-            // Get user-configured path or use default
-            const contextCardConfig = vscode.workspace.getConfiguration('ai-prd-generator.contextCard');
-            const contextCardPath = contextCardConfig.get<string>('contextCardPath') || 'mise-en-place-output/context-cards';
+            // Get user-configured path using configuration manager
             
-            const contextCardDir = vscode.Uri.joinPath(workspaceUri, contextCardPath);
+            const contextCardDir = getContextCardOutputPath(workspaceUri);
             const contextCardFiles = await vscode.workspace.findFiles(
                 new vscode.RelativePattern(contextCardDir, '*.md'),
                 null,
@@ -174,11 +173,9 @@ export class ProjectStateDetector {
      */
     private static async findContextTemplateFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         try {
-            // Get user-configured path or use default
-            const contextTemplateConfig = vscode.workspace.getConfiguration('ai-prd-generator.contextTemplate');
-            const contextTemplatePath = contextTemplateConfig.get<string>('contextTemplatePath') || 'mise-en-place-output/context-templates';
+            // Get user-configured path using configuration manager
             
-            const contextTemplateDir = vscode.Uri.joinPath(workspaceUri, contextTemplatePath);
+            const contextTemplateDir = getContextTemplateOutputPath(workspaceUri);
             const contextTemplateFiles = await vscode.workspace.findFiles(
                 new vscode.RelativePattern(contextTemplateDir, '*.md'),
                 null,
@@ -200,11 +197,10 @@ export class ProjectStateDetector {
      */
     private static async checkDiagramExists(workspaceUri: vscode.Uri, fileName: string): Promise<boolean> {
         try {
-            // Get user-configured path or use default
-            const contextTemplateConfig = vscode.workspace.getConfiguration('aiPrdGenerator.contextTemplateOutput');
-            const contextTemplatePath = contextTemplateConfig.get<string>('contextTemplatePath') || 'mise-en-place-output/context-templates';
+            // Get user-configured path using configuration manager
             
-            const diagramPath = vscode.Uri.joinPath(workspaceUri, contextTemplatePath, fileName);
+            const diagramDir = getDiagramOutputPath(workspaceUri);
+            const diagramPath = vscode.Uri.joinPath(diagramDir, fileName);
             
             /**
              * Logic Step: Debug logging for diagram file detection.

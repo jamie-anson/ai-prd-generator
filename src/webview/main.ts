@@ -11,9 +11,11 @@
  * 5. Manage the communication bridge between the webview and VS Code extension.
  */
 
-import { updateApiKeyDisplay, showPostGenerationControls, displayError, updateUIBasedOnProjectState } from './ui.js';
-import { initializeEventHandlers } from './eventHandlers.js';
-import { COMMANDS } from './commands.js';
+import { elements, updateApiKeyDisplay, updateUIBasedOnProjectState, displayErrorMessage } from './ui';
+import { MessageRouter } from './router';
+import { initializeEventHandlers } from './eventHandlers';
+import { ExtensionToWebviewMessage, ProjectState, isValidProjectState } from './types';
+import { isValidProjectState as validateProjectState } from './uiUtils';
 
 // Define a global type for the VS Code API object
 declare global {
@@ -36,31 +38,41 @@ const vscode = (window as any).acquireVsCodeApi();
     
     // Notify the extension that the webview is ready.
     console.log('Sending webviewReady message');
-    vscode.postMessage({ command: COMMANDS.WEBVIEW_READY });
+    vscode.postMessage({ command: 'webviewReady' });
 
     // Set up all event listeners for user interactions.
     initializeEventHandlers(vscode);
 
-    // Handle messages received from the extension.
-    window.addEventListener('message', (event: MessageEvent) => {
+    // Logic Step: Listen for messages from the extension with type safety
+    window.addEventListener('message', (event: MessageEvent<ExtensionToWebviewMessage>) => {
         const message = event.data;
-        console.log('Received message:', message);
-        switch (message.command) {
-            case 'apiKeyStatus': // This is sent from the extension, not a shared command
-                console.log('Received apiKeyStatus:', message.hasApiKey);
-                updateApiKeyDisplay(message.hasApiKey);
-                break;
-            case 'prdGenerated': // This is also sent from the extension
-                showPostGenerationControls();
-                break;
-            case 'error': // Generic error message from extension
-                displayError(message.text);
-                break;
-            case 'project-state-update': // Logic Step: Handle project state updates from extension
-                // This message contains detected artifact information used for context-aware UI
-                console.log('Received project state update:', message.projectState);
-                updateUIBasedOnProjectState(message.projectState);
-                break;
+        
+        try {
+            switch (message.command) {
+                case 'api-key-status':
+                    if (typeof message.hasApiKey === 'boolean') {
+                        updateApiKeyDisplay(message.hasApiKey);
+                    } else {
+                        console.error('Invalid api-key-status message format:', message);
+                        displayErrorMessage('Invalid API key status received', 'validation');
+                    }
+                    break;
+                    
+                case 'project-state-update':
+                    if (validateProjectState(message.projectState)) {
+                        updateUIBasedOnProjectState(message.projectState as ProjectState);
+                    } else {
+                        console.error('Invalid project-state-update message format:', message);
+                        displayErrorMessage('Invalid project state data received', 'validation');
+                    }
+                    break;
+                    
+                default:
+                    console.log('Unknown message command:', message.command);
+            }
+        } catch (error) {
+            console.error('Error processing message:', error, message);
+            displayErrorMessage('Error processing extension message', 'validation');
         }
     });
 })();
