@@ -15,14 +15,18 @@ export function initializeEventHandlers(vscode: any): void {
     // Generate PRD button
     if (elements.generatePrdButton && elements.prdPrompt) {
         elements.generatePrdButton.addEventListener('click', () => {
-            vscode.postMessage({ command: COMMANDS.GENERATE_PRD, text: elements.prdPrompt.value });
+            if (elements.prdPrompt) {
+                vscode.postMessage({ command: COMMANDS.GENERATE_PRD, text: elements.prdPrompt.value });
+            }
         });
     }
 
     // Set API Key button
     if (elements.setApiKeyButton && elements.apiKeyInput) {
         elements.setApiKeyButton.addEventListener('click', () => {
-            vscode.postMessage({ command: COMMANDS.SAVE_API_KEY, apiKey: elements.apiKeyInput.value });
+            if (elements.apiKeyInput) {
+                vscode.postMessage({ command: COMMANDS.SAVE_API_KEY, apiKey: elements.apiKeyInput.value });
+            }
         });
     }
 
@@ -89,6 +93,13 @@ export function initializeEventHandlers(vscode: any): void {
     if (elements.viewComponentHierarchyButton) {
         elements.viewComponentHierarchyButton.addEventListener('click', () => {
             vscode.postMessage({ command: COMMANDS.VIEW_COMPONENT_HIERARCHY });
+        });
+    }
+
+    // Generate CCS button
+    if (elements.generateCCSButton) {
+        elements.generateCCSButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_CCS });
         });
     }
 }

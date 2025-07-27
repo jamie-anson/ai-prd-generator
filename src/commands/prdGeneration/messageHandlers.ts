@@ -8,6 +8,7 @@ import { handleWebviewReady } from '../../webview/handlers/handleWebviewReady';
 import { handleGenerateDataFlowDiagram } from '../../webview/handlers/handleDataFlowDiagram';
 import { handleGenerateComponentHierarchy } from '../../webview/handlers/handleComponentHierarchy';
 import { handleViewDataFlowDiagram, handleViewComponentHierarchy } from '../../webview/handlers/handleViewDiagrams';
+import { handleGenerateCCS } from '../../webview/handlers/handleGenerateCCS';
 import { COMMANDS } from '../../webview/commands';
 
 /**
@@ -66,7 +67,10 @@ export function createPrdMessageHandler(): MessageRouter {
         return handleViewComponentHierarchy(context);
     });
 
-
+    // Register the CCS generation handler
+    router.register(COMMANDS.GENERATE_CCS, (message, context, webview) => {
+        return handleGenerateCCS(message, context, webview);
+    });
 
     return router;
 }

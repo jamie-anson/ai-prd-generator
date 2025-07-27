@@ -9,13 +9,13 @@ import * as vscode from 'vscode';
 export async function handleApiKey(message: any, context: vscode.ExtensionContext, webview: vscode.Webview) {
     if (message.command === 'webviewReady') {
         const apiKey = await context.secrets.get('openAiApiKey');
-        await webview.postMessage({ command: 'apiKeyStatus', apiKey: apiKey });
+        await webview.postMessage({ command: 'apiKeyStatus', hasApiKey: !!apiKey });
         return true; // Command was handled
     }
 
     if (message.command === 'saveApiKey') {
         await context.secrets.store('openAiApiKey', message.apiKey);
-        await webview.postMessage({ command: 'apiKeyStatus', apiKey: message.apiKey });
+        await webview.postMessage({ command: 'apiKeyStatus', hasApiKey: !!message.apiKey });
         return true; // Command was handled
     }
 

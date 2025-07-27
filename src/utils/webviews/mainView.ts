@@ -81,6 +81,35 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 display: flex;
                 gap: 10px;
             }
+            .ccs-results {
+                margin-top: 15px;
+                padding: 20px;
+                background-color: var(--vscode-textBlockQuote-background);
+                border-left: 4px solid var(--vscode-textBlockQuote-border);
+                border-radius: 4px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                white-space: pre-wrap;
+                max-height: 600px;
+                overflow-y: auto;
+            }
+            .ccs-results h2 {
+                color: var(--vscode-foreground);
+                margin-top: 0;
+                margin-bottom: 15px;
+                font-size: 1.2em;
+                border-bottom: 1px solid var(--vscode-textSeparator-foreground);
+                padding-bottom: 5px;
+            }
+            .ccs-results h3 {
+                color: var(--vscode-foreground);
+                margin-top: 20px;
+                margin-bottom: 10px;
+                font-size: 1.1em;
+            }
+            .ccs-results strong {
+                color: var(--vscode-textPreformat-foreground);
+            }
         </style>
     </head>
     <body>
@@ -133,6 +162,14 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <button id="generate-component-hierarchy">Generate Component Hierarchy</button>
                     <button id="view-component-hierarchy" style="display: none;">View Component Hierarchy</button>
                 </div>
+            </div>
+            <!-- Logic Step: Code Comprehension Score section with unique ID for context-aware visibility control -->
+            <div id="ccs-section" class="controls-section">
+                <h2>Code Comprehension Score</h2>
+                <div class="button-group">
+                    <button id="generate-ccs">Generate CCS Score</button>
+                </div>
+                <div id="ccs-results" class="hidden ccs-results"></div>
             </div>
         </div>
 

@@ -11,7 +11,7 @@
  */
 
 import * as vscode from 'vscode';
-import { getPrdOutputPath, getContextCardOutputPath, getContextTemplateOutputPath, getDiagramOutputPath } from './configManager';
+import { getPrdOutputPath, getContextCardOutputPath, getContextTemplateOutputPath, getDiagramOutputPath, getCcsOutputPath } from './configManager';
 
 /**
  * Interface representing the current state of generated artifacts in the project.
@@ -28,12 +28,28 @@ export interface ProjectState {
     hasDataFlowDiagram: boolean;
     /** Whether component hierarchy diagram exists */
     hasComponentHierarchy: boolean;
+    /** Whether CCS (Code Comprehension Score) analysis exists */
+    hasCCS: boolean;
     /** Array of URIs pointing to detected PRD files */
     prdFiles: vscode.Uri[];
     /** Array of URIs pointing to detected Context Card files */
     contextCardFiles: vscode.Uri[];
     /** Array of URIs pointing to detected Context Template files */
     contextTemplateFiles: vscode.Uri[];
+    /** Array of URIs pointing to detected CCS analysis files */
+    ccsFiles: vscode.Uri[];
+    /** Number of PRD files found */
+    prdCount: number;
+    /** Number of context card files found */
+    contextCardCount: number;
+    /** Number of context template files found */
+    contextTemplateCount: number;
+    /** Array of URIs pointing to detected data flow diagram files */
+    dataFlowDiagramFiles: Array<{ fsPath: string }>;
+    /** Array of URIs pointing to detected component hierarchy files */
+    componentHierarchyFiles: Array<{ fsPath: string }>;
+    /** Number of CCS analysis files found */
+    ccsCount: number;
 }
 
 /**
@@ -56,9 +72,17 @@ export class ProjectStateDetector {
                 hasContextTemplates: false,
                 hasDataFlowDiagram: false,
                 hasComponentHierarchy: false,
+                hasCCS: false,
                 prdFiles: [],
                 contextCardFiles: [],
-                contextTemplateFiles: []
+                contextTemplateFiles: [],
+                ccsFiles: [],
+                prdCount: 0,
+                contextCardCount: 0,
+                contextTemplateCount: 0,
+                dataFlowDiagramFiles: [],
+                componentHierarchyFiles: [],
+                ccsCount: 0
             };
         }
 
@@ -72,6 +96,9 @@ export class ProjectStateDetector {
         
         // Detect Context Templates
         const contextTemplateFiles = await this.findContextTemplateFiles(workspaceUri);
+        
+        // Detect CCS files
+        const ccsFiles = await this.findCCSFiles(workspaceUri);
 
         // Detect diagram files
         // Logic Step: Detect diagram files in the context templates directory
@@ -94,9 +121,17 @@ export class ProjectStateDetector {
             hasContextTemplates: contextTemplateFiles.length > 0,
             hasDataFlowDiagram,
             hasComponentHierarchy,
+            hasCCS: ccsFiles.length > 0,
             prdFiles,
             contextCardFiles,
-            contextTemplateFiles
+            contextTemplateFiles,
+            ccsFiles,
+            prdCount: prdFiles.length,
+            contextCardCount: contextCardFiles.length,
+            contextTemplateCount: contextTemplateFiles.length,
+            dataFlowDiagramFiles: hasDataFlowDiagram ? [{ fsPath: vscode.Uri.joinPath(getDiagramOutputPath(workspaceUri), 'data_flow_diagram.md').fsPath }] : [],
+            componentHierarchyFiles: hasComponentHierarchy ? [{ fsPath: vscode.Uri.joinPath(getDiagramOutputPath(workspaceUri), 'component_hierarchy.md').fsPath }] : [],
+            ccsCount: ccsFiles.length
         };
     }
 
@@ -185,6 +220,29 @@ export class ProjectStateDetector {
             return contextTemplateFiles;
         } catch (error) {
             console.log('Error finding context template files:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Logic Step: Find CCS (Code Comprehension Score) analysis files in the user-configured or default directory.
+     * Uses the VS Code configuration to determine the correct path for CCS files.
+     * @param workspaceUri The root URI of the current workspace
+     * @returns Array of URIs pointing to detected CCS analysis files
+     */
+    private static async findCCSFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        try {
+            // Get user-configured path using configuration manager
+            const ccsDir = getCcsOutputPath(workspaceUri);
+            const ccsFiles = await vscode.workspace.findFiles(
+                new vscode.RelativePattern(ccsDir, 'ccs-analysis-*.md'),
+                null,
+                1000
+            );
+
+            return ccsFiles;
+        } catch (error) {
+            console.log('Error finding CCS files:', error);
             return [];
         }
     }

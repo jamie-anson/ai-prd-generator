@@ -22,6 +22,7 @@ export interface ExtensionConfig {
     prdOutputPath: string;
     contextCardOutputPath: string;
     contextTemplateOutputPath: string;
+    ccsOutputPath: string;
 }
 
 /**
@@ -31,7 +32,8 @@ const DEFAULT_CONFIG: ExtensionConfig = {
     openAiModel: 'gpt-4o',
     prdOutputPath: 'mise-en-place-output/prd',
     contextCardOutputPath: 'mise-en-place-output/context-cards',
-    contextTemplateOutputPath: 'mise-en-place-output/context-templates'
+    contextTemplateOutputPath: 'mise-en-place-output/context-templates',
+    ccsOutputPath: 'mise-en-place-output/ccs'
 };
 
 /**
@@ -41,7 +43,8 @@ const CONFIG_KEYS = {
     openAiModel: 'aiPrdGenerator.openAiModel',
     prdOutputPath: 'aiPrdGenerator.prdOutput.prdPath',
     contextCardOutputPath: 'aiPrdGenerator.contextCardOutput.contextCardPath',
-    contextTemplateOutputPath: 'aiPrdGenerator.contextTemplateOutput.contextTemplatePath'
+    contextTemplateOutputPath: 'aiPrdGenerator.contextTemplateOutput.contextTemplatePath',
+    ccsOutputPath: 'aiPrdGenerator.ccsOutput.ccsPath'
 } as const;
 
 /**
@@ -57,7 +60,8 @@ export function getExtensionConfig(): ExtensionConfig {
         openAiModel: config.get<string>(CONFIG_KEYS.openAiModel) || DEFAULT_CONFIG.openAiModel,
         prdOutputPath: config.get<string>(CONFIG_KEYS.prdOutputPath) || DEFAULT_CONFIG.prdOutputPath,
         contextCardOutputPath: config.get<string>(CONFIG_KEYS.contextCardOutputPath) || DEFAULT_CONFIG.contextCardOutputPath,
-        contextTemplateOutputPath: config.get<string>(CONFIG_KEYS.contextTemplateOutputPath) || DEFAULT_CONFIG.contextTemplateOutputPath
+        contextTemplateOutputPath: config.get<string>(CONFIG_KEYS.contextTemplateOutputPath) || DEFAULT_CONFIG.contextTemplateOutputPath,
+        ccsOutputPath: config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath
     };
 }
 
@@ -138,6 +142,28 @@ export function getContextTemplateOutputPath(workspaceUri?: vscode.Uri): vscode.
 }
 
 /**
+ * Logic Step: Get the CCS (Code Comprehension Score) output directory path.
+ * Returns the configured path for CCS analysis output, resolved relative to workspace
+ * @param workspaceUri Optional workspace URI for path resolution
+ * @returns Absolute URI for CCS output directory
+ */
+export function getCcsOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
+    const config = vscode.workspace.getConfiguration();
+    const relativePath = config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath;
+    
+    if (workspaceUri) {
+        return vscode.Uri.joinPath(workspaceUri, relativePath);
+    }
+    
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (workspaceFolders && workspaceFolders.length > 0) {
+        return vscode.Uri.joinPath(workspaceFolders[0].uri, relativePath);
+    }
+    
+    throw new Error('No workspace folder found for CCS output path resolution');
+}
+
+/**
  * Logic Step: Get output directory for diagram files.
  * Returns the path where diagram files (data flow, component hierarchy) should be stored
  * Uses the context template output path as diagrams are related to context documentation
@@ -174,12 +200,14 @@ export function getAllOutputPaths(workspaceUri?: vscode.Uri): {
     contextCards: vscode.Uri;
     contextTemplates: vscode.Uri;
     diagrams: vscode.Uri;
+    ccs: vscode.Uri;
 } {
     return {
         prd: getPrdOutputPath(workspaceUri),
         contextCards: getContextCardOutputPath(workspaceUri),
         contextTemplates: getContextTemplateOutputPath(workspaceUri),
-        diagrams: getDiagramOutputPath(workspaceUri)
+        diagrams: getDiagramOutputPath(workspaceUri),
+        ccs: getCcsOutputPath(workspaceUri)
     };
 }
 
@@ -208,6 +236,10 @@ export function validateConfiguration(): string[] {
     
     if (!config.contextTemplateOutputPath || config.contextTemplateOutputPath.trim() === '') {
         errors.push('Context template output path configuration is required');
+    }
+    
+    if (!config.ccsOutputPath || config.ccsOutputPath.trim() === '') {
+        errors.push('CCS output path configuration is required');
     }
     
     return errors;

@@ -109,10 +109,11 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
         toggleVisibility(elements.postGenerationControls, false);
     }
 
-    // Logic Step: Update each section based on project state with type safety
+    // Logic Step: Update individual sections based on project state
     updateContextTemplatesSection(projectState);
     updateContextCardsSection(projectState);
     updateDiagramSection(projectState);
+    updateCCSSection(projectState);
 }
 
 /**
@@ -245,5 +246,51 @@ function updateDiagramSection(projectState: ProjectState): void {
             enabled: false,
             visible: false
         });
+    }
+}
+
+/**
+ * Logic Step: Update the CCS section visibility and button text with type safety.
+ * Shows the section only if a codebase exists (always true for workspace projects).
+ * Updates button text to indicate regeneration if CCS analysis already exists.
+ * @param projectState Typed object containing project artifact detection results
+ */
+function updateCCSSection(projectState: ProjectState): void {
+    const buttonConfig: ButtonConfig = {
+        text: projectState.hasCCS ? 'Regenerate CCS Score' : 'Generate CCS Score',
+        title: projectState.hasCCS ? 'CCS analysis already exists. Click to regenerate it.' : 'Analyze codebase comprehension score',
+        enabled: true,
+        visible: true
+    };
+    
+    updateButton(elements.generateCCSButton, buttonConfig);
+    updateSection('ccs-section', {
+        sectionId: 'ccs-section',
+        visible: true
+    });
+}
+
+/**
+ * Logic Step: Display CCS analysis results in the UI with proper formatting.
+ * Updates the CCS results container with the analysis content and converts markdown to HTML.
+ * @param analysis The CCS analysis text to display
+ */
+export function displayCCSResults(analysis: string): void {
+    const resultsContainer = elements.ccsResults;
+    if (resultsContainer) {
+        // Convert markdown-style formatting to HTML for better display
+        const formattedAnalysis = analysis
+            .replace(/## (.*)/g, '<h2>$1</h2>')
+            .replace(/### (.*)/g, '<h3>$1</h3>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^(.)/gm, '<p>$1')
+            .replace(/<p><h/g, '<h')
+            .replace(/<\/h([123])><\/p>/g, '</h$1>')
+            .replace(/<p><\/p>/g, '')
+            + '</p>';
+        
+        resultsContainer.innerHTML = formattedAnalysis;
+        toggleVisibility(resultsContainer, true);
     }
 }

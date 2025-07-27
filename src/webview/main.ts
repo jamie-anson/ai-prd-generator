@@ -11,7 +11,7 @@
  * 5. Manage the communication bridge between the webview and VS Code extension.
  */
 
-import { elements, updateApiKeyDisplay, updateUIBasedOnProjectState, displayErrorMessage } from './ui';
+import { elements, updateApiKeyDisplay, updateUIBasedOnProjectState, displayErrorMessage, displayCCSResults } from './ui';
 import { MessageRouter } from './router';
 import { initializeEventHandlers } from './eventHandlers';
 import { ExtensionToWebviewMessage, ProjectState, isValidProjectState } from './types';
@@ -64,6 +64,15 @@ const vscode = (window as any).acquireVsCodeApi();
                     } else {
                         console.error('Invalid project-state-update message format:', message);
                         displayErrorMessage('Invalid project state data received', 'validation');
+                    }
+                    break;
+                    
+                case 'ccsGenerated':
+                    if (message.analysis && typeof message.analysis === 'string') {
+                        displayCCSResults(message.analysis);
+                    } else {
+                        console.error('Invalid ccsGenerated message format:', message);
+                        displayErrorMessage('Invalid CCS analysis data received', 'validation');
                     }
                     break;
                     

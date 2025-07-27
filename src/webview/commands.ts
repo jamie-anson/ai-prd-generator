@@ -40,4 +40,7 @@ export const COMMANDS = {
     // Diagram viewing
     VIEW_DATA_FLOW_DIAGRAM: 'view-data-flow-diagram',
     VIEW_COMPONENT_HIERARCHY: 'view-component-hierarchy',
+
+    // Code Comprehension Score
+    GENERATE_CCS: 'generate-ccs',
 };

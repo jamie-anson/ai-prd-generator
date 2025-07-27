@@ -72,7 +72,9 @@ export async function handleViewCommands(message: any): Promise<boolean> {
 async function findCorrespondingGraphFile(prdFile: vscode.Uri): Promise<string | undefined> {
     try {
         const prdFileName = prdFile.path.split('/').pop();
-        if (!prdFileName) return undefined;
+        if (!prdFileName) {
+            return undefined;
+        }
         
         // Logic Step: Generate expected graph file name
         const baseName = prdFileName.replace('.md', '');

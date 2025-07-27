@@ -51,11 +51,19 @@ export async function handleWebviewReady(
                 hasPRD: projectState.hasPRD,
                 hasContextCards: projectState.hasContextCards,
                 hasContextTemplates: projectState.hasContextTemplates,
-                hasDataFlowDiagram: projectState.hasDataFlowDiagram,    // Added for diagram UI state
-                hasComponentHierarchy: projectState.hasComponentHierarchy, // Added for diagram UI state
-                prdCount: projectState.prdFiles.length,
-                contextCardCount: projectState.contextCardFiles.length,
-                contextTemplateCount: projectState.contextTemplateFiles.length
+                hasDataFlowDiagram: projectState.hasDataFlowDiagram,
+                hasComponentHierarchy: projectState.hasComponentHierarchy,
+                hasCCS: projectState.hasCCS,
+                prdFiles: projectState.prdFiles,
+                contextCardFiles: projectState.contextCardFiles,
+                contextTemplateFiles: projectState.contextTemplateFiles,
+                ccsFiles: projectState.ccsFiles,
+                prdCount: projectState.prdCount,
+                contextCardCount: projectState.contextCardCount,
+                contextTemplateCount: projectState.contextTemplateCount,
+                dataFlowDiagramFiles: projectState.dataFlowDiagramFiles,
+                componentHierarchyFiles: projectState.componentHierarchyFiles,
+                ccsCount: projectState.ccsCount
             }
         });
     } catch (error) {
@@ -72,11 +80,19 @@ export async function handleWebviewReady(
                 hasPRD: false,
                 hasContextCards: false,
                 hasContextTemplates: false,
-                hasDataFlowDiagram: false,      // Included for consistent state structure
-                hasComponentHierarchy: false,   // Included for consistent state structure
+                hasDataFlowDiagram: false,
+                hasComponentHierarchy: false,
+                hasCCS: false,
+                prdFiles: [],
+                contextCardFiles: [],
+                contextTemplateFiles: [],
+                ccsFiles: [],
                 prdCount: 0,
                 contextCardCount: 0,
-                contextTemplateCount: 0
+                contextTemplateCount: 0,
+                dataFlowDiagramFiles: [],
+                componentHierarchyFiles: [],
+                ccsCount: 0
             }
         });
     }

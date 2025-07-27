@@ -48,6 +48,13 @@ export interface ProjectState {
     hasComponentHierarchy: boolean;
     /** Array of URIs pointing to detected component hierarchy files */
     componentHierarchyFiles: Array<{ fsPath: string }>;
+    
+    /** Whether CCS (Code Comprehension Score) analysis exists in the workspace */
+    hasCCS: boolean;
+    /** Array of URIs pointing to detected CCS analysis files */
+    ccsFiles: Array<{ fsPath: string }>;
+    /** Number of CCS analysis files found */
+    ccsCount: number;
 }
 
 // --- UI Element Types ---
@@ -89,6 +96,10 @@ export interface UIElements {
     viewDataFlowDiagramButton: HTMLButtonElement;
     generateComponentHierarchyButton: HTMLButtonElement;
     viewComponentHierarchyButton: HTMLButtonElement;
+    
+    // CCS (Code Comprehension Score) Elements
+    generateCCSButton: HTMLButtonElement;
+    ccsResults: HTMLDivElement;
 }
 
 /**
@@ -148,7 +159,7 @@ export interface SetApiKeyMessage extends BaseMessage {
  */
 export interface GenerationMessage extends BaseMessage {
     command: 'generate-prd' | 'generate-context-templates' | 'bulk-generate-context-cards' | 
-             'generate-data-flow-diagram' | 'generate-component-hierarchy';
+             'generate-data-flow-diagram' | 'generate-component-hierarchy' | 'generate-ccs';
     /** Optional prompt text for PRD generation */
     prompt?: string;
 }

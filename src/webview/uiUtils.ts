@@ -111,6 +111,10 @@ export function initializeUIElements(): Partial<UIElements> {
         viewDataFlowDiagramButton: safeGetElement('view-data-flow-diagram', isButton) || undefined,
         generateComponentHierarchyButton: safeGetElement('generate-component-hierarchy', isButton) || undefined,
         viewComponentHierarchyButton: safeGetElement('view-component-hierarchy', isButton) || undefined,
+        
+        // CCS (Code Comprehension Score) Elements
+        generateCCSButton: safeGetElement('generate-ccs', isButton) || undefined,
+        ccsResults: safeGetElement('ccs-results', isDiv) || undefined,
     };
 }
 
@@ -245,7 +249,10 @@ export function isValidProjectState(projectState: any): projectState is ProjectS
            typeof projectState.hasDataFlowDiagram === 'boolean' &&
            Array.isArray(projectState.dataFlowDiagramFiles) &&
            typeof projectState.hasComponentHierarchy === 'boolean' &&
-           Array.isArray(projectState.componentHierarchyFiles);
+           Array.isArray(projectState.componentHierarchyFiles) &&
+           typeof projectState.hasCCS === 'boolean' &&
+           Array.isArray(projectState.ccsFiles) &&
+           typeof projectState.ccsCount === 'number';
 }
 
 // --- Utility Functions ---
