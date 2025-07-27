@@ -6,20 +6,20 @@ import { PanelManager } from '../../commands/prdGeneration/panelManager';
 import { MessageRouter } from '../../webview/router';
 import { handleWebviewReady } from '../../webview/handlers/handleWebviewReady';
 
-suite('Webview Panel Handshake Test Suite', () => {
+describe('Webview Panel Handshake Test Suite', () => {
     let sandbox: sinon.SinonSandbox;
 
     // Create a sandbox for our stubs and spies
-    setup(() => {
+    beforeEach(() => {
         sandbox = sinon.createSandbox();
     });
 
     // Restore the original functions after each test
-    teardown(() => {
+    afterEach(() => {
         sandbox.restore();
     });
 
-    test('Should send apiKeyStatus when webview sends webviewReady', async () => {
+    it('Should send apiKeyStatus when webview sends webviewReady', async () => {
         // 1. Prepare a fake webview panel to intercept the real one.
         let webviewMessageListener: (message: any) => void;
         const postMessageSpy = sandbox.spy();
@@ -63,7 +63,7 @@ suite('Webview Panel Handshake Test Suite', () => {
         await webviewMessageListener!({ command: COMMANDS.WEBVIEW_READY });
 
         // 7. Assert that the extension sent the correct status message back.
-        assert.ok(postMessageSpy.calledOnceWith({ command: 'apiKeyStatus', apiKey: false }),
+        assert.ok(postMessageSpy.calledWith({ command: 'apiKeyStatus', hasApiKey: false }),
             'postMessage should be called with apiKeyStatus after webview is ready');
     });
 });

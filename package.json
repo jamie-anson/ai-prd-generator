@@ -56,7 +56,7 @@
     "codebase-graph": "node scripts/generate-codebase-graph.js",
     "vscode:prepublish": "npm run build",
     "clean": "rm -rf dist",
-    "clean-all": "rm -rf dist out",
+    "clean-all": "rm -rf dist out coverage",
     "build": "npm run clean && node esbuild.js",
     "compile": "npm run clean && npm run check-types && npm run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
@@ -68,7 +68,13 @@
     "pretest": "npm run compile-tests && npm run check-types && npm run lint && node esbuild.js",
     "check-types": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
-    "test": "vscode-test",
+    "test": "node scripts/test.js all",
+    "test:unit": "node scripts/test.js unit",
+    "test:integration": "node scripts/test.js integration",
+    "test:extension": "node scripts/test.js extension",
+    "test:coverage": "node scripts/test.js all --coverage",
+    "test:watch": "node scripts/test.js all --watch",
+    "test:ci": "npm run pretest && npm run test:coverage",
     "test:analyzer": "ts-node src/context-card-generator/analyzer.ts"
   },
   "devDependencies": {
