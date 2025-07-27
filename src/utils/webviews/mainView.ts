@@ -120,7 +120,8 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
             <button id="change-api-key">Change</button>
         </div>
 
-        <div id="api-key-input-container"> // Visible by default; JS will toggle visibility based on API Key status
+        <!-- Visible by default; JS will toggle visibility based on API Key status -->
+        <div id="api-key-input-container">
             <input type="text" id="api-key-input" placeholder="Enter your OpenAI API Key..." size="50">
             <button id="set-api-key">Set API Key</button>
         </div>

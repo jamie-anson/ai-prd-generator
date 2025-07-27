@@ -31,7 +31,8 @@ export async function handleWebviewReady(
     // Check API key status
     const apiKey = await context.secrets.get('openAiApiKey');
     const hasApiKey = !!apiKey;
-    console.log('Sending apiKeyStatus message, hasApiKey:', hasApiKey);
+    console.log('[Extension] API key detection - apiKey length:', apiKey ? apiKey.length : 0, 'hasApiKey:', hasApiKey);
+    console.log('[Extension] Sending apiKeyStatus message, hasApiKey:', hasApiKey);
     webview.postMessage({ command: 'apiKeyStatus', hasApiKey });
     
     // Detect project state and send to webview

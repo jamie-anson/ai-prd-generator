@@ -89,6 +89,40 @@ export class VSCodeMocks {
     }
 
     /**
+     * Create a mock Webview for testing
+     */
+    public static createMockWebview(): any {
+        return {
+            html: '',
+            options: {},
+            viewColumn: undefined,
+            onDidReceiveMessage: sinon.stub().returns({ dispose: sinon.stub() }),
+            postMessage: sinon.stub().resolves(),
+            asWebviewUri: sinon.stub().callsFake((uri: any) => uri),
+            cspSource: 'vscode-webview:'
+        };
+    }
+
+    /**
+     * Create a mock WebviewPanel for testing
+     */
+    public static createMockWebviewPanel(): any {
+        const mockWebview = this.createMockWebview();
+        return {
+            webview: mockWebview,
+            viewType: 'test-webview',
+            title: 'Test Webview',
+            viewColumn: vscode.ViewColumn.One,
+            active: true,
+            visible: true,
+            onDidDispose: sinon.stub().returns({ dispose: sinon.stub() }),
+            onDidChangeViewState: sinon.stub().returns({ dispose: sinon.stub() }),
+            dispose: sinon.stub(),
+            reveal: sinon.stub()
+        };
+    }
+
+    /**
      * Create a mock ExtensionContext for testing
      */
     public static createMockExtensionContext(): vscode.ExtensionContext {

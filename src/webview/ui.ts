@@ -39,11 +39,20 @@ export const elements: Partial<UIElements> = initializeUIElements();
 export function updateApiKeyDisplay(hasApiKey: boolean): void {
     const { apiKeyDisplay, apiKeyInputContainer, apiKeyObfuscated } = elements;
     
+    console.log('[UI] updateApiKeyDisplay called with hasApiKey:', hasApiKey);
+    console.log('[UI] Elements found:', {
+        apiKeyDisplay: !!apiKeyDisplay,
+        apiKeyInputContainer: !!apiKeyInputContainer,
+        apiKeyObfuscated: !!apiKeyObfuscated
+    });
+    
     if (hasApiKey) {
+        console.log('[UI] Setting API key display to show obfuscated key');
         safeSetText(apiKeyObfuscated, 'sk-******************key-saved');
         toggleVisibility(apiKeyDisplay, true);
         toggleVisibility(apiKeyInputContainer, false);
     } else {
+        console.log('[UI] Setting API key display to show input form');
         toggleVisibility(apiKeyDisplay, false);
         toggleVisibility(apiKeyInputContainer, true);
     }
@@ -101,9 +110,19 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
     // Logic Step: Determine if any artifacts exist to control main UI flow
     const hasAnyArtifacts = projectState.hasPRD || projectState.hasContextCards || projectState.hasContextTemplates;
     
+    console.log('[UI] Project state received:', {
+        hasPRD: projectState.hasPRD,
+        hasContextCards: projectState.hasContextCards,
+        hasContextTemplates: projectState.hasContextTemplates,
+        hasAnyArtifacts,
+        prdCount: projectState.prdCount
+    });
+    
     if (hasAnyArtifacts) {
+        console.log('[UI] Showing post-generation controls (artifacts detected)');
         showPostGenerationControls();
     } else {
+        console.log('[UI] Showing generation controls (no artifacts detected)');
         // Show PRD generation controls only if no artifacts exist
         toggleVisibility(elements.generationControls, true);
         toggleVisibility(elements.postGenerationControls, false);

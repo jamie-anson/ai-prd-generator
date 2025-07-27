@@ -90,6 +90,7 @@ export class ProjectStateDetector {
         
         // Detect PRD files
         const prdFiles = await this.findPRDFiles(workspaceUri);
+        console.log('[ProjectStateDetector] PRD files found:', prdFiles.map(f => f.fsPath));
         
         // Detect Context Cards
         const contextCardFiles = await this.findContextCardFiles(workspaceUri);

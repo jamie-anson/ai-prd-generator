@@ -50,8 +50,10 @@ const vscode = (window as any).acquireVsCodeApi();
         try {
             switch (message.command) {
                 case 'api-key-status':
+                    console.log('[UI] API key status received:', message.hasApiKey);
                     if (typeof message.hasApiKey === 'boolean') {
                         updateApiKeyDisplay(message.hasApiKey);
+                        console.log('[UI] Updated API key display with hasApiKey:', message.hasApiKey);
                     } else {
                         console.error('Invalid api-key-status message format:', message);
                         displayErrorMessage('Invalid API key status received', 'validation');
