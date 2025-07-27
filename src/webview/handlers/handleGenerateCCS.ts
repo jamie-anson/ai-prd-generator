@@ -4,24 +4,42 @@
  * @description Handles the generation of Code Comprehension Score (CCS) analysis for the current workspace.
  * 
  * The logic of this file is to:
- * 1. Analyze the current workspace codebase structure and complexity
- * 2. Evaluate documentation quality, naming conventions, and test coverage
- * 3. Generate a comprehensive CCS report using AI analysis
- * 4. Display the results in the webview with scores and improvement suggestions
+ * 1. Coordinate CCS analysis using modular services
+ * 2. Handle webview communication and progress reporting
+ * 3. Save analysis results and update UI
+ * 4. Provide centralized error handling for CCS generation
  */
 
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { OpenAiService } from '../../utils/openai';
 import { handleGenerationError, handleApiError, withErrorHandling } from '../../utils/errorHandler';
 import { getCcsOutputPath, ensureOutputDirectory } from '../../utils/configManager';
+import { CodebaseAnalysisService } from '../../services/codebaseAnalysisService';
+import { CCSPromptTemplate } from '../../templates/ccsPromptTemplate';
+import { MarkdownFormatterService } from '../../services/markdownFormatterService';
 
 /**
  * Logic Step: Handles the 'generate-ccs' message from the webview to generate a Code Comprehension Score analysis.
- * @param message The message object from the webview.
- * @param context The extension context.
- * @param webview The webview instance to post messages back to.
- * @returns The URI of the generated CCS file, or undefined if generation fails.
+ * 
+ * This function coordinates the entire CCS generation process using modular services:
+ * 1. Validates prerequisites (API key, workspace)
+ * 2. Uses CodebaseAnalysisService for codebase scanning
+ * 3. Uses CCSPromptTemplate for AI prompt generation
+ * 4. Uses MarkdownFormatterService for result formatting
+ * 5. Saves results and updates the webview
+ * 
+ * @param message - The message object from the webview (must have command: 'generate-ccs')
+ * @param context - The VS Code extension context for accessing secrets and workspace
+ * @param webview - The webview instance to post progress and results back to
+ * @returns Promise<vscode.Uri | undefined> - The URI of the generated CCS file, or undefined if generation fails
+ * 
+ * @example
+ * ```typescript
+ * const result = await handleGenerateCCS(message, context, webview);
+ * if (result) {
+ *     console.log(`CCS analysis saved to: ${result.fsPath}`);
+ * }
+ * ```
  */
 export async function handleGenerateCCS(message: any, context: vscode.ExtensionContext, webview: vscode.Webview): Promise<vscode.Uri | undefined> {
     if (message.command !== 'generate-ccs') {
@@ -35,75 +53,61 @@ export async function handleGenerateCCS(message: any, context: vscode.ExtensionC
         title: "Analyzing Code Comprehension Score...", 
         cancellable: false 
     }, async (progress) => {
-        progress.report({ increment: 0, message: "Analyzing codebase..." });
-
-        const apiKey = await context.secrets.get('openAiApiKey');
-        if (!apiKey) {
-            handleApiError(
-                new Error('OpenAI API Key not set'), 
-                'OpenAI', 
-                'authentication', 
-                webview
-            );
+        // Logic Step: Validate prerequisites
+        const validationResult = await validatePrerequisites(context, webview);
+        if (!validationResult) {
             return;
         }
 
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders || workspaceFolders.length === 0) {
-            handleGenerationError(
-                new Error('No workspace folder found'), 
-                'CCS generation', 
-                webview
-            );
-            return;
-        }
+        const { apiKey, workspaceUri } = validationResult;
 
         // Logic Step: Use error handling wrapper for the entire generation process
         const result = await withErrorHandling(async () => {
-            const workspaceUri = workspaceFolders[0].uri;
+            // Logic Step: Analyze the codebase using the dedicated service
+            progress.report({ increment: 10, message: "Initializing codebase analysis..." });
+            const analysisService = new CodebaseAnalysisService();
             
-            // Logic Step: Analyze the codebase structure
-            progress.report({ increment: 20, message: "Scanning files..." });
-            const codebaseAnalysis = await analyzeCodebase(workspaceUri);
+            progress.report({ increment: 20, message: "Scanning files and directories..." });
+            const codebaseAnalysis = await analysisService.analyzeWorkspace(workspaceUri);
             
-            progress.report({ increment: 40, message: "Calling AI for analysis..." });
+            // Logic Step: Log analysis summary for debugging
+            console.log('CCS Analysis Summary:', analysisService.generateAnalysisSummary(codebaseAnalysis));
+            
+            // Logic Step: Generate AI prompt using the template service
+            progress.report({ increment: 50, message: "Generating AI analysis prompt..." });
+            const prompt = CCSPromptTemplate.generatePrompt(codebaseAnalysis);
+            
+            // Logic Step: Call AI service for analysis
+            progress.report({ increment: 60, message: "Calling AI for code analysis..." });
             const openAiService = new OpenAiService(apiKey);
-            const ccsAnalysis = await generateCCSAnalysis(openAiService, codebaseAnalysis);
+            const rawCcsAnalysis = await openAiService.generateText(prompt);
             
-            progress.report({ increment: 70, message: "Saving results..." });
-            
-            if (!ccsAnalysis) {
-                throw new Error('No CCS analysis generated');
+            if (!rawCcsAnalysis) {
+                throw new Error('No CCS analysis generated by AI service');
             }
 
-            // Logic Step: Save the CCS analysis to file
-            const outputDir = getCcsOutputPath(workspaceUri);
-            await ensureOutputDirectory(outputDir);
+            // Logic Step: Format the analysis results for webview display
+            progress.report({ increment: 80, message: "Formatting analysis results..." });
+            const formattedAnalysis = MarkdownFormatterService.formatCCSResults(rawCcsAnalysis);
             
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-            const ccsFilePath = vscode.Uri.joinPath(outputDir, `ccs-analysis-${timestamp}.md`);
+            // Logic Step: Save the raw analysis to file
+            progress.report({ increment: 85, message: "Saving analysis to file..." });
+            const savedFilePath = await saveCCSAnalysis(workspaceUri, rawCcsAnalysis);
             
-            await vscode.workspace.fs.writeFile(ccsFilePath, Buffer.from(ccsAnalysis, 'utf-8'));
-            generatedPath = ccsFilePath;
-
-            // Logic Step: Send the analysis results to the webview
+            // Logic Step: Send the formatted analysis to the webview
+            progress.report({ increment: 95, message: "Updating webview..." });
             await webview.postMessage({ 
                 command: 'ccsGenerated', 
-                analysis: ccsAnalysis,
-                filePath: ccsFilePath.fsPath
+                analysis: formattedAnalysis,
+                filePath: savedFilePath.fsPath
             });
 
-            vscode.window.showInformationMessage('Code Comprehension Score analysis completed.');
-            
-            return ccsAnalysis;
-        }, {
-            operation: 'generate CCS analysis',
-            component: 'CCSGenerator'
-        }, webview);
+            progress.report({ increment: 100, message: "CCS analysis complete!" });
+            return savedFilePath;
+        }, 'CCS generation', webview);
 
-        // Logic Step: Return early if generation failed
-        if (!result) {
-            return;
+        if (result) {
+            generatedPath = result;
         }
     });
 
@@ -111,262 +115,75 @@ export async function handleGenerateCCS(message: any, context: vscode.ExtensionC
 }
 
 /**
- * Logic Step: Analyzes the codebase structure to gather metrics for CCS evaluation.
- * @param workspaceUri The workspace URI to analyze.
- * @returns A structured analysis of the codebase.
+ * Logic Step: Validates prerequisites for CCS generation.
+ * 
+ * Checks for required conditions before starting analysis:
+ * - OpenAI API key availability
+ * - Workspace folder existence
+ * - Proper error reporting if validation fails
+ * 
+ * @param context - VS Code extension context for accessing secrets
+ * @param webview - Webview for error reporting
+ * @returns Promise<{apiKey: string, workspaceUri: vscode.Uri} | null> - Validation result or null if failed
  */
-async function analyzeCodebase(workspaceUri: vscode.Uri): Promise<CodebaseAnalysis> {
-    const analysis: CodebaseAnalysis = {
-        totalFiles: 0,
-        totalLines: 0,
-        fileTypes: {},
-        hasReadme: false,
-        hasTests: false,
-        hasTypeDefinitions: false,
-        hasDocumentation: false,
-        directories: [],
-        sampleFiles: []
+async function validatePrerequisites(context: vscode.ExtensionContext, webview: vscode.Webview): Promise<{apiKey: string, workspaceUri: vscode.Uri} | null> {
+    // Logic Step: Check for API key
+    const apiKey = await context.secrets.get('openAiApiKey');
+    if (!apiKey) {
+        handleApiError(
+            new Error('OpenAI API Key not set'), 
+            'OpenAI', 
+            'authentication', 
+            webview
+        );
+        return null;
+    }
+
+    // Logic Step: Check for workspace
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        handleGenerationError(
+            new Error('No workspace folder found'), 
+            'CCS generation', 
+            webview
+        );
+        return null;
+    }
+
+    return {
+        apiKey,
+        workspaceUri: workspaceFolders[0].uri
     };
-
-    try {
-        // Logic Step: Recursively scan the workspace directory
-        await scanDirectory(workspaceUri, analysis, 0);
-        
-        // Logic Step: Analyze specific patterns
-        analysis.hasReadme = await checkFileExists(workspaceUri, ['README.md', 'README.txt', 'readme.md']);
-        analysis.hasTests = await checkTestFiles(workspaceUri);
-        analysis.hasTypeDefinitions = await checkTypeDefinitions(workspaceUri);
-        analysis.hasDocumentation = await checkDocumentation(workspaceUri);
-        
-    } catch (error) {
-        console.error('Error analyzing codebase:', error);
-    }
-
-    return analysis;
 }
 
 /**
- * Logic Step: Recursively scans a directory to collect file metrics.
+ * Logic Step: Saves CCS analysis to a timestamped markdown file.
+ * 
+ * Creates a new file in the configured CCS output directory with:
+ * - Timestamp-based filename for uniqueness
+ * - Raw markdown content from AI analysis
+ * - Proper error handling for file operations
+ * 
+ * @param workspaceUri - The workspace root URI for path resolution
+ * @param analysisContent - The raw markdown CCS analysis content
+ * @returns Promise<vscode.Uri> - URI of the saved file
+ * @throws {Error} When file saving fails
  */
-async function scanDirectory(dirUri: vscode.Uri, analysis: CodebaseAnalysis, depth: number): Promise<void> {
-    if (depth > 5) {
-        return; // Limit recursion depth
-    }
-    
+async function saveCCSAnalysis(workspaceUri: vscode.Uri, analysisContent: string): Promise<vscode.Uri> {
     try {
-        const entries = await vscode.workspace.fs.readDirectory(dirUri);
+        // Logic Step: Ensure output directory exists
+        const outputDir = getCcsOutputPath(workspaceUri);
+        await ensureOutputDirectory(outputDir);
         
-        for (const [name, type] of entries) {
-            // Logic Step: Skip common ignore patterns
-            if (shouldSkipFile(name)) {
-                continue;
-            }
-            
-            const itemUri = vscode.Uri.joinPath(dirUri, name);
-            
-            if (type === vscode.FileType.Directory) {
-                analysis.directories.push(name);
-                await scanDirectory(itemUri, analysis, depth + 1);
-            } else if (type === vscode.FileType.File) {
-                analysis.totalFiles++;
-                
-                const ext = path.extname(name).toLowerCase();
-                analysis.fileTypes[ext] = (analysis.fileTypes[ext] || 0) + 1;
-                
-                // Logic Step: Count lines for code files
-                if (isCodeFile(ext)) {
-                    const lineCount = await countLines(itemUri);
-                    analysis.totalLines += lineCount;
-                    
-                    // Logic Step: Collect sample files for analysis
-                    if (analysis.sampleFiles.length < 5) {
-                        const content = await readFileContent(itemUri, 500); // First 500 chars
-                        analysis.sampleFiles.push({
-                            name,
-                            path: itemUri.fsPath,
-                            extension: ext,
-                            lines: lineCount,
-                            sampleContent: content
-                        });
-                    }
-                }
-            }
-        }
+        // Logic Step: Generate unique filename with timestamp
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const ccsFilePath = vscode.Uri.joinPath(outputDir, `ccs-analysis-${timestamp}.md`);
+        
+        // Logic Step: Write analysis content to file
+        await vscode.workspace.fs.writeFile(ccsFilePath, Buffer.from(analysisContent, 'utf-8'));
+        
+        return ccsFilePath;
     } catch (error) {
-        console.error(`Error scanning directory ${dirUri.fsPath}:`, error);
+        throw new Error(`Failed to save CCS analysis: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-}
-
-/**
- * Logic Step: Generates the CCS analysis using AI.
- */
-async function generateCCSAnalysis(openAiService: OpenAiService, analysis: CodebaseAnalysis): Promise<string> {
-    const prompt = `You are acting as a senior technical reviewer.
-Estimate the Code Comprehension Score (CCS) for this codebase. This score represents how easily a new developer or an AI assistant could understand and reason about the codebase in its current state.
-
-CODEBASE ANALYSIS:
-- Total Files: ${analysis.totalFiles}
-- Total Lines of Code: ${analysis.totalLines}
-- File Types: ${JSON.stringify(analysis.fileTypes, null, 2)}
-- Has README: ${analysis.hasReadme}
-- Has Tests: ${analysis.hasTests}
-- Has Type Definitions: ${analysis.hasTypeDefinitions}
-- Has Documentation: ${analysis.hasDocumentation}
-- Main Directories: ${analysis.directories.slice(0, 10).join(', ')}
-
-SAMPLE FILES:
-${analysis.sampleFiles.map(f => `
-File: ${f.name} (${f.lines} lines)
-Sample Content:
-${f.sampleContent}
----`).join('\n')}
-
-Use the following categories to guide your reasoning:
-1. Codebase Size & Complexity
-   Estimate total lines of code, number of modules/files, and structural complexity. Consider modularity and cohesion.
-2. Documentation Quality
-   Evaluate README files, docstrings, inline comments, typed annotations, and usage of documentation tools like JSDoc/Typedoc.
-3. Naming Clarity
-   Assess if variable, function, and module names are descriptive and consistent.
-4. Test Coverage & Structure
-   Note if the codebase has tests, how comprehensive they are, and if they're organized.
-5. Summarizability
-   Try summarizing one or two modules. If it's hard to do, reduce the score accordingly.
-
-Score each section out of 10, and then provide an overall CCS out of 100%. Include a short rationale for the final score.
-
-Then, suggest 1–3 actions that would most increase the CCS.
-
-Format your response as:
-## Code Comprehension Score Analysis
-
-### Category Scores
-1. **Codebase Size & Complexity**: X/10
-2. **Documentation Quality**: X/10
-3. **Naming Clarity**: X/10
-4. **Test Coverage & Structure**: X/10
-5. **Summarizability**: X/10
-
-### Overall CCS: X%
-
-### Rationale
-[Your detailed rationale here]
-
-### Improvement Recommendations
-1. [First recommendation]
-2. [Second recommendation]
-3. [Third recommendation]`;
-
-    return await openAiService.generateText(prompt);
-}
-
-// Logic Step: Helper functions for codebase analysis
-
-function shouldSkipFile(name: string): boolean {
-    const skipPatterns = [
-        'node_modules', '.git', '.vscode', 'dist', 'build', 'out',
-        '.DS_Store', 'Thumbs.db', '*.log', '*.tmp'
-    ];
-    return skipPatterns.some(pattern => 
-        name === pattern || name.startsWith('.') && name !== '.gitignore'
-    );
-}
-
-function isCodeFile(ext: string): boolean {
-    const codeExtensions = [
-        '.ts', '.js', '.tsx', '.jsx', '.py', '.java', '.c', '.cpp', '.cs',
-        '.go', '.rs', '.php', '.rb', '.swift', '.kt', '.scala', '.html',
-        '.css', '.scss', '.sass', '.vue', '.svelte', '.md'
-    ];
-    return codeExtensions.includes(ext);
-}
-
-async function countLines(fileUri: vscode.Uri): Promise<number> {
-    try {
-        const content = await vscode.workspace.fs.readFile(fileUri);
-        return content.toString().split('\n').length;
-    } catch {
-        return 0;
-    }
-}
-
-async function readFileContent(fileUri: vscode.Uri, maxChars: number): Promise<string> {
-    try {
-        const content = await vscode.workspace.fs.readFile(fileUri);
-        const text = content.toString();
-        return text.length > maxChars ? text.substring(0, maxChars) + '...' : text;
-    } catch {
-        return '';
-    }
-}
-
-async function checkFileExists(workspaceUri: vscode.Uri, filenames: string[]): Promise<boolean> {
-    for (const filename of filenames) {
-        try {
-            const fileUri = vscode.Uri.joinPath(workspaceUri, filename);
-            await vscode.workspace.fs.stat(fileUri);
-            return true;
-        } catch {
-            // File doesn't exist, continue checking
-        }
-    }
-    return false;
-}
-
-async function checkTestFiles(workspaceUri: vscode.Uri): Promise<boolean> {
-    const testPatterns = ['test', 'tests', '__tests__', 'spec', 'specs'];
-    for (const pattern of testPatterns) {
-        try {
-            const testUri = vscode.Uri.joinPath(workspaceUri, pattern);
-            await vscode.workspace.fs.stat(testUri);
-            return true;
-        } catch {
-            // Directory doesn't exist, continue checking
-        }
-    }
-    return false;
-}
-
-async function checkTypeDefinitions(workspaceUri: vscode.Uri): Promise<boolean> {
-    try {
-        const entries = await vscode.workspace.fs.readDirectory(workspaceUri);
-        return entries.some(([name]) => name.endsWith('.d.ts') || name === 'tsconfig.json');
-    } catch {
-        return false;
-    }
-}
-
-async function checkDocumentation(workspaceUri: vscode.Uri): Promise<boolean> {
-    const docPatterns = ['docs', 'documentation', 'doc'];
-    for (const pattern of docPatterns) {
-        try {
-            const docUri = vscode.Uri.joinPath(workspaceUri, pattern);
-            await vscode.workspace.fs.stat(docUri);
-            return true;
-        } catch {
-            // Directory doesn't exist, continue checking
-        }
-    }
-    return false;
-}
-
-// Logic Step: Interface definitions for type safety
-interface CodebaseAnalysis {
-    totalFiles: number;
-    totalLines: number;
-    fileTypes: { [ext: string]: number };
-    hasReadme: boolean;
-    hasTests: boolean;
-    hasTypeDefinitions: boolean;
-    hasDocumentation: boolean;
-    directories: string[];
-    sampleFiles: SampleFile[];
-}
-
-interface SampleFile {
-    name: string;
-    path: string;
-    extension: string;
-    lines: number;
-    sampleContent: string;
 }
