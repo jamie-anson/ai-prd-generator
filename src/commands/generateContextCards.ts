@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ContextCardGenerator } from '../context-card-generator';
+// import { ContextCardGenerator } from '../context-card-generator';
 
 export function registerGenerateContextCardsCommand(context: vscode.ExtensionContext) {
     const command = vscode.commands.registerCommand('ai-prd-generator.bulkGenerateContextCards', async () => {
@@ -9,8 +9,9 @@ export function registerGenerateContextCardsCommand(context: vscode.ExtensionCon
             return;
         }
         const workspaceUri = workspaceFolders[0].uri;
-        const generator = new ContextCardGenerator(workspaceUri, context);
-        await generator.generateAndSaveContextCards();
+        // const generator = new ContextCardGenerator(workspaceUri, context);
+        // await generator.generateAndSaveContextCards();
+        vscode.window.showInformationMessage('Context Cards generation temporarily disabled due to dependency issues');
     });
 
     context.subscriptions.push(command);

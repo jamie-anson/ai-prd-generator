@@ -24,6 +24,7 @@ const TEST_CONFIG = {
         unit: 'out/test/unit/**/*.test.js',
         integration: 'out/test/integration/**/*.test.js',
         extension: 'out/test/extension/**/*.test.js',
+        smoke: 'out/test/smoke/**/*.test.js',
         all: 'out/test/**/*.test.js'
     }
 };

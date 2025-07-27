@@ -1,1 +1,1 @@
-declare module 'tree-sitter-typescript';
+// declare module 'tree-sitter-typescript';

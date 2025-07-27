@@ -2,7 +2,7 @@
   "name": "ai-prd-generator",
   "displayName": "Mise-en-Place",
   "description": "AI-Powered PRD Generator",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "publisher": "jammie-anson",
   "engines": {
     "vscode": "^1.89.0"
@@ -16,7 +16,7 @@
   },
   "main": "./dist/extension.js",
   "activationEvents": [
-    "onCommand:ai-prd-generator.generatePrd"
+    "*"
   ],
   "contributes": {
     "commands": [
@@ -72,10 +72,14 @@
     "test:unit": "node scripts/test.js unit",
     "test:integration": "node scripts/test.js integration",
     "test:extension": "node scripts/test.js extension",
+    "test:smoke": "node scripts/test.js smoke",
     "test:coverage": "node scripts/test.js all --coverage",
     "test:watch": "node scripts/test.js all --watch",
-    "test:ci": "npm run pretest && npm run test:coverage",
-    "test:analyzer": "ts-node src/context-card-generator/analyzer.ts"
+    "test:ci": "npm run pretest && npm run test:coverage && npm run test:smoke",
+    "test:full": "npm run test:ci && npm run validate:deps",
+    "validate:deps": "node scripts/validate-dependencies.js",
+    "prepackage": "npm run validate:deps && npm run test:smoke",
+    "test:analyzer": "echo 'Analyzer temporarily disabled due to dependency issues'"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
@@ -105,8 +109,6 @@
     "dagre": "^0.8.5",
     "json-viewer-js": "^1.0.8",
     "node-fetch": "^2.7.0",
-    "openai": "^5.10.1",
-    "tree-sitter": "^0.21.0",
-    "tree-sitter-typescript": "^0.23.2"
+    "openai": "^5.10.1"
   }
 }

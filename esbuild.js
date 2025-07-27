@@ -31,8 +31,9 @@ async function main() {
   fs.copySync('node_modules/cytoscape-dagre/cytoscape-dagre.js', 'dist/media/cytoscape-dagre.js');
 
   // @intent: Copy native modules required by tree-sitter for syntax analysis into the build output
-  fs.copySync('node_modules/tree-sitter', 'dist/node_modules/tree-sitter');
-  fs.copySync('node_modules/tree-sitter-typescript', 'dist/node_modules/tree-sitter-typescript');
+  // fs.copySync('node_modules/tree-sitter', 'dist/node_modules/tree-sitter');
+  // fs.copySync('node_modules/tree-sitter-typescript', 'dist/node_modules/tree-sitter-typescript');
+  // Tree-sitter temporarily disabled due to native dependency issues
 
   // @intent: Build the extension code using esbuild context API
   // @why: This step prepares the extension for use in VSCode by bundling and applying plugins

@@ -1,7 +1,8 @@
-import Parser from 'tree-sitter';
+// Tree-sitter imports temporarily disabled due to native dependency issues
+// import Parser from 'tree-sitter';
 import { CodeEnricher } from './enricher';
 import { OpenAiService } from '../utils/openai';
-const TypeScript = require('tree-sitter-typescript');
+// const TypeScript = require('tree-sitter-typescript');
 
 /**
  * Represents the extracted information for a function or method.

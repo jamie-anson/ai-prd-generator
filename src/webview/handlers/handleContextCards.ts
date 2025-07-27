@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ContextCardGenerator } from '../../context-card-generator';
+// import { ContextCardGenerator } from '../../context-card-generator';
 
 /**
  * Handles the 'bulkGenerateContextCards' message from the webview.
@@ -18,8 +18,9 @@ export async function handleContextCards(message: any, context: vscode.Extension
         }
         try {
             const workspaceUri = workspaceFolders[0].uri;
-            const generator = new ContextCardGenerator(workspaceUri, context);
-            await generator.generateAndSaveContextCards();
+            // const generator = new ContextCardGenerator(workspaceUri, context);
+            // await generator.generateAndSaveContextCards();
+            await webview.postMessage({ command: 'info', text: 'Context Cards generation temporarily disabled due to dependency issues' });
         } catch (error: any) {
             console.error('Error generating context cards:', error);
             vscode.window.showErrorMessage(`Error generating context cards: ${error.message}`);
