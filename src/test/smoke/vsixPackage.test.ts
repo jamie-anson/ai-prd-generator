@@ -27,7 +27,7 @@ import { VSCodeMocks } from '../utils/testUtils';
 describe('VSIX Package Smoke Tests', () => {
     let vscodeMocks: VSCodeMocks;
     const projectRoot = path.resolve(__dirname, '../../../');
-    const vsixPath = path.join(projectRoot, 'ai-prd-generator-0.1.1.vsix');
+    const vsixPath = path.join(projectRoot, 'ai-prd-generator-0.1.10.vsix');
 
     beforeEach(() => {
         vscodeMocks = new VSCodeMocks();

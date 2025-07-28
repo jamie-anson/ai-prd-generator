@@ -28,17 +28,33 @@ export async function handleWebviewReady(
 ): Promise<void> {
     console.log('handleWebviewReady called');
     
-    // Check API key status
-    const apiKey = await context.secrets.get('openAiApiKey');
-    const hasApiKey = !!apiKey;
-    console.log('[Extension] API key detection - apiKey length:', apiKey ? apiKey.length : 0, 'hasApiKey:', hasApiKey);
+    // Check API key status with error handling
+    let hasApiKey = false;
+    try {
+        const apiKey = await context.secrets.get('openAiApiKey');
+        hasApiKey = !!apiKey;
+        console.log('[Extension] API key detection - apiKey length:', apiKey ? apiKey.length : 0, 'hasApiKey:', hasApiKey);
+    } catch (error) {
+        console.error('Error retrieving API key:', error);
+        hasApiKey = false;
+    }
+    
     console.log('[Extension] Sending apiKeyStatus message, hasApiKey:', hasApiKey);
     webview.postMessage({ command: 'apiKeyStatus', hasApiKey });
     
     // Detect project state and send to webview
     try {
         const projectState = await ProjectStateDetector.detectProjectState();
-        console.log('Detected project state:', projectState);
+        console.log('[WebviewReady] Detected project state:', {
+            hasPRD: projectState.hasPRD,
+            hasContextCards: projectState.hasContextCards,
+            hasContextTemplates: projectState.hasContextTemplates,
+            hasCCS: projectState.hasCCS,
+            prdCount: projectState.prdCount,
+            contextCardCount: projectState.contextCardCount,
+            contextTemplateCount: projectState.contextTemplateCount,
+            ccsCount: projectState.ccsCount
+        });
         /**
          * Logic Step: Send complete project state to webview including diagram detection results.
          * This message enables context-aware UI behavior by informing the webview about all

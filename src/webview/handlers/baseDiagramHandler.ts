@@ -90,12 +90,12 @@ export abstract class BaseDiagramHandler {
             }, async (progress) => {
                 const prdContent = Buffer.from(await vscode.workspace.fs.readFile(prdFile)).toString('utf-8');
 
-                progress.report({ message: `Analyzing ${diagramConfig.diagramType.toLowerCase()} from PRD...`, increment: 30 });
+                progress.report({ message: `Analyzing ${diagramConfig.diagramType?.toLowerCase() || 'diagram'} from PRD...`, increment: 30 });
                 
                 // Logic Step: Call abstract method for diagram-specific generation
                 const diagramContent = await this.generateDiagramContent(prdContent, openAiService);
 
-                progress.report({ message: `Saving ${diagramConfig.diagramType.toLowerCase()}...`, increment: 70 });
+                progress.report({ message: `Saving ${diagramConfig.diagramType?.toLowerCase() || 'diagram'}...`, increment: 70 });
 
                 // Logic Step: Use configuration manager for output path
                 const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -129,7 +129,7 @@ export abstract class BaseDiagramHandler {
             
             return true;
         }, {
-            operation: `generate ${diagramConfig.diagramType.toLowerCase()}`,
+            operation: `generate ${diagramConfig.diagramType?.toLowerCase() || 'diagram'}`,
             component: `${diagramConfig.diagramType}Generator`
         }, webview);
 

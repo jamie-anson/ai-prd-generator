@@ -64,7 +64,7 @@ export async function handleGenerateContextTemplates(context: vscode.ExtensionCo
             for (const feature of features) {
                 progress.report({ message: `Generating template for: ${feature}`, increment });
                 const templateContent = await generateTemplateForFeature(feature, prdContent, openAiService);
-                const fileName = `${feature.replace(/\s+/g, '_').toLowerCase()}_context.md`;
+                const fileName = `${(feature || 'feature').replace(/\s+/g, '_').toLowerCase()}_context.md`;
                 const filePath = vscode.Uri.joinPath(outputDir, fileName);
                 await vscode.workspace.fs.writeFile(filePath, Buffer.from(templateContent, 'utf-8'));
             }

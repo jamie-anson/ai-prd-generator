@@ -203,7 +203,7 @@ export class TypeScriptContextCardGenerator {
                     analysis.prdContent = prdContent.toString();
                     
                     // Extract features and domain from PRD
-                    const content = analysis.prdContent.toLowerCase();
+                    const content = analysis.prdContent?.toLowerCase() || '';
                     if (content.includes('web') || content.includes('website') || content.includes('browser')) {
                         analysis.projectType = 'web-app';
                     } else if (content.includes('mobile') || content.includes('ios') || content.includes('android')) {

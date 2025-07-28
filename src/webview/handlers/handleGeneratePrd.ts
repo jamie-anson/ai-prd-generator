@@ -57,7 +57,7 @@ export async function handleGeneratePrd(message: any, context: vscode.ExtensionC
             const outputDir = getPrdOutputPath(workspaceUri);
             await ensureOutputDirectory(outputDir);
 
-            const safeTitle = prdOutput.json.title.replace(/[^a-z0-9_\-]+/gi, '-').toLowerCase();
+            const safeTitle = (prdOutput.json.title || 'untitled').replace(/[^a-z0-9_\-]+/gi, '-').toLowerCase();
             const mdFilePath = vscode.Uri.joinPath(outputDir, `${safeTitle}.md`);
             const graphFilePath = vscode.Uri.joinPath(outputDir, `${safeTitle}-graph.json`);
 

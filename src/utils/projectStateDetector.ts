@@ -94,12 +94,15 @@ export class ProjectStateDetector {
         
         // Detect Context Cards
         const contextCardFiles = await this.findContextCardFiles(workspaceUri);
+        console.log('[ProjectStateDetector] Context Card files found:', contextCardFiles.map(f => f.fsPath));
         
         // Detect Context Templates
         const contextTemplateFiles = await this.findContextTemplateFiles(workspaceUri);
+        console.log('[ProjectStateDetector] Context Template files found:', contextTemplateFiles.map(f => f.fsPath));
         
         // Detect CCS files
         const ccsFiles = await this.findCCSFiles(workspaceUri);
+        console.log('[ProjectStateDetector] CCS files found:', ccsFiles.map(f => f.fsPath));
 
         // Detect diagram files
         // Logic Step: Detect diagram files in the context templates directory

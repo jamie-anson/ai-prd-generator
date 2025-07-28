@@ -90,17 +90,25 @@ export class VSCodeMocks {
 
     /**
      * Create a mock Webview for testing
+     * Uses a factory pattern to ensure fresh, non-conflicting stubs
      */
     public static createMockWebview(): any {
-        return {
+        // Create a plain object first, then add methods
+        const mockWebview = {
             html: '',
             options: {},
             viewColumn: undefined,
-            onDidReceiveMessage: sinon.stub().returns({ dispose: sinon.stub() }),
-            postMessage: sinon.stub().resolves(),
-            asWebviewUri: sinon.stub().callsFake((uri: any) => uri),
             cspSource: 'vscode-webview:'
         };
+        
+        // Add stub methods that can be safely spied on
+        Object.assign(mockWebview, {
+            onDidReceiveMessage: sinon.stub().returns({ dispose: sinon.stub() }),
+            postMessage: function(message: any) { return Promise.resolve(true); },
+            asWebviewUri: sinon.stub().callsFake((uri: any) => uri)
+        });
+        
+        return mockWebview;
     }
 
     /**
@@ -123,35 +131,37 @@ export class VSCodeMocks {
     }
 
     /**
-     * Create a mock ExtensionContext for testing
+     * Logic Step: Create a mock ExtensionContext for testing
+     * Creates fresh instances to prevent Sinon stubbing conflicts
      */
-    public static createMockExtensionContext(): vscode.ExtensionContext {
-        return {
+    public static createMockExtensionContext(): any {
+        // Create fresh mock objects for each test to prevent conflicts
+        const mockContext = {
             subscriptions: [],
             workspaceState: {
-                get: sinon.stub().returns(undefined),
-                update: sinon.stub().resolves(),
-                keys: sinon.stub().returns([])
+                get: function(key: string) { return undefined; },
+                update: function(key: string, value: any) { return Promise.resolve(); },
+                keys: function() { return []; }
             },
             globalState: {
-                get: sinon.stub().returns(undefined),
-                update: sinon.stub().resolves(),
-                keys: sinon.stub().returns([]),
-                setKeysForSync: sinon.stub()
+                get: function(key: string) { return undefined; },
+                update: function(key: string, value: any) { return Promise.resolve(); },
+                keys: function() { return []; },
+                setKeysForSync: function(keys: string[]) { }
             },
             secrets: {
-                get: sinon.stub().callsFake((key: string) => 
-                    Promise.resolve(key === 'openAiApiKey' ? 'test-api-key' : undefined)
-                ),
-                store: sinon.stub().resolves(),
-                delete: sinon.stub().resolves(),
-                onDidChange: sinon.stub().returns({ dispose: sinon.stub() })
+                get: function(key: string) { 
+                    return Promise.resolve(key === 'openAiApiKey' ? 'test-api-key' : undefined);
+                },
+                store: function(key: string, value: string) { return Promise.resolve(); },
+                delete: function(key: string) { return Promise.resolve(); },
+                onDidChange: function() { return { dispose: function() {} }; }
             },
             extensionUri: vscode.Uri.file('/test/extension'),
             extensionPath: '/test/extension',
-            asAbsolutePath: sinon.stub().callsFake((relativePath: string) => 
-                `/test/extension/${relativePath}`
-            ),
+            asAbsolutePath: function(relativePath: string) {
+                return `/test/extension/${relativePath}`;
+            },
             storagePath: '/test/storage',
             globalStoragePath: '/test/global-storage',
             logPath: '/test/logs',
@@ -160,16 +170,16 @@ export class VSCodeMocks {
             globalStorageUri: vscode.Uri.file('/test/global-storage'),
             environmentVariableCollection: {
                 persistent: false,
-                replace: sinon.stub(),
-                append: sinon.stub(),
-                prepend: sinon.stub(),
-                get: sinon.stub(),
-                forEach: sinon.stub(),
-                delete: sinon.stub(),
-                clear: sinon.stub(),
-                getScoped: sinon.stub(),
+                replace: function(variable: string, value: string) { },
+                append: function(variable: string, value: string) { },
+                prepend: function(variable: string, value: string) { },
+                get: function(variable: string) { return undefined; },
+                forEach: function(callback: any) { },
+                delete: function(variable: string) { },
+                clear: function() { },
+                getScoped: function(scope: any) { return this; },
                 description: 'Test environment variable collection',
-                [Symbol.iterator]: sinon.stub()
+                [Symbol.iterator]: function() { return [][Symbol.iterator](); }
             },
             extensionMode: vscode.ExtensionMode.Test,
             extension: {
@@ -180,13 +190,15 @@ export class VSCodeMocks {
                 packageJSON: {},
                 extensionKind: vscode.ExtensionKind.Workspace,
                 exports: undefined,
-                activate: sinon.stub().resolves()
+                activate: function() { return Promise.resolve(); }
             },
             languageModelAccessInformation: {
-                onDidChange: sinon.stub().returns({ dispose: sinon.stub() }),
-                canSendRequest: sinon.stub().returns(undefined)
+                onDidChange: function() { return { dispose: function() {} }; },
+                canSendRequest: function() { return undefined; }
             }
-        } as vscode.ExtensionContext;
+        };
+        
+        return mockContext;
     }
 }
 

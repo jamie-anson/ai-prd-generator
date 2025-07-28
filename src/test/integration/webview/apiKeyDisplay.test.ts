@@ -24,10 +24,19 @@ describe('API Key Display Integration Tests', () => {
     let postMessageSpy: sinon.SinonSpy;
 
     beforeEach(() => {
+        // Restore any existing stubs first
+        sinon.restore();
+        
         vscodeMocks = new VSCodeMocks();
         mockContext = VSCodeMocks.createMockExtensionContext();
         mockWebview = VSCodeMocks.createMockWebview();
-        postMessageSpy = sinon.spy(mockWebview, 'postMessage');
+        
+        // Only spy if not already spied
+        if (!(mockWebview.postMessage as any).isSinonProxy) {
+            postMessageSpy = sinon.spy(mockWebview, 'postMessage');
+        } else {
+            postMessageSpy = mockWebview.postMessage as sinon.SinonSpy;
+        }
     });
 
     afterEach(() => {

@@ -66,6 +66,7 @@ export abstract class BaseCcsDocumentationHandler {
         protected context: vscode.ExtensionContext,
         protected webview: vscode.Webview
     ) {
+        this.openAiService = new OpenAiService(context);
         this.analysisService = new CodebaseAnalysisService();
     }
 
@@ -153,8 +154,7 @@ export abstract class BaseCcsDocumentationHandler {
             return false;
         }
 
-        // Logic Step: Initialize OpenAI service
-        this.openAiService = new OpenAiService(apiKey);
+        // Logic Step: OpenAI service already initialized in constructor
 
         // Logic Step: Validate workspace folder
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
