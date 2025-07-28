@@ -304,7 +304,7 @@ export class APIAssertions {
         
         this.assertValidOpenAIResponse(response, message);
         
-        const content = response.choices[0].message.content.toLowerCase();
+        const content = (response.choices[0].message.content || '').toLowerCase();
         
         switch (contentType) {
             case 'prd':

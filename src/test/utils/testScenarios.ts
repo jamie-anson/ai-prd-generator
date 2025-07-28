@@ -153,7 +153,7 @@ export class TestScenarioBuilder {
             
             result.success = result.errors.length === 0;
         } catch (error) {
-            result.errors.push(`Scenario execution failed: ${error.message}`);
+            result.errors.push(`Scenario execution failed: ${error instanceof Error ? error.message : String(error)}`);
         } finally {
             result.executionTime = performance.now() - startTime;
         }
@@ -210,7 +210,7 @@ export class TestScenarioBuilder {
             ProjectStateAssertions.assertValidProjectState(detectedState, 'Detected project state');
             result.assertions.projectState = true;
         } catch (error) {
-            result.errors.push(`Project state assertion failed: ${error.message}`);
+            result.errors.push(`Project state assertion failed: ${error instanceof Error ? error.message : String(error)}`);
         }
 
         // Step 3: Test UI state
@@ -218,7 +218,7 @@ export class TestScenarioBuilder {
             this.validateUIState(mocks.webviewManager, result);
             result.assertions.uiState = true;
         } catch (error) {
-            result.errors.push(`UI state assertion failed: ${error.message}`);
+            result.errors.push(`UI state assertion failed: ${error instanceof Error ? error.message : String(error)}`);
         }
 
         // Step 4: Test API interactions (if applicable)
@@ -231,10 +231,10 @@ export class TestScenarioBuilder {
                 APIAssertions.assertValidOpenAIResponse(response, 'OpenAI response');
                 result.assertions.apiResponse = true;
             } catch (error) {
-                if (this.scenario.expectedErrors.some(expectedError => error.message.includes(expectedError))) {
+                if (this.scenario.expectedErrors.some(expectedError => (error instanceof Error ? error.message : String(error)).includes(expectedError))) {
                     result.assertions.apiResponse = true; // Expected error
                 } else {
-                    result.errors.push(`API assertion failed: ${error.message}`);
+                    result.errors.push(`API assertion failed: ${error instanceof Error ? error.message : String(error)}`);
                 }
             }
         }
@@ -245,7 +245,7 @@ export class TestScenarioBuilder {
                 this.validatePerformance(mocks.webviewManager, result);
                 result.assertions.performance = true;
             } catch (error) {
-                result.errors.push(`Performance assertion failed: ${error.message}`);
+                result.errors.push(`Performance assertion failed: ${error instanceof Error ? error.message : String(error)}`);
             }
         } else {
             result.assertions.performance = true; // No performance expectations

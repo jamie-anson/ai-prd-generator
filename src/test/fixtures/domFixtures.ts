@@ -185,7 +185,7 @@ export class DOMFixtureFactory {
         const dom = new JSDOM(options.customHTML || WEBVIEW_HTML_FIXTURE, {
             url: options.url || 'https://localhost',
             pretendToBeVisual: options.pretendToBeVisual !== false,
-            resources: options.resources || 'usable'
+            resources: (options.resources as any) || 'usable'
         });
 
         return {

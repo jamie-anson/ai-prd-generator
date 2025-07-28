@@ -40,7 +40,7 @@ export class ProjectStateFixtures {
     public static readonly PRD_ONLY_PROJECT: ProjectState = {
         ...ProjectStateFixtures.EMPTY_PROJECT,
         hasPRD: true,
-        prdFiles: ['/workspace/mise-en-place-output/prd/product-requirements.md'],
+        prdFiles: [{ fsPath: '/workspace/mise-en-place-output/prd/product-requirements.md' }],
         prdCount: 1
     };
 
@@ -51,13 +51,13 @@ export class ProjectStateFixtures {
         ...ProjectStateFixtures.PRD_ONLY_PROJECT,
         hasContextCards: true,
         contextCardFiles: [
-            '/workspace/mise-en-place-output/context-cards/architecture-card.md',
-            '/workspace/mise-en-place-output/context-cards/api-card.md'
+            { fsPath: '/workspace/mise-en-place-output/context-cards/architecture-card.md' },
+            { fsPath: '/workspace/mise-en-place-output/context-cards/api-card.md' }
         ],
         contextCardCount: 2,
         hasContextTemplates: true,
         contextTemplateFiles: [
-            '/workspace/mise-en-place-output/context-templates/component-template.md'
+            { fsPath: '/workspace/mise-en-place-output/context-templates/component-template.md' }
         ],
         contextTemplateCount: 1
     };
@@ -68,31 +68,31 @@ export class ProjectStateFixtures {
     public static readonly COMPLETE_PROJECT: ProjectState = {
         hasPRD: true,
         prdFiles: [
-            '/workspace/mise-en-place-output/prd/product-requirements.md',
-            '/workspace/mise-en-place-output/prd/technical-specs.md'
+            { fsPath: '/workspace/mise-en-place-output/prd/product-requirements.md' },
+            { fsPath: '/workspace/mise-en-place-output/prd/technical-specs.md' }
         ],
         prdCount: 2,
         hasContextCards: true,
         contextCardFiles: [
-            '/workspace/mise-en-place-output/context-cards/architecture-card.md',
-            '/workspace/mise-en-place-output/context-cards/api-card.md',
-            '/workspace/mise-en-place-output/context-cards/database-card.md'
+            { fsPath: '/workspace/mise-en-place-output/context-cards/architecture-card.md' },
+            { fsPath: '/workspace/mise-en-place-output/context-cards/api-card.md' },
+            { fsPath: '/workspace/mise-en-place-output/context-cards/database-card.md' }
         ],
         contextCardCount: 3,
         hasContextTemplates: true,
         contextTemplateFiles: [
-            '/workspace/mise-en-place-output/context-templates/component-template.md',
-            '/workspace/mise-en-place-output/context-templates/service-template.md'
+            { fsPath: '/workspace/mise-en-place-output/context-templates/component-template.md' },
+            { fsPath: '/workspace/mise-en-place-output/context-templates/service-template.md' }
         ],
         contextTemplateCount: 2,
         hasDataFlowDiagram: true,
-        dataFlowDiagramFiles: ['/workspace/mise-en-place-output/diagrams/data-flow.mmd'],
+        dataFlowDiagramFiles: [{ fsPath: '/workspace/mise-en-place-output/diagrams/data-flow.mmd' }],
         hasComponentHierarchy: true,
-        componentHierarchyFiles: ['/workspace/mise-en-place-output/diagrams/component-hierarchy.mmd'],
+        componentHierarchyFiles: [{ fsPath: '/workspace/mise-en-place-output/diagrams/component-hierarchy.mmd' }],
         hasCCS: true,
         ccsFiles: [
-            '/workspace/mise-en-place-output/ccs/analysis.md',
-            '/workspace/mise-en-place-output/ccs/documentation.md'
+            { fsPath: '/workspace/mise-en-place-output/ccs/analysis.md' },
+            { fsPath: '/workspace/mise-en-place-output/ccs/documentation.md' }
         ],
         ccsCount: 2
     };
@@ -104,10 +104,10 @@ export class ProjectStateFixtures {
         ...ProjectStateFixtures.EMPTY_PROJECT,
         hasPRD: true,
         prdFiles: [
-            '/workspace/mise-en-place-output/prd/product-requirements-v1.md',
-            '/workspace/mise-en-place-output/prd/product-requirements-v2.md',
-            '/workspace/mise-en-place-output/prd/technical-specs.md',
-            '/workspace/mise-en-place-output/prd/api-specs.md'
+            { fsPath: '/workspace/mise-en-place-output/prd/product-requirements-v1.md' },
+            { fsPath: '/workspace/mise-en-place-output/prd/product-requirements-v2.md' },
+            { fsPath: '/workspace/mise-en-place-output/prd/technical-specs.md' },
+            { fsPath: '/workspace/mise-en-place-output/prd/api-specs.md' }
         ],
         prdCount: 4
     };
@@ -118,9 +118,9 @@ export class ProjectStateFixtures {
     public static readonly DIAGRAMS_ONLY_PROJECT: ProjectState = {
         ...ProjectStateFixtures.EMPTY_PROJECT,
         hasDataFlowDiagram: true,
-        dataFlowDiagramFiles: ['/workspace/mise-en-place-output/diagrams/data-flow.mmd'],
+        dataFlowDiagramFiles: [{ fsPath: '/workspace/mise-en-place-output/diagrams/data-flow.mmd' }],
         hasComponentHierarchy: true,
-        componentHierarchyFiles: ['/workspace/mise-en-place-output/diagrams/component-hierarchy.mmd']
+        componentHierarchyFiles: [{ fsPath: '/workspace/mise-en-place-output/diagrams/component-hierarchy.mmd' }]
     };
 
     /**
@@ -209,7 +209,7 @@ export class FileSystemFixtures {
         // Add PRD files
         if (projectState.hasPRD && projectState.prdFiles.length > 0) {
             files['/workspace/mise-en-place-output/prd'] = projectState.prdFiles.map(
-                path => path.split('/').pop() || ''
+                uri => uri.fsPath.split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('prd');
         }
@@ -217,7 +217,7 @@ export class FileSystemFixtures {
         // Add context card files
         if (projectState.hasContextCards && projectState.contextCardFiles.length > 0) {
             files['/workspace/mise-en-place-output/context-cards'] = projectState.contextCardFiles.map(
-                path => path.split('/').pop() || ''
+                uri => uri.fsPath.split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('context-cards');
         }
@@ -225,7 +225,7 @@ export class FileSystemFixtures {
         // Add context template files
         if (projectState.hasContextTemplates && projectState.contextTemplateFiles.length > 0) {
             files['/workspace/mise-en-place-output/context-templates'] = projectState.contextTemplateFiles.map(
-                path => path.split('/').pop() || ''
+                uri => uri.fsPath.split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('context-templates');
         }
@@ -234,10 +234,10 @@ export class FileSystemFixtures {
         if (projectState.hasDataFlowDiagram || projectState.hasComponentHierarchy) {
             const diagramFiles: string[] = [];
             if (projectState.hasDataFlowDiagram) {
-                diagramFiles.push(...projectState.dataFlowDiagramFiles.map(path => path.split('/').pop() || ''));
+                diagramFiles.push(...projectState.dataFlowDiagramFiles.map(uri => uri.fsPath.split('/').pop() || ''));
             }
             if (projectState.hasComponentHierarchy) {
-                diagramFiles.push(...projectState.componentHierarchyFiles.map(path => path.split('/').pop() || ''));
+                diagramFiles.push(...projectState.componentHierarchyFiles.map(uri => uri.fsPath.split('/').pop() || ''));
             }
             files['/workspace/mise-en-place-output/diagrams'] = diagramFiles;
             files['/workspace/mise-en-place-output'].push('diagrams');
@@ -246,7 +246,7 @@ export class FileSystemFixtures {
         // Add CCS files
         if (projectState.hasCCS && projectState.ccsFiles.length > 0) {
             files['/workspace/mise-en-place-output/ccs'] = projectState.ccsFiles.map(
-                path => path.split('/').pop() || ''
+                uri => uri.fsPath.split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('ccs');
         }

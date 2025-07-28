@@ -20,8 +20,8 @@ import { ProjectStateAssertions, APIAssertions, ConfigAssertions } from '../util
  * Base class for integration testing with service interactions
  */
 export abstract class IntegrationTestBase {
-    protected sandbox: sinon.SinonSandbox;
-    protected mocks: {
+    protected sandbox!: sinon.SinonSandbox;
+    protected mocks!: {
         vscode: any;
         fileSystem: any;
         openAI: any;
@@ -120,24 +120,24 @@ export abstract class IntegrationTestBase {
             }
         } catch (error) {
             if (expectedBehavior === 'success') {
-                throw new Error(`Expected API to succeed but it failed: ${error.message}`);
+                throw new Error(`Expected API to succeed but it failed: ${error instanceof Error ? error.message : String(error)}`);
             }
 
             // Validate expected error types
             switch (expectedBehavior) {
                 case 'auth_error':
-                    if (!error.message.includes('Invalid API key') && !error.error?.code?.includes('invalid_api_key')) {
-                        throw new Error(`Expected auth error but got: ${error.message}`);
+                    if (!(error instanceof Error && error.message.includes('Invalid API key')) && !((error as any).error?.code?.includes('invalid_api_key'))) {
+                        throw new Error(`Expected auth error but got: ${error instanceof Error ? error.message : String(error)}`);
                     }
                     break;
                 case 'rate_limit':
-                    if (!error.message.includes('Rate limit') && !error.error?.code?.includes('rate_limit')) {
-                        throw new Error(`Expected rate limit error but got: ${error.message}`);
+                    if (!(error instanceof Error && error.message.includes('Rate limit')) && !((error as any).error?.code?.includes('rate_limit'))) {
+                        throw new Error(`Expected rate limit error but got: ${error instanceof Error ? error.message : String(error)}`);
                     }
                     break;
                 case 'timeout':
-                    if (!error.message.includes('timeout')) {
-                        throw new Error(`Expected timeout error but got: ${error.message}`);
+                    if (!(error instanceof Error && error.message.includes('timeout'))) {
+                        throw new Error(`Expected timeout error but got: ${error instanceof Error ? error.message : String(error)}`);
                     }
                     break;
             }
@@ -171,19 +171,19 @@ export abstract class IntegrationTestBase {
             }
         } catch (error) {
             if (expectedBehavior === 'success') {
-                throw new Error(`Expected file system to succeed but it failed: ${error.message}`);
+                throw new Error(`Expected file system to succeed but it failed: ${error instanceof Error ? error.message : String(error)}`);
             }
 
             // Validate expected error types
             switch (expectedBehavior) {
                 case 'permission_error':
-                    if (!error.message.includes('permission denied') && error.code !== 'EACCES') {
-                        throw new Error(`Expected permission error but got: ${error.message}`);
+                    if (!(error instanceof Error && error.message.includes('permission denied')) && (error as any).code !== 'EACCES') {
+                        throw new Error(`Expected permission error but got: ${error instanceof Error ? error.message : String(error)}`);
                     }
                     break;
                 case 'not_found':
-                    if (!error.message.includes('no such file') && error.code !== 'ENOENT') {
-                        throw new Error(`Expected not found error but got: ${error.message}`);
+                    if (!(error instanceof Error && error.message.includes('no such file')) && (error as any).code !== 'ENOENT') {
+                        throw new Error(`Expected not found error but got: ${error instanceof Error ? error.message : String(error)}`);
                     }
                     break;
             }
@@ -244,7 +244,7 @@ export abstract class IntegrationTestBase {
         await window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: 'Test Progress'
-        }, async (progress) => {
+        }, async (progress: any) => {
             progress.report({ message: 'Testing...', increment: 50 });
             return 'completed';
         });
@@ -495,7 +495,7 @@ export abstract class ServiceIntegrationTestBase extends IntegrationTestBase {
                 await scenario.test();
                 throw new Error(`${serviceName} should have thrown error for scenario: ${scenario.name}`);
             } catch (error) {
-                if (error.message.includes('should have thrown error')) {
+                if (error instanceof Error && error.message.includes('should have thrown error')) {
                     throw error; // Re-throw test failure
                 }
                 // Expected error - test passed

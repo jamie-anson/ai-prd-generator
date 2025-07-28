@@ -17,24 +17,15 @@ import { ProjectState } from '../../webview/types';
  * Base class for webview testing with common patterns and utilities
  */
 export abstract class WebviewTestBase {
-    protected webviewManager: WebviewTestManager;
-    protected document: Document;
-    protected sandbox: sinon.SinonSandbox;
+    protected webviewManager!: WebviewTestManager;
+    protected document!: Document;
+    protected sandbox!: sinon.SinonSandbox;
 
     /**
      * Logic Step: Initialize webview test environment
      * Override this method to provide custom setup
      */
-    protected setup(options: {
-        customHTML?: string;
-        projectState?: {
-            hasApiKey?: boolean;
-            hasPRD?: boolean;
-            hasContextCards?: boolean;
-            hasContextTemplates?: boolean;
-            hasCCS?: boolean;
-        };
-    } = {}): void {
+    protected setup(options: any = {}): void {
         this.sandbox = sinon.createSandbox();
         this.webviewManager = new WebviewTestManager();
         this.webviewManager.setup(options);
@@ -411,7 +402,7 @@ export abstract class WebviewTestBase {
  * Specialized base class for CSP testing
  */
 export abstract class CSPTestBase extends WebviewTestBase {
-    protected nonce: string;
+    protected nonce!: string;
 
     /**
      * Logic Step: Setup CSP test environment

@@ -168,7 +168,7 @@ function formatErrorMessage(error: any, context: ErrorContext): string {
  * @returns User-friendly error message string
  */
 function formatUserMessage(error: any, context: ErrorContext): string {
-    const operation = context.operation.toLowerCase();
+    const operation = (context.operation || 'operation').toLowerCase();
     const baseMessage = `Failed to ${operation}`;
     
     // Logic Step: Provide specific guidance based on error type

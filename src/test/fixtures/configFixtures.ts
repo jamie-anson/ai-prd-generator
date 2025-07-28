@@ -108,7 +108,7 @@ export class MockConfigFactory {
      * @returns Mock configuration with get, update, and inspect methods
      */
     public static createMockConfig(values: Record<string, any> = {}): any {
-        const configValues = {
+        const configValues: Record<string, any> = {
             ...ConfigFixtures.DEFAULT_CONFIG,
             ...values
         };
@@ -156,7 +156,7 @@ export class MockConfigFactory {
         failingKeys: string[], 
         values: Record<string, any> = {}
     ): any {
-        const configValues = {
+        const configValues: Record<string, any> = {
             ...ConfigFixtures.DEFAULT_CONFIG,
             ...values
         };

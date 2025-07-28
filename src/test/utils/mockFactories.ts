@@ -110,11 +110,11 @@ export class VSCodeMockFactory {
         
         // Set up command execution simulation
         registeredCommands.forEach((handler, commandId) => {
-            executeCommandStub.withArgs(commandId).callsFake(handler);
+            executeCommandStub.withArgs(commandId).callsFake(handler as any);
         });
 
         return {
-            registerCommand: sinon.stub().callsFake((commandId: string, handler: Function) => {
+            registerCommand: sinon.stub().callsFake((commandId: string, handler: (...args: any[]) => any) => {
                 registeredCommands.set(commandId, handler);
                 return { dispose: sinon.stub() };
             }),
@@ -616,7 +616,7 @@ export class IntegrationMockFactory {
     public static createIntegrationEnvironment(scenario: {
         projectState?: ProjectState;
         hasApiKey?: boolean;
-        openAIScenario?: 'success' | 'auth_error' | 'rate_limit';
+        openAIScenario?: 'success' | 'auth_error' | 'rate_limit' | 'timeout';
         fileSystemScenario?: 'success' | 'permission_error' | 'not_found';
         configOverrides?: Record<string, any>;
     } = {}): {

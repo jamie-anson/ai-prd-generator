@@ -14,10 +14,10 @@ import { testConfig } from '../test.config';
  * Base class for unit testing with isolation and mocking
  */
 export abstract class UnitTestBase {
-    protected sandbox: sinon.SinonSandbox;
-    protected testTimeout: number;
-    protected stubs: Map<string, sinon.SinonStub>;
-    protected spies: Map<string, sinon.SinonSpy>;
+    protected sandbox!: sinon.SinonSandbox;
+    protected testTimeout!: number;
+    protected stubs!: Map<string, sinon.SinonStub>;
+    protected spies!: Map<string, sinon.SinonSpy>;
 
     /**
      * Logic Step: Initialize unit test environment
@@ -334,12 +334,12 @@ export abstract class UnitTestBase {
             throw new Error(`${operationName} should have thrown an error`);
         } catch (error) {
             if (typeof expectedError === 'string') {
-                if (!error.message.includes(expectedError)) {
-                    throw new Error(`${operationName} threw "${error.message}", expected message containing "${expectedError}"`);
+                if (!(error instanceof Error && error.message.includes(expectedError))) {
+                    throw new Error(`${operationName} threw "${error instanceof Error ? error.message : String(error)}", expected message containing "${expectedError}"`);
                 }
             } else {
-                if (error.constructor !== expectedError.constructor) {
-                    throw new Error(`${operationName} threw ${error.constructor.name}, expected ${expectedError.constructor.name}`);
+                if (!(error instanceof Error) || error.constructor !== expectedError.constructor) {
+                    throw new Error(`${operationName} threw ${error instanceof Error ? error.constructor.name : typeof error}, expected ${expectedError.constructor.name}`);
                 }
                 if (error.message !== expectedError.message) {
                     throw new Error(`${operationName} threw "${error.message}", expected "${expectedError.message}"`);
@@ -364,12 +364,12 @@ export abstract class UnitTestBase {
             throw new Error(`${operationName} should have rejected`);
         } catch (error) {
             if (typeof expectedError === 'string') {
-                if (!error.message.includes(expectedError)) {
-                    throw new Error(`${operationName} rejected with "${error.message}", expected message containing "${expectedError}"`);
+                if (!(error instanceof Error && error.message.includes(expectedError))) {
+                    throw new Error(`${operationName} rejected with "${error instanceof Error ? error.message : String(error)}", expected message containing "${expectedError}"`);
                 }
             } else {
-                if (error.constructor !== expectedError.constructor) {
-                    throw new Error(`${operationName} rejected with ${error.constructor.name}, expected ${expectedError.constructor.name}`);
+                if (!(error instanceof Error) || error.constructor !== expectedError.constructor) {
+                    throw new Error(`${operationName} rejected with ${error instanceof Error ? error.constructor.name : typeof error}, expected ${expectedError.constructor.name}`);
                 }
                 if (error.message !== expectedError.message) {
                     throw new Error(`${operationName} rejected with "${error.message}", expected "${expectedError.message}"`);
@@ -400,7 +400,7 @@ export abstract class UnitTestBase {
                     throw new Error(`${operationName} ${description}: expected ${testCase.expected}, got ${result}`);
                 }
             } catch (error) {
-                throw new Error(`${operationName} ${description} failed: ${error.message}`);
+                throw new Error(`${operationName} ${description} failed: ${error instanceof Error ? error.message : String(error)}`);
             }
         }
     }
@@ -427,7 +427,7 @@ export abstract class UnitTestBase {
                     throw new Error(`${operationName} ${description}: expected ${testCase.expected}, got ${result}`);
                 }
             } catch (error) {
-                throw new Error(`${operationName} ${description} failed: ${error.message}`);
+                throw new Error(`${operationName} ${description} failed: ${error instanceof Error ? error.message : String(error)}`);
             }
         }
     }
@@ -557,7 +557,7 @@ export abstract class UtilityTestBase extends UnitTestBase {
  */
 export abstract class ClassTestBase extends UnitTestBase {
     protected instance: any;
-    protected dependencies: Map<string, any>;
+    protected dependencies!: Map<string, any>;
 
     /**
      * Logic Step: Setup class test environment
