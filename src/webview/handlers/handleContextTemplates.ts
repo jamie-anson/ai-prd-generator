@@ -41,7 +41,7 @@ export async function handleGenerateContextTemplates(context: vscode.ExtensionCo
 
     // Logic Step: Use error handling wrapper for the entire generation process
     const result = await withErrorHandling(async () => {
-        await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: 'Generating Context Templates...', cancellable: false }, async (progress) => {
+        await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: 'Generating Code Templates...', cancellable: false }, async (progress) => {
             const prdContent = Buffer.from(await vscode.workspace.fs.readFile(prdFile)).toString('utf-8');
 
             progress.report({ message: 'Extracting features from PRD...', increment: 20 });

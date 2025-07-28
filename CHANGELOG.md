@@ -4,6 +4,37 @@ All notable changes to the "ai-prd-generator" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.4] - 2025-07-28
+
+### Added
+- **Intelligent Context Card Generator**: Completely redesigned context card generation to be proactive and intelligent
+- **Project Structure Analysis**: Analyzes manifest.json, PRD files, and existing artifacts to understand project needs
+- **Smart Context File Recommendations**: Determines what context files would be most valuable based on project type
+- **Comprehensive Context Files**: Generates up to 10 different types of context files:
+  - Architecture Overview - System design and architectural decisions
+  - Data Models Guide - Data structures and database schema
+  - API Specification - Endpoints, request/response formats
+  - User Flows Guide - User journeys and interaction patterns
+  - Component Structure - Frontend organization patterns
+  - Security Considerations - Security best practices
+  - Deployment Guide - Environment setup and deployment
+  - Testing Strategy - Quality assurance guidelines
+  - Code Standards - Coding conventions and best practices
+  - Project Glossary - Key terms and definitions
+- **Windsurf Agent Optimization**: Context files specifically designed to provide rich context for AI development assistance
+- **Project Type Detection**: Automatically detects web-app, mobile-app, API, or library projects
+- **Technology Stack Analysis**: Extracts tech stack information from PRD content
+
+### Changed
+- **Context Card Generation Approach**: Moved from analyzing existing source code to generating proactive guidance documents
+- **User Experience**: Context card generation now works on new projects without existing source code
+- **File Output**: Generates comprehensive markdown files with detailed guidance instead of simple code analysis
+
+### Fixed
+- **Webview Message Handling**: Added proper handlers for info, success, and error messages during context generation
+- **User Feedback**: Progress messages and completion notifications now display correctly
+- **Empty Project Support**: Context card generation now works effectively on projects with minimal existing code
+
 ## [0.1.1] - 2025-01-27
 
 ### Fixed

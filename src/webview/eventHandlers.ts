@@ -54,14 +54,14 @@ export function initializeEventHandlers(vscode: any): void {
         });
     }
 
-    // Bulk Generate Context Cards button
+    // Generate Development Guidelines button
     if (elements.bulkGenerateContextCardsButton) {
         elements.bulkGenerateContextCardsButton.addEventListener('click', () => {
             vscode.postMessage({ command: COMMANDS.GENERATE_CONTEXT_CARDS });
         });
     }
 
-    // Generate Context Templates button
+    // Generate Code Templates button
     if (elements.generateContextTemplatesButton) {
         elements.generateContextTemplatesButton.addEventListener('click', () => {
             vscode.postMessage({ command: COMMANDS.GENERATE_CONTEXT_TEMPLATES });
@@ -100,6 +100,37 @@ export function initializeEventHandlers(vscode: any): void {
     if (elements.generateCCSButton) {
         elements.generateCCSButton.addEventListener('click', () => {
             vscode.postMessage({ command: COMMANDS.GENERATE_CCS });
+        });
+    }
+
+    // Documentation & Testing section buttons
+    if (elements.generateComprehensiveReadmeButton) {
+        elements.generateComprehensiveReadmeButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_COMPREHENSIVE_README });
+        });
+    }
+
+    if (elements.generateCodebaseMapButton) {
+        elements.generateCodebaseMapButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_CODEBASE_MAP });
+        });
+    }
+
+    if (elements.generateTestingFrameworkButton) {
+        elements.generateTestingFrameworkButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_TESTING_FRAMEWORK });
+        });
+    }
+
+    if (elements.generateAiPromptingGuideButton) {
+        elements.generateAiPromptingGuideButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_AI_PROMPTING_GUIDE });
+        });
+    }
+
+    if (elements.generateAllCcsDocsButton) {
+        elements.generateAllCcsDocsButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_ALL_CCS_DOCS });
         });
     }
 }

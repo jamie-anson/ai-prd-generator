@@ -100,6 +100,13 @@ export interface UIElements {
     // CCS (Code Comprehension Score) Elements
     generateCCSButton: HTMLButtonElement;
     ccsResults: HTMLDivElement;
+    
+    // CCS Documentation & Testing Elements
+    generateComprehensiveReadmeButton: HTMLButtonElement;
+    generateCodebaseMapButton: HTMLButtonElement;
+    generateTestingFrameworkButton: HTMLButtonElement;
+    generateAiPromptingGuideButton: HTMLButtonElement;
+    generateAllCcsDocsButton: HTMLButtonElement;
 }
 
 /**

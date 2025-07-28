@@ -43,4 +43,11 @@ export const COMMANDS = {
 
     // Code Comprehension Score
     GENERATE_CCS: 'generate-ccs',
+
+    // CCS Documentation & Testing
+    GENERATE_COMPREHENSIVE_README: 'generate-comprehensive-readme',
+    GENERATE_CODEBASE_MAP: 'generate-codebase-map',
+    GENERATE_TESTING_FRAMEWORK: 'generate-testing-framework',
+    GENERATE_AI_PROMPTING_GUIDE: 'generate-ai-prompting-guide',
+    GENERATE_ALL_CCS_DOCS: 'generate-all-ccs-docs',
 };

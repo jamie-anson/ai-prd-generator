@@ -82,6 +82,30 @@ export function displayErrorMessage(errorMessage: string, errorType: UIError['ty
 }
 
 /**
+ * Logic Step: Display info message to user.
+ * Shows informational messages like progress updates during generation.
+ * @param infoMessage Info message to display
+ */
+export function displayInfoMessage(infoMessage: string): void {
+    if (elements.errorContainer) {
+        elements.errorContainer.innerHTML = `<div class="info-message" style="color: #0078d4; background: #f3f9ff; border: 1px solid #0078d4; padding: 8px; border-radius: 4px; margin: 8px 0;">${infoMessage}</div>`;
+        elements.errorContainer.style.display = 'block';
+    }
+}
+
+/**
+ * Logic Step: Display success message to user.
+ * Shows success messages when operations complete successfully.
+ * @param successMessage Success message to display
+ */
+export function displaySuccessMessage(successMessage: string): void {
+    if (elements.errorContainer) {
+        elements.errorContainer.innerHTML = `<div class="success-message" style="color: #107c10; background: #f3fff3; border: 1px solid #107c10; padding: 8px; border-radius: 4px; margin: 8px 0;">${successMessage}</div>`;
+        elements.errorContainer.style.display = 'block';
+    }
+}
+
+/**
  * Logic Step: Clear any displayed error messages.
  * Hides error container and clears its content safely.
  */
@@ -136,7 +160,7 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
 }
 
 /**
- * Logic Step: Update the Context Templates section visibility and button text with type safety.
+ * Logic Step: Update the Code Templates section visibility and button text with type safety.
  * Shows the section only if a PRD exists (required to generate templates).
  * Updates button text to indicate regeneration if templates already exist.
  * @param projectState Typed object containing project artifact detection results
@@ -144,7 +168,7 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
 function updateContextTemplatesSection(projectState: ProjectState): void {
     if (projectState.hasPRD) {
         const buttonConfig: ButtonConfig = {
-            text: projectState.hasContextTemplates ? 'Regenerate Context Templates' : 'Generate Context Templates',
+            text: projectState.hasContextTemplates ? 'Regenerate Code Templates' : 'Generate Code Templates',
             title: projectState.hasContextTemplates ? 'Context templates already exist. Click to regenerate them.' : 'Generate context templates from PRD',
             enabled: true,
             visible: true
@@ -164,7 +188,7 @@ function updateContextTemplatesSection(projectState: ProjectState): void {
 }
 
 /**
- * Logic Step: Update the Context Cards section visibility and button text with type safety.
+ * Logic Step: Update the Development Guidelines section visibility and button text with type safety.
  * Shows the section only if a PRD exists (required to generate context cards).
  * Updates button text to indicate regeneration if context cards already exist.
  * @param projectState Typed object containing project artifact detection results
@@ -172,7 +196,7 @@ function updateContextTemplatesSection(projectState: ProjectState): void {
 function updateContextCardsSection(projectState: ProjectState): void {
     if (projectState.hasPRD) {
         const buttonConfig: ButtonConfig = {
-            text: projectState.hasContextCards ? 'Regenerate Context Cards' : 'Bulk Generate Context Cards',
+            text: projectState.hasContextCards ? 'Regenerate Development Guidelines' : 'Generate Development Guidelines',
             title: projectState.hasContextCards ? 'Context cards already exist. Click to regenerate them.' : 'Generate context cards from PRD',
             enabled: true,
             visible: true

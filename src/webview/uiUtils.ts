@@ -115,6 +115,13 @@ export function initializeUIElements(): Partial<UIElements> {
         // CCS (Code Comprehension Score) Elements
         generateCCSButton: safeGetElement('generate-ccs', isButton) || undefined,
         ccsResults: safeGetElement('ccs-results', isDiv) || undefined,
+        
+        // CCS Documentation & Testing Elements
+        generateComprehensiveReadmeButton: safeGetElement('generate-comprehensive-readme', isButton) || undefined,
+        generateCodebaseMapButton: safeGetElement('generate-codebase-map', isButton) || undefined,
+        generateTestingFrameworkButton: safeGetElement('generate-testing-framework', isButton) || undefined,
+        generateAiPromptingGuideButton: safeGetElement('generate-ai-prompting-guide', isButton) || undefined,
+        generateAllCcsDocsButton: safeGetElement('generate-all-ccs-docs', isButton) || undefined,
     };
 }
 

@@ -141,18 +141,20 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <button id="view-graph">View Graph</button>
                 </div>
             </div>
-            <!-- Logic Step: Context Templates section with unique ID for context-aware visibility control -->
+            <!-- Logic Step: Code Templates section with unique ID for context-aware visibility control -->
             <div id="context-templates-section" class="controls-section">
-                <h2>Context Templates</h2>
+                <h2>Code Templates</h2>
+                <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Generate reusable code patterns and boilerplate templates for your project</p>
                 <div class="button-group">
-                    <button id="generate-context-templates">Generate Context Templates</button>
+                    <button id="generate-context-templates">Generate Code Templates</button>
                 </div>
             </div>
-            <!-- Logic Step: Context Cards section with unique ID for context-aware visibility control -->
+            <!-- Logic Step: Development Guidelines section with unique ID for context-aware visibility control -->
             <div id="context-cards-section" class="controls-section">
-                <h2>Context Cards</h2>
+                <h2>Development Guidelines</h2>
+                <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Create coding standards, best practices, and team conventions for your project</p>
                 <div class="button-group">
-                    <button id="bulk-generate-context-cards">Bulk Generate Context Cards</button>
+                    <button id="bulk-generate-context-cards">Generate Development Guidelines</button>
                 </div>
             </div>
             <div class="controls-section">
@@ -171,6 +173,22 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <button id="generate-ccs">Generate CCS Score</button>
                 </div>
                 <div id="ccs-results" class="hidden ccs-results"></div>
+            </div>
+            <!-- Logic Step: Documentation & Testing section for CCS improvement artifacts -->
+            <div id="documentation-testing-section" class="controls-section">
+                <h2>Documentation & Testing</h2>
+                <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Generate comprehensive documentation and testing frameworks to improve Code Comprehension Scores</p>
+                <div class="button-group">
+                    <button id="generate-comprehensive-readme">Generate README.md</button>
+                    <button id="generate-codebase-map">Generate Codebase Map</button>
+                </div>
+                <div class="button-group" style="margin-top: 10px;">
+                    <button id="generate-testing-framework">Generate Testing Framework</button>
+                    <button id="generate-ai-prompting-guide">Generate AI Prompting Guide</button>
+                </div>
+                <div class="button-group" style="margin-top: 10px;">
+                    <button id="generate-all-ccs-docs">Generate All CCS Documentation</button>
+                </div>
             </div>
         </div>
 

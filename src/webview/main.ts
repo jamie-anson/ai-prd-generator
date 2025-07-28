@@ -11,7 +11,7 @@
  * 5. Manage the communication bridge between the webview and VS Code extension.
  */
 
-import { elements, updateApiKeyDisplay, updateUIBasedOnProjectState, displayErrorMessage, displayCCSResults } from './ui';
+import { elements, updateApiKeyDisplay, updateUIBasedOnProjectState, displayErrorMessage, displayInfoMessage, displaySuccessMessage, displayCCSResults } from './ui';
 import { MessageRouter } from './router';
 import { initializeEventHandlers } from './eventHandlers';
 import { ExtensionToWebviewMessage, ProjectState, isValidProjectState } from './types';
@@ -49,7 +49,7 @@ const vscode = (window as any).acquireVsCodeApi();
         
         try {
             switch (message.command) {
-                case 'api-key-status':
+                case 'apiKeyStatus':
                     console.log('[UI] API key status received:', message.hasApiKey);
                     if (typeof message.hasApiKey === 'boolean') {
                         updateApiKeyDisplay(message.hasApiKey);
@@ -75,6 +75,34 @@ const vscode = (window as any).acquireVsCodeApi();
                     } else {
                         console.error('Invalid ccsGenerated message format:', message);
                         displayErrorMessage('Invalid CCS analysis data received', 'validation');
+                    }
+                    break;
+                    
+                case 'info':
+                    if (message.text && typeof message.text === 'string') {
+                        console.log('[INFO]', message.text);
+                        displayInfoMessage(message.text);
+                    } else {
+                        console.error('Invalid info message format:', message);
+                    }
+                    break;
+                    
+                case 'success':
+                    if (message.text && typeof message.text === 'string') {
+                        console.log('[SUCCESS]', message.text);
+                        displaySuccessMessage(message.text);
+                    } else {
+                        console.error('Invalid success message format:', message);
+                    }
+                    break;
+                    
+                case 'error':
+                    if (message.text && typeof message.text === 'string') {
+                        console.error('[ERROR]', message.text);
+                        displayErrorMessage(message.text, 'generation');
+                    } else {
+                        console.error('Invalid error message format:', message);
+                        displayErrorMessage('Unknown error occurred', 'generation');
                     }
                     break;
                     
