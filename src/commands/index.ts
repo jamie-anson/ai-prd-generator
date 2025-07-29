@@ -29,7 +29,7 @@ import { registerViewContextCardsCommand } from './viewContextCards';
 export function registerAllCommands(context: vscode.ExtensionContext) {
     registerGeneratePrdCommand(context);
     registerViewPrdCommand(context);
-    registerViewDiagramCommand(context);  // Added for visual diagram rendering
+    registerViewDiagramCommand(context);
     registerGenerateContextCardsCommand(context);
     registerViewContextCardsCommand(context);
 }

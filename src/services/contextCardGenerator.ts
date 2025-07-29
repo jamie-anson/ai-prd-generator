@@ -620,7 +620,7 @@ export class TypeScriptContextCardGenerator {
             const { extends: extendsClass, implements: implementsInterfaces } = 
                 await this.parseClassDeclaration(symbol, document);
 
-            if (extendsClass) dependencies.add(extendsClass);
+            if (extendsClass) {dependencies.add(extendsClass);}
             implementsInterfaces.forEach(impl => dependencies.add(impl));
 
             return {
@@ -771,7 +771,7 @@ export class TypeScriptContextCardGenerator {
      * Extract signature from hover information
      */
     private extractSignatureFromHover(hovers: vscode.Hover[] | undefined): string | undefined {
-        if (!hovers || hovers.length === 0) return undefined;
+        if (!hovers || hovers.length === 0) {return undefined;}
 
         for (const hover of hovers) {
             for (const content of hover.contents) {
@@ -790,7 +790,7 @@ export class TypeScriptContextCardGenerator {
      * Extract documentation from hover information
      */
     private extractDocumentationFromHover(hovers: vscode.Hover[] | undefined): string | undefined {
-        if (!hovers || hovers.length === 0) return undefined;
+        if (!hovers || hovers.length === 0) {return undefined;}
 
         for (const hover of hovers) {
             for (const content of hover.contents) {

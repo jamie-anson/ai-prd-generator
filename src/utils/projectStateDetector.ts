@@ -104,20 +104,26 @@ export class ProjectStateDetector {
         const ccsFiles = await this.findCCSFiles(workspaceUri);
         console.log('[ProjectStateDetector] CCS files found:', ccsFiles.map(f => f.fsPath));
 
-        // Detect diagram files
-        // Logic Step: Detect diagram files in the context templates directory
-        const hasDataFlowDiagram = await this.checkDiagramExists(workspaceUri, 'data_flow_diagram.md');
-        const hasComponentHierarchy = await this.checkDiagramExists(workspaceUri, 'component_hierarchy.md');
+        // Detect diagram files with error handling
+        let hasDataFlowDiagram = false;
+        let hasComponentHierarchy = false;
         
-        /**
-         * Logic Step: Log diagram detection results for debugging.
-         * These debug logs help diagnose UI state issues where diagram files exist
-         * but buttons don't switch from "Generate" to "View" mode. Can be removed
-         * in production once diagram detection is stable.
-         */
-        console.log(`[ProjectStateDetector] Detection results:`);
-        console.log(`[ProjectStateDetector] - hasDataFlowDiagram: ${hasDataFlowDiagram}`);
-        console.log(`[ProjectStateDetector] - hasComponentHierarchy: ${hasComponentHierarchy}`);
+        try {
+            // Logic Step: Detect diagram files in the context templates directory
+            hasDataFlowDiagram = await this.checkDiagramExists(workspaceUri, 'data_flow_diagram.md');
+            hasComponentHierarchy = await this.checkDiagramExists(workspaceUri, 'component_hierarchy.md');
+            
+            // Log diagram detection results for debugging
+            console.log(`[ProjectStateDetector] Detection results:`);
+            console.log(`[ProjectStateDetector] - hasDataFlowDiagram: ${hasDataFlowDiagram}`);
+            console.log(`[ProjectStateDetector] - hasComponentHierarchy: ${hasComponentHierarchy}`);
+        } catch (error) {
+            // If there's an error detecting diagrams, log it but don't fail the entire operation
+            console.error('[ProjectStateDetector] Error detecting diagram files:', error);
+            console.log('[ProjectStateDetector] Continuing with diagram detection disabled');
+            hasDataFlowDiagram = false;
+            hasComponentHierarchy = false;
+        }
 
         return {
             hasPRD: prdFiles.length > 0,
@@ -260,24 +266,37 @@ export class ProjectStateDetector {
     private static async checkDiagramExists(workspaceUri: vscode.Uri, fileName: string): Promise<boolean> {
         try {
             // Get user-configured path using configuration manager
-            
             const diagramDir = getDiagramOutputPath(workspaceUri);
+            
+            // First, check if the directory exists
+            try {
+                await vscode.workspace.fs.stat(diagramDir);
+            } catch (dirError) {
+                console.log(`[ProjectStateDetector] Diagram directory not found at ${diagramDir.fsPath}`);
+                return false;
+            }
+            
             const diagramPath = vscode.Uri.joinPath(diagramDir, fileName);
             
-            /**
-             * Logic Step: Debug logging for diagram file detection.
-             * These logs help diagnose path resolution and file existence issues
-             * when diagram files exist but aren't being detected by the UI.
-             */
+            // Debug logging for diagram file detection
             console.log(`[ProjectStateDetector] Checking diagram: ${fileName}`);
             console.log(`[ProjectStateDetector] Full path: ${diagramPath.fsPath}`);
             
             // Check if file exists
-            await vscode.workspace.fs.stat(diagramPath);
-            console.log(`[ProjectStateDetector] ✅ Found diagram: ${fileName}`);
-            return true;
+            try {
+                await vscode.workspace.fs.stat(diagramPath);
+                console.log(`[ProjectStateDetector] ✅ Found diagram: ${fileName}`);
+                return true;
+            } catch (fileError) {
+                if (fileError instanceof vscode.FileSystemError) {
+                    console.log(`[ProjectStateDetector] ❌ Diagram file not found: ${fileName}`);
+                } else {
+                    console.error(`[ProjectStateDetector] ❌ Error checking diagram file ${fileName}:`, fileError);
+                }
+                return false;
+            }
         } catch (error) {
-            console.log(`[ProjectStateDetector] ❌ Diagram not found: ${fileName} - ${error}`);
+            console.error(`[ProjectStateDetector] ❌ Unexpected error in checkDiagramExists for ${fileName}:`, error);
             return false;
         }
     }

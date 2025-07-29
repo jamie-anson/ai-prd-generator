@@ -9,10 +9,7 @@ import { handleGenerateDataFlowDiagram } from '../../webview/handlers/handleData
 import { handleGenerateComponentHierarchy } from '../../webview/handlers/handleComponentHierarchy';
 import { handleViewDataFlowDiagram, handleViewComponentHierarchy } from '../../webview/handlers/handleViewDiagrams';
 import { handleGenerateCCS } from '../../webview/handlers/handleGenerateCCS';
-import { 
-    CcsDocumentationHandlerRegistry,
-    handleGenerateAllCcsDocs
-} from '../../webview/handlers/ccsDocumentationRegistry';
+import { handleCcsDocumentation } from '../../webview/handlers/handleCcsDocumentation';
 import { COMMANDS } from '../../webview/commands';
 
 /**
@@ -76,10 +73,12 @@ export function createPrdMessageHandler(): MessageRouter {
         return handleGenerateCCS(message, context, webview);
     });
 
-    // Register CCS Documentation Generation Handlers - Registry-based
-    const ccsRegistry = new CcsDocumentationHandlerRegistry();
-    ccsRegistry.registerAllHandlers(router);
-    router.register(COMMANDS.GENERATE_ALL_CCS_DOCS, handleGenerateAllCcsDocs);
+    // Register the unified documentation generation handler
+    router.register(COMMANDS.GENERATE_COMPREHENSIVE_README, handleCcsDocumentation);
+    router.register(COMMANDS.GENERATE_CODEBASE_MAP, handleCcsDocumentation);
+    router.register(COMMANDS.GENERATE_TESTING_FRAMEWORK, handleCcsDocumentation);
+    router.register(COMMANDS.GENERATE_AI_PROMPTING_GUIDE, handleCcsDocumentation);
+    router.register(COMMANDS.GENERATE_ALL_CCS_DOCS, handleCcsDocumentation);
 
     return router;
 }

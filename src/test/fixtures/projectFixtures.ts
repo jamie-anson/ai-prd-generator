@@ -6,7 +6,11 @@
  * for consistent testing across all project state detection and UI tests.
  */
 
-import { ProjectState } from '../../webview/types';
+import { ProjectState } from "../../webview/types";
+
+function getPathFromUri(uri: string | { fsPath: string }): string {
+    return typeof uri === 'string' ? uri : uri.fsPath;
+}
 
 /**
  * Standard project state scenarios for testing
@@ -209,7 +213,7 @@ export class FileSystemFixtures {
         // Add PRD files
         if (projectState.hasPRD && projectState.prdFiles.length > 0) {
             files['/workspace/mise-en-place-output/prd'] = projectState.prdFiles.map(
-                uri => uri.fsPath.split('/').pop() || ''
+                uri => getPathFromUri(uri).split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('prd');
         }
@@ -217,7 +221,7 @@ export class FileSystemFixtures {
         // Add context card files
         if (projectState.hasContextCards && projectState.contextCardFiles.length > 0) {
             files['/workspace/mise-en-place-output/context-cards'] = projectState.contextCardFiles.map(
-                uri => uri.fsPath.split('/').pop() || ''
+                uri => getPathFromUri(uri).split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('context-cards');
         }
@@ -225,7 +229,7 @@ export class FileSystemFixtures {
         // Add context template files
         if (projectState.hasContextTemplates && projectState.contextTemplateFiles.length > 0) {
             files['/workspace/mise-en-place-output/context-templates'] = projectState.contextTemplateFiles.map(
-                uri => uri.fsPath.split('/').pop() || ''
+                uri => getPathFromUri(uri).split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('context-templates');
         }
@@ -234,10 +238,10 @@ export class FileSystemFixtures {
         if (projectState.hasDataFlowDiagram || projectState.hasComponentHierarchy) {
             const diagramFiles: string[] = [];
             if (projectState.hasDataFlowDiagram) {
-                diagramFiles.push(...projectState.dataFlowDiagramFiles.map(uri => uri.fsPath.split('/').pop() || ''));
+                                diagramFiles.push(...projectState.dataFlowDiagramFiles.map(uri => getPathFromUri(uri).split('/').pop() || ''));
             }
             if (projectState.hasComponentHierarchy) {
-                diagramFiles.push(...projectState.componentHierarchyFiles.map(uri => uri.fsPath.split('/').pop() || ''));
+                                diagramFiles.push(...projectState.componentHierarchyFiles.map(uri => getPathFromUri(uri).split('/').pop() || ''));
             }
             files['/workspace/mise-en-place-output/diagrams'] = diagramFiles;
             files['/workspace/mise-en-place-output'].push('diagrams');
@@ -246,7 +250,7 @@ export class FileSystemFixtures {
         // Add CCS files
         if (projectState.hasCCS && projectState.ccsFiles.length > 0) {
             files['/workspace/mise-en-place-output/ccs'] = projectState.ccsFiles.map(
-                uri => uri.fsPath.split('/').pop() || ''
+                uri => getPathFromUri(uri).split('/').pop() || ''
             );
             files['/workspace/mise-en-place-output'].push('ccs');
         }

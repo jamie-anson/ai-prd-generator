@@ -22,8 +22,8 @@ const TEST_CONFIG = {
     },
     testPaths: {
         unit: 'out/test/unit/**/*.test.js',
-        integration: 'src/test/integration/**/*.test.ts',
-        'webview-ui': 'src/test/integration/webview/**/*.test.ts',
+        integration: 'out/test/integration/**/*.test.js',
+        'webview-ui': 'out/test/integration/webview/**/*.test.js',
         extension: 'out/test/extension/**/*.test.js',
         smoke: 'out/test/smoke/**/*.test.js',
         all: 'out/test/**/*.test.js'
@@ -37,8 +37,9 @@ function runTests(testType = 'all', options = {}) {
     return new Promise((resolve, reject) => {
         const testPath = TEST_CONFIG.testPaths[testType] || TEST_CONFIG.testPaths.all;
         
+        const extensionTestsPath = path.resolve(process.cwd(), 'out/test/suite/extension.test.js');
         const args = [
-            'test',
+            '--extensionTestsPath', extensionTestsPath,
             '--files', testPath,
             '--timeout', TEST_CONFIG.timeout.toString()
         ];

@@ -59,24 +59,45 @@ export class CcsDocumentationPromptService {
      * @returns Formatted analysis string for prompt inclusion
      */
     private formatCodebaseAnalysis(analysis: CodebaseAnalysisData): string {
-        const mainDirectories = analysis.sampleFiles
+        // Ensure we have valid analysis data
+        if (!analysis) {
+            return 'Project Analysis: No analysis data available';
+        }
+
+        // Safely handle sample files
+        const sampleFiles = analysis.sampleFiles || [];
+        const mainDirectories = sampleFiles
+            .filter(file => file?.relativePath) // Filter out invalid entries
             .map(f => path.dirname(f.relativePath))
-            .filter((v, i, a) => a.indexOf(v) === i)
+            .filter((v, i, a) => v && a.indexOf(v) === i) // Ensure unique, non-null values
             .slice(0, 10)
             .join(', ');
 
+        // Safely format languages array
+        const languages = Array.isArray(analysis.languages) && analysis.languages.length > 0 
+            ? analysis.languages.join(', ') 
+            : 'No languages detected';
+
+        // Safely format sample files list
+        const sampleFilesList = sampleFiles.length > 0
+            ? sampleFiles
+                .filter(file => file?.relativePath) // Filter out invalid entries
+                .map(file => `- ${file.relativePath} (${file.language || 'unknown'}) - ${file.lines || 0} lines`)
+                .join('\n')
+            : 'No sample files available';
+
         return `Project Analysis:
-- Total Files: ${analysis.totalFiles}
-- Code Files: ${analysis.codeFiles}
-- Languages: ${analysis.languages.join(', ')}
-- Directory Structure Depth: ${analysis.maxDepth}
-- Has Tests: ${analysis.hasTests}
-- Has Documentation: ${analysis.hasDocumentation}
-- Has TypeScript: ${analysis.hasTypeScript}
-- Main Directories: ${mainDirectories}
+- Total Files: ${analysis.totalFiles || 0}
+- Code Files: ${analysis.codeFiles || 0}
+- Languages: ${languages}
+- Directory Structure Depth: ${analysis.maxDepth || 0}
+- Has Tests: ${analysis.hasTests ? 'Yes' : 'No'}
+- Has Documentation: ${analysis.hasDocumentation ? 'Yes' : 'No'}
+- Has TypeScript: ${analysis.hasTypeScript ? 'Yes' : 'No'}
+- Main Directories: ${mainDirectories || 'None detected'}
 
 Sample Files:
-${analysis.sampleFiles.map(file => `- ${file.relativePath} (${file.language}) - ${file.lines} lines`).join('\n')}`;
+${sampleFilesList}`;
     }
 
     /**

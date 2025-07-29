@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
 import { PrdJson } from '../utils/types';
 import { getStyledPrdWebviewContent, getStyledMdViewerWebviewContent, getGraphViewerWebviewContent } from '../utils/webview';
+import { registerCommandOnce } from './commandRegistry';
 
 export function registerViewPrdCommand(context: vscode.ExtensionContext) {
-    const command = vscode.commands.registerCommand('ai-prd-generator.viewPrd', async (filePath: string, viewType: 'json' | 'markdown' | 'graph' | 'styled') => {
+    registerCommandOnce('ai-prd-generator.viewPrd', async (filePath: string, viewType: 'json' | 'markdown' | 'graph' | 'styled') => {
         if (!filePath) {
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (!workspaceFolders) {
@@ -65,7 +66,5 @@ export function registerViewPrdCommand(context: vscode.ExtensionContext) {
             console.error('Error reading or parsing PRD file:', error);
             vscode.window.showErrorMessage(`Failed to open PRD viewer: ${error.message}`);
         }
-    });
-
-    context.subscriptions.push(command);
+    }, context);
 }

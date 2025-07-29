@@ -4,6 +4,27 @@ All notable changes to the "ai-prd-generator" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.11] - 2025-07-28
+
+### Fixed
+- **TypeScript Test Suite**: Resolved 37+ TypeScript errors across test files
+- **Error Handling**: Added comprehensive unknown error type checking in catch blocks
+- **Dependency Resolution**: Removed @types/glob in favor of built-in glob types
+- **Test Stability**: Fixed property initialization issues in test base classes
+- **Type Safety**: Added proper type assertions and null checks
+
+### Improved
+- **Test Coverage**: Enhanced test reliability and maintainability
+- **Code Quality**: Added defensive programming patterns throughout test suite
+- **Build Process**: Clean TypeScript compilation with strict type checking
+- **Dependency Management**: Resolved version conflicts in test dependencies
+
+### Technical
+- **Test Infrastructure**: Improved mock implementations and test isolation
+- **Type Definitions**: Enhanced type safety in test utilities and fixtures
+- **Error Messages**: More descriptive error reporting in test failures
+
+
 ## [0.1.4] - 2025-07-28
 
 ### Added

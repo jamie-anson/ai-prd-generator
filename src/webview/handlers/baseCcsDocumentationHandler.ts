@@ -66,7 +66,6 @@ export abstract class BaseCcsDocumentationHandler {
         protected context: vscode.ExtensionContext,
         protected webview: vscode.Webview
     ) {
-        this.openAiService = new OpenAiService(context);
         this.analysisService = new CodebaseAnalysisService();
     }
 
@@ -154,7 +153,8 @@ export abstract class BaseCcsDocumentationHandler {
             return false;
         }
 
-        // Logic Step: OpenAI service already initialized in constructor
+        // Logic Step: Initialize OpenAI service with the retrieved key
+        this.openAiService = new OpenAiService(apiKey);
 
         // Logic Step: Validate workspace folder
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
@@ -256,17 +256,65 @@ export abstract class BaseCcsDocumentationHandler {
      * @returns string - Formatted codebase analysis for AI prompts
      */
     protected formatCodebaseAnalysisForPrompt(codebaseAnalysis: any): string {
-        return `Project Analysis:
-- Total Files: ${codebaseAnalysis.totalFiles}
-- Code Files: ${codebaseAnalysis.codeFiles}
-- Languages: ${codebaseAnalysis.languages.join(', ')}
-- Directory Structure Depth: ${codebaseAnalysis.maxDepth}
-- Has Tests: ${codebaseAnalysis.hasTests}
-- Has Documentation: ${codebaseAnalysis.hasDocumentation}
-- Has TypeScript: ${codebaseAnalysis.hasTypeScript}
+        if (!codebaseAnalysis) {
+            return 'No codebase analysis data available.';
+        }
 
-Sample Files:
-${codebaseAnalysis.sampleFiles.map(file => `- ${file.relativePath} (${file.language}) - ${file.lines} lines`).join('\n')}`;
+        const sections: string[] = [];
+        
+        // Basic project info
+        sections.push('## Project Analysis');
+        
+        // Add metrics with null checks
+        if (codebaseAnalysis.totalFiles !== undefined) {
+            sections.push(`- Total Files: ${codebaseAnalysis.totalFiles}`);
+        }
+        
+        if (codebaseAnalysis.codeFiles !== undefined) {
+            sections.push(`- Code Files: ${codebaseAnalysis.codeFiles}`);
+        }
+        
+        // Handle languages array safely
+        if (Array.isArray(codebaseAnalysis.languages) && codebaseAnalysis.languages.length > 0) {
+            sections.push(`- Languages: ${codebaseAnalysis.languages.join(', ')}`);
+        } else if (codebaseAnalysis.language) {
+            sections.push(`- Language: ${codebaseAnalysis.language}`);
+        }
+        
+        // Add other metrics if they exist
+        if (codebaseAnalysis.maxDepth !== undefined) {
+            sections.push(`- Directory Structure Depth: ${codebaseAnalysis.maxDepth}`);
+        }
+        
+        if (codebaseAnalysis.hasTests !== undefined) {
+            sections.push(`- Has Tests: ${codebaseAnalysis.hasTests ? 'Yes' : 'No'}`);
+        }
+        
+        if (codebaseAnalysis.hasDocumentation !== undefined) {
+            sections.push(`- Has Documentation: ${codebaseAnalysis.hasDocumentation ? 'Yes' : 'No'}`);
+        }
+        
+        if (codebaseAnalysis.hasTypeScript !== undefined) {
+            sections.push(`- Uses TypeScript: ${codebaseAnalysis.hasTypeScript ? 'Yes' : 'No'}`);
+        }
+        
+        // Add sample files if available
+        if (Array.isArray(codebaseAnalysis.sampleFiles) && codebaseAnalysis.sampleFiles.length > 0) {
+            sections.push(
+                '\n## Sample Files\n' +
+                codebaseAnalysis.sampleFiles
+                    .filter((file: any) => file && file.relativePath)
+                    .map((file: any) => {
+                        const parts = [`- ${file.relativePath}`];
+                        if (file.language) {parts.push(`(${file.language})`);}
+                        if (file.lines) {parts.push(`- ${file.lines} lines`);}
+                        return parts.join(' ');
+                    })
+                    .join('\n')
+            );
+        }
+        
+        return sections.join('\n');
     }
 
     // Abstract methods that subclasses must implement

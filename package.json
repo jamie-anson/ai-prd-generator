@@ -2,7 +2,7 @@
   "name": "ai-prd-generator",
   "displayName": "Mise-en-Place",
   "description": "AI-Powered PRD Generator",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "publisher": "jammie-anson",
   "engines": {
     "vscode": "^1.89.0"
@@ -14,9 +14,7 @@
     "type": "git",
     "url": "https://github.com/johndoe/ai-prd-generator.git"
   },
-  "activationEvents": [
-    "onCommand:ai-prd-generator.generatePrd"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -52,36 +50,18 @@
     }
   },
   "scripts": {
-    "comment-index": "node scripts/generate-comment-index.js",
-    "codebase-graph": "node scripts/generate-codebase-graph.js",
-    "vscode:prepublish": "npm run build",
-    "clean": "rm -rf dist",
-    "clean-all": "rm -rf dist out coverage",
-    "build": "npm run clean && node esbuild.js",
-    "compile": "npm run clean && npm run check-types && npm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run check-types && npm run lint && node esbuild.js",
-    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist out coverage",
     "lint": "eslint src --ext .ts",
-    "test": "node scripts/test.js all",
-    "test:unit": "node scripts/test.js unit",
-    "test:integration": "node scripts/test.js integration",
-    "test:extension": "node scripts/test.js extension",
-    "test:smoke": "node scripts/test.js smoke",
-    "test:ui-state": "npx mocha --require ts-node/register src/test/integration/webview/uiState.test.ts --timeout 10000",
-    "test:tolowercase-safety": "npx mocha --require ts-node/register src/test/regression/toLowerCaseSafety.test.ts --timeout 10000",
-    "test:coverage": "node scripts/test.js all --coverage",
-    "test:watch": "node scripts/test.js all --watch",
-    "test:ci": "npm run pretest && npm run test:coverage && npm run test:smoke",
-    "test:full": "npm run test:ci && npm run validate:deps",
-    "validate:deps": "node scripts/validate-dependencies.js",
-    "prepackage": "npm run validate:deps && npm run test:smoke",
-    "test:analyzer": "echo 'Analyzer temporarily disabled due to dependency issues'"
+    "check-types": "tsc --noEmit",
+    "compile:extension": "node esbuild.js",
+    "compile:tests": "tsc -p . --outDir out",
+    "build": "npm run clean && npm run lint && npm run check-types && npm run compile:tests && npm run compile:extension",
+    "test": "node scripts/run-tests.js",
+    "package": "npm run build && vsce package --no-dependencies",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tests": "tsc -p . -w --outDir out",
+    "comment-index": "node scripts/generate-comment-index.js",
+    "codebase-graph": "node scripts/generate-codebase-graph.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
@@ -89,6 +69,7 @@
     "@types/markdown-it": "^14.1.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/proxyquire": "^1.3.31",
     "@types/sinon": "^17.0.4",
     "@types/vscode": "^1.89.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
@@ -102,6 +83,7 @@
     "jsdom": "^26.1.0",
     "markdown-it": "^14.1.0",
     "npm-run-all": "^4.1.5",
+    "proxyquire": "^2.1.3",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

@@ -100,7 +100,7 @@ describe('toLowerCase Safety Regression Tests', () => {
 
             const unprotectedUsages = toLowerCaseUsages.filter(usage => {
                 // Skip if already marked as unsafe for other reasons
-                if (!usage.isSafe) return false;
+                if (!usage.isSafe) {return false;}
                 
                 // Check if the line contains any defensive patterns
                 return !defensivePatterns.some(pattern => pattern.test(usage.content));

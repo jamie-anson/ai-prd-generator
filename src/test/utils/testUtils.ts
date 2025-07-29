@@ -18,7 +18,12 @@ export class VSCodeMocks {
         getConfiguration: sinon.stub(),
         workspaceFolders: [{ uri: { fsPath: '/test/workspace' } }],
         findFiles: sinon.stub(),
-        onDidChangeConfiguration: sinon.stub()
+        onDidChangeConfiguration: sinon.stub(),
+        fs: {
+            stat: sinon.stub(),
+            readDirectory: sinon.stub(),
+            readFile: sinon.stub(),
+        },
     };
 
     public static window = {
@@ -29,9 +34,17 @@ export class VSCodeMocks {
         withProgress: sinon.stub()
     };
 
+    private static _registeredCommands: string[] = [];
+
     public static commands = {
-        registerCommand: sinon.stub(),
-        executeCommand: sinon.stub()
+        registerCommand: sinon.stub().callsFake((command: string, callback: (...args: any[]) => any) => {
+            VSCodeMocks._registeredCommands.push(command);
+            return { dispose: () => {} };
+        }),
+        executeCommand: sinon.stub(),
+        getCommands: sinon.stub().callsFake(() => {
+            return Promise.resolve(VSCodeMocks._registeredCommands);
+        }),
     };
 
     public static Uri = {
@@ -71,20 +84,29 @@ export class VSCodeMocks {
         if (typeof this.workspace.onDidChangeConfiguration.reset === 'function') {
             this.workspace.onDidChangeConfiguration.reset();
         }
+
+        if (this.workspace.fs) {
+            Object.values(this.workspace.fs).forEach(stub => {
+                if (typeof stub.reset === 'function') {
+                    stub.reset();
+                }
+            });
+        }
         
         // Reset window stubs
         Object.values(this.window).forEach(stub => {
-            if (typeof stub.reset === 'function') stub.reset();
+            if (typeof stub.reset === 'function') {stub.reset();}
         });
         
         // Reset command stubs
-        Object.values(this.commands).forEach(stub => {
-            if (typeof stub.reset === 'function') stub.reset();
-        });
+        this.commands.registerCommand.resetHistory();
+        this.commands.executeCommand.resetHistory();
+        this.commands.getCommands.resetHistory();
+        this._registeredCommands = [];
         
         // Reset Uri stubs
         Object.values(this.Uri).forEach(stub => {
-            if (typeof stub.reset === 'function') stub.reset();
+            if (typeof stub.reset === 'function') {stub.reset();}
         });
     }
 
@@ -246,16 +268,16 @@ export class FileSystemMocks {
      */
     public static mockProjectFiles(state: Partial<ProjectState>): void {
         this.pathExists.callsFake((path: string) => {
-            if (path.includes('prd') && state.hasPRD) return Promise.resolve(true);
-            if (path.includes('context-cards') && state.hasContextCards) return Promise.resolve(true);
-            if (path.includes('context-templates') && state.hasContextTemplates) return Promise.resolve(true);
+            if (path.includes('prd') && state.hasPRD) {return Promise.resolve(true);}
+            if (path.includes('context-cards') && state.hasContextCards) {return Promise.resolve(true);}
+            if (path.includes('context-templates') && state.hasContextTemplates) {return Promise.resolve(true);}
             return Promise.resolve(false);
         });
 
         this.readdir.callsFake((path: string) => {
-            if (path.includes('prd')) return Promise.resolve(state.prdCount ? ['prd1.md'] : []);
-            if (path.includes('context-cards')) return Promise.resolve(state.contextCardCount ? ['card1.md'] : []);
-            if (path.includes('context-templates')) return Promise.resolve(state.contextTemplateCount ? ['template1.md'] : []);
+            if (path.includes('prd')) {return Promise.resolve(state.prdCount ? ['prd1.md'] : []);}
+            if (path.includes('context-cards')) {return Promise.resolve(state.contextCardCount ? ['card1.md'] : []);}
+            if (path.includes('context-templates')) {return Promise.resolve(state.contextTemplateCount ? ['template1.md'] : []);}
             return Promise.resolve([]);
         });
     }

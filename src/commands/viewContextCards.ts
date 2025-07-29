@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
+import { registerCommandOnce } from './commandRegistry';
 
 export function registerViewContextCardsCommand(context: vscode.ExtensionContext) {
-    const command = vscode.commands.registerCommand('ai-prd-generator.viewContextCards', async () => {
+    registerCommandOnce('ai-prd-generator.viewContextCards', async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
         if (!workspaceFolders) {
             vscode.window.showErrorMessage('No workspace folder open.');
@@ -28,7 +29,5 @@ export function registerViewContextCardsCommand(context: vscode.ExtensionContext
             console.log('Could not read context card directory, likely does not exist yet.');
             vscode.window.showInformationMessage('No context cards have been generated yet.');
         }
-    });
-
-    context.subscriptions.push(command);
+    }, context);
 }

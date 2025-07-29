@@ -9,14 +9,14 @@ import { getPrdSystemPrompt } from '../prompts/prdGeneration';
  * and provides standardized error handling for all AI-powered features.
  */
 export class OpenAiService {
-    private client: OpenAI;
+    private openai: OpenAI;
 
         /**
      * Initializes a new instance of the OpenAiService.
      * @param apiKey The OpenAI API key used for authentication.
      */
     constructor(apiKey: string) {
-        this.client = new OpenAI({ apiKey });
+        this.openai = new OpenAI({ apiKey });
     }
 
         /**
@@ -38,12 +38,12 @@ export class OpenAiService {
         }
 
         try {
-            const response = await this.client.chat.completions.create({
+            const completion = await this.openai.chat.completions.create({
                 model: model,
                 messages: messages,
                 response_format: jsonMode ? { type: 'json_object' } : { type: 'text' },
             });
-            return response.choices?.[0]?.message?.content ?? null;
+            return completion.choices?.[0]?.message?.content ?? null;
         } catch (error) {
             console.error('Error calling OpenAI API:', error);
             vscode.window.showErrorMessage(`Error calling OpenAI API: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -80,9 +80,24 @@ export class OpenAiService {
      * @param prompt The prompt to send to the AI.
      * @returns A promise that resolves with the generated text, or an empty string if the API returns no content.
      */
-    public async generateText(prompt: string): Promise<string> {
-        const response = await this.baseApiCall(prompt);
+    public async generateText(prompt: string, systemPrompt?: string): Promise<string> {
+        const response = await this.baseApiCall(prompt, systemPrompt);
         return response ?? '';
+    }
+
+    /**
+     * Validates the OpenAI API key by making a lightweight API call.
+     * @returns {Promise<boolean>} - True if the API key is valid, false otherwise.
+     */
+    async validateApiKey(): Promise<boolean> {
+        try {
+            // Make a simple, low-cost API call to validate the key
+            await this.openai.models.list();
+            return true;
+        } catch (error) {
+            console.error('API key validation failed:', error);
+            return false;
+        }
     }
 }
 

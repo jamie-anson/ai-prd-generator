@@ -9,14 +9,23 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
+import * as proxyquire from 'proxyquire';
 import { TestSetup, VSCodeMocks, OpenAIMocks, FileSystemMocks, TestDataFactory } from '../../utils/testUtils';
 import { testConfig } from '../../test.config';
 
 describe('Generate PRD Command Extension Tests', () => {
-    
+    let activate: (context: vscode.ExtensionContext) => Promise<void>;
+    let mockContext: vscode.ExtensionContext;
+
     beforeEach(() => {
         TestSetup.beforeEach();
-        TestSetup.setupIntegrationTest();
+        mockContext = VSCodeMocks.createMockExtensionContext();
+
+        // Logic Step: Use proxyquire to load the extension with our shared mocks
+        const extensionModule = proxyquire.load('../../../extension', {
+            'vscode': VSCodeMocks
+        });
+        activate = extensionModule.activate;
     });
 
     afterEach(() => {
@@ -25,89 +34,46 @@ describe('Generate PRD Command Extension Tests', () => {
 
     it('should register PRD generation command', async function(this: any) {
         this.timeout(testConfig.timeouts.extension);
-        
-        // Logic Step: Import and simulate extension activation
-        const { activate } = require('../../../extension');
-        const mockContext = VSCodeMocks.createMockExtensionContext();
-        
-        // Logic Step: Mock command registration
+
         const registerCommandStub = VSCodeMocks.commands.registerCommand;
-        
-        try {
-            // Logic Step: Activate extension to register commands
-            await activate(mockContext);
-            
-            // Logic Step: Verify command was registered
-            assert.ok(registerCommandStub.called, 'Command should be registered during activation');
-            
-            // Logic Step: Verify the correct command name was registered
-            const commandCalls = registerCommandStub.getCalls();
-            const prdCommand = commandCalls.find(call => call.args[0] === 'ai-prd-generator.generatePrd');
-            assert.ok(prdCommand, 'PRD generation command should be registered');
-        } catch (error) {
-            // Logic Step: If activation fails, manually register command for test
-            console.warn('Extension activation failed, manually registering command for test:', error);
-            registerCommandStub('ai-prd-generator.generatePrd', () => {});
-            assert.ok(registerCommandStub.called, 'Command should be registered');
-        }
+
+        // Logic Step: Activate extension to register commands
+        await activate(mockContext);
+
+        // Logic Step: Verify command was registered
+        assert.ok(registerCommandStub.calledWith('ai-prd-generator.generatePrd'), 'PRD generation command should be registered');
     });
 
     it('should create webview panel when command executed', async function(this: any) {
         this.timeout(testConfig.timeouts.extension);
-        
-        // Logic Step: Mock webview panel creation
-        const mockPanel = {
-            webview: {
-                html: '',
-                postMessage: sinon.stub(),
-                onDidReceiveMessage: sinon.stub(),
-                options: {},
-                cspSource: 'test'
-            },
-            onDidDispose: sinon.stub(),
-            reveal: sinon.stub(),
-            dispose: sinon.stub()
-        };
-        
-        VSCodeMocks.window.createWebviewPanel.returns(mockPanel);
-        
-        // Logic Step: Import and activate extension to register commands
-        const { activate } = require('../../../extension');
-        const mockContext = VSCodeMocks.createMockExtensionContext();
-        
-        try {
-            // Logic Step: Activate extension to register commands
-            await activate(mockContext);
-            
-            // Logic Step: Get the registered command handler
-            const commandCalls = VSCodeMocks.commands.registerCommand.getCalls();
-            const prdCommand = commandCalls.find(call => call.args[0] === 'ai-prd-generator.generatePrd');
-            
-            if (prdCommand && prdCommand.args[1]) {
-                // Logic Step: Execute the command handler
-                await prdCommand.args[1]();
-                
-                // Logic Step: Verify webview creation
-                assert.ok(VSCodeMocks.window.createWebviewPanel.called, 'Webview panel should be created');
-            } else {
-                // Logic Step: Fallback - manually test webview creation
-                const { generatePrd } = require('../../../commands/generatePrd');
-                await generatePrd();
-                assert.ok(VSCodeMocks.window.createWebviewPanel.called, 'Webview panel should be created');
+
+        const createWebviewPanelStub = VSCodeMocks.window.createWebviewPanel.returns(
+            VSCodeMocks.createMockWebviewPanel()
+        );
+
+        // Logic Step: Set up a fake command callback for executeCommand to find
+        let commandCallback: () => void;
+        VSCodeMocks.commands.registerCommand.callsFake((name, cb) => {
+            if (name === 'ai-prd-generator.generatePrd') {
+                commandCallback = cb;
             }
-        } catch (error) {
-            // Logic Step: If activation fails, test command directly
-            console.warn('Extension activation failed, testing command directly:', error);
-            try {
-                const { generatePrd } = require('../../../commands/generatePrd');
-                await generatePrd();
-                assert.ok(VSCodeMocks.window.createWebviewPanel.called, 'Webview panel should be created');
-            } catch (cmdError) {
-                console.warn('Direct command test failed:', cmdError);
-                // Logic Step: At minimum, verify the mock was set up correctly
-                assert.ok(VSCodeMocks.window.createWebviewPanel, 'Webview panel creation mock should be available');
+            return { dispose: () => {} };
+        });
+
+        VSCodeMocks.commands.executeCommand.callsFake(async (command) => {
+            if (command === 'ai-prd-generator.generatePrd' && commandCallback) {
+                await commandCallback();
             }
-        }
+        });
+
+        // Logic Step: Activate extension to register commands
+        await activate(mockContext);
+
+        // Logic Step: Execute the command to trigger webview creation
+        await vscode.commands.executeCommand('ai-prd-generator.generatePrd');
+
+        // Logic Step: Verify webview creation
+        assert.ok(createWebviewPanelStub.called, 'Webview panel should be created');
     });
 
     it('should handle webview message for PRD generation', async function(this: any) {

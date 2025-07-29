@@ -148,9 +148,9 @@ export class MarkdownFormatterService {
         const lines = html.split('\n');
         const processedLines = lines.map(line => {
             const trimmed = line.trim();
-            if (trimmed === '') return '';
-            if (trimmed.startsWith('<')) return line; // Already HTML
-            if (trimmed.match(/^\d+\./)) return line; // Numbered list
+            if (trimmed === '') {return '';}
+            if (trimmed.startsWith('<')) {return line;} // Already HTML
+            if (trimmed.match(/^\d+\./)) {return line;} // Numbered list
             return `<p class="ccs-paragraph">${line}</p>`;
         });
 

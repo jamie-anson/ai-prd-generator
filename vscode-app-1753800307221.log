@@ -1,0 +1,496 @@
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-vsliveshare.vsliveshare' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.gather' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.vscode-pylance' wants API proposal 'mcpConfigurationProvider' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  INFO Started local extension host with pid 87838.
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+  INFO Settings Sync: Account status changed from uninitialized to unavailable
+  WARN No search provider registered for scheme: file, waiting
+warn @ workbench.desktop.main.js:35
+   ERR [Extension Host] (node:87838) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:87838) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+Tds @ workbench.desktop.main.js:518
+  INFO [perf] Render performance baseline is 12ms
+ [Extension Host] NODE_ENV undefined
+  WARN Authentication provider continue was not declared in the Extension Manifest.
+warn @ workbench.desktop.main.js:35
+   ERR [Extension Host] (node:87838) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:87838) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] ChatGPT extension is now active!
+ [Extension Host] Wrote payload to /Users/Jammie/Library/Application Support/com.openai.chat/app_pairing_extensions/Visual Studio Code-bd981be9-ecf8-4e07-abd3-69be69459417
+ [Extension Host] Registered
+ [Extension Host] Server listening on UNIX domain socket: /tmp/Visual Studio Code-bd981be9-ecf8-4e07-abd3-69be69459417.sock
+   ERR [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+error @ workbench.desktop.main.js:35
+ [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] Figma for VS Code started activation
+ [Extension Host] Client connected
+ [Extension Host] Client message received: {"command":"ping","payload":{}}
+ [Extension Host] Client connected
+ [Extension Host] Client message received: {"payload":{},"command":"ping"}
+ [Extension Host] Found ChatGPT app info: {"isInstalled":true,"installPath":"/Applications/ChatGPT.app","bundleID":"com.openai.chat","version":{"options":{},"loose":false,"includePrerelease":false,"raw":"1.2025.196","major":1,"minor":2025,"patch":196,"prerelease":[],"build":[],"version":"1.2025.196"}}. Supports pairing: true
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+ [Extension Host] Unable to read plugin config file plugin_dev_settings.json Error: ENOENT: no such file or directory, open '/Users/Jammie/Library/Application Support/Code/User/globalStorage/figma.figma-vscode-extension/plugin_dev_settings.json'
+    at readFileSync (node:fs:443:20)
+    at t.readFileSync (node:electron/js2c/node_init:2:10960)
+    at Object.g [as read] (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31740:4527)
+    at TQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:2253)
+    at CQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:1276)
+    at db.n (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13386)
+    at db.m (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13349)
+    at db.l (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:12805)
+ [Extension Host] Figma for VS Code active
+marketplace.visualstudio.com/_apis/public/gallery/vscode/ms-ossdata/vscode-postgresql/latest:1  Failed to load resource: the server responded with a status of 404 ()
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1  Failed to load resource: the server responded with a status of 404 ()
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+ [Extension Host] 🚀 AI PRD Generator extension is activating...
+ [Extension Host] 📍 Extension ID: jammie-anson.ai-prd-generator
+ [Extension Host] 📍 Extension path: /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11
+ [Extension Host] 🔧 About to register all commands...
+ [Extension Host] 🔧 Registering ai-prd-generator.generatePrd command...
+ [Extension Host] ✅ ai-prd-generator.generatePrd command registered successfully
+ [Extension Host] ✅ All commands registered successfully
+ [Extension Host] 🔍 Verifying command registration...
+ [Extension Host] 🧪 Testing direct command execution...
+ [Extension Host] 🎯 Generate PRD command executed!
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+ [Extension Host] 🎉 AI PRD Generator extension activation complete!
+ [Extension Host] ✅ Direct command execution successful
+ [Extension Host] 📋 Total registered commands: 2964
+ [Extension Host] ✅ SUCCESS: Command ai-prd-generator.generatePrd is registered and available
+ [Extension Host] 🎯 Generate PRD command executed!
+ [Extension Host] handleWebviewReady called
+ [Extension Host] [Extension] API key detection - apiKey length: 164 hasApiKey: true
+ [Extension Host] [Extension] Sending apiKeyStatus message, hasApiKey: true
+ [Extension Host] [ProjectStateDetector] PRD files found: Array(1)
+ [Extension Host] [ProjectStateDetector] Context Card files found: Array(9)
+ [Extension Host] [ProjectStateDetector] Context Template files found: Array(4)
+ [Extension Host] [ProjectStateDetector] CCS files found: Array(3)
+ [Extension Host] [ProjectStateDetector] Checking diagram: data_flow_diagram.md
+ [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md
+ [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: data_flow_diagram.md
+ [Extension Host] [ProjectStateDetector] Checking diagram: component_hierarchy.md
+ [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md
+ [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: component_hierarchy.md
+ [Extension Host] [ProjectStateDetector] Detection results:
+ [Extension Host] [ProjectStateDetector] - hasDataFlowDiagram: false
+ [Extension Host] [ProjectStateDetector] - hasComponentHierarchy: false
+ [Extension Host] [WebviewReady] Detected project state: Object
+ [Extension Host] Failed to check type definitions: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.checkTypeDefinitions (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15599:23)
+    at async Promise.all (index 2)
+    at CodebaseAnalysisService.detectQualityIndicators (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15757:75)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15736:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16918:34
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] Failed to read directory undefined: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.readDirectorySafe (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15683:14)
+    at CodebaseAnalysisService.scanDirectory (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15803:23)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15737:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16918:34
+Tds @ workbench.desktop.main.js:518
+   ERR [Extension Host] [Extension] Error in README.md generation | Message: Cannot read properties of undefined (reading 'join') Object
+error @ workbench.desktop.main.js:35
+ [Extension Host] [Extension] Error in README.md generation | Message: Cannot read properties of undefined (reading 'join') Object
+Tds @ workbench.desktop.main.js:518
+ Failed to readme.md generation: Cannot read properties of undefined (reading 'join')
+c @ workbench.desktop.main.js:3357
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+  INFO Started local extension host with pid 90495.
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1  Failed to load resource: the server responded with a status of 404 ()
+   ERR [Extension Host] (node:90495) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:90495) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] NODE_ENV undefined
+  WARN Authentication provider continue was not declared in the Extension Manifest.
+warn @ workbench.desktop.main.js:35
+   ERR [Extension Host] (node:90495) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:90495) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] ChatGPT extension is now active!
+ [Extension Host] Wrote payload to /Users/Jammie/Library/Application Support/com.openai.chat/app_pairing_extensions/Visual Studio Code-88afcef5-77c5-4393-8ae4-96a74e979a41
+ [Extension Host] Registered
+ [Extension Host] Server listening on UNIX domain socket: /tmp/Visual Studio Code-88afcef5-77c5-4393-8ae4-96a74e979a41.sock
+   ERR [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+error @ workbench.desktop.main.js:35
+ [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] Figma for VS Code started activation
+ [Extension Host] Client connected
+ [Extension Host] Client message received: {"payload":{},"command":"ping"}
+ [Extension Host] Client connected
+ [Extension Host] Client message received: {"payload":{},"command":"ping"}
+ [Extension Host] Found ChatGPT app info: {"isInstalled":true,"installPath":"/Applications/ChatGPT.app","bundleID":"com.openai.chat","version":{"options":{},"loose":false,"includePrerelease":false,"raw":"1.2025.196","major":1,"minor":2025,"patch":196,"prerelease":[],"build":[],"version":"1.2025.196"}}. Supports pairing: true
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+ [Extension Host] Unable to read plugin config file plugin_dev_settings.json Error: ENOENT: no such file or directory, open '/Users/Jammie/Library/Application Support/Code/User/globalStorage/figma.figma-vscode-extension/plugin_dev_settings.json'
+    at readFileSync (node:fs:443:20)
+    at t.readFileSync (node:electron/js2c/node_init:2:10960)
+    at Object.g [as read] (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31740:4527)
+    at TQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:2253)
+    at CQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:1276)
+    at db.n (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13386)
+    at db.m (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13349)
+    at db.l (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:12805)
+ [Extension Host] Figma for VS Code active
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+ [Extension Host] 🚀 AI PRD Generator extension is activating...
+ [Extension Host] 📍 Extension ID: jammie-anson.ai-prd-generator
+ [Extension Host] 📍 Extension path: /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11
+ [Extension Host] 🔧 About to register all commands...
+ [Extension Host] 🔧 Registering ai-prd-generator.generatePrd command...
+ [Extension Host] ✅ ai-prd-generator.generatePrd command registered successfully
+ [Extension Host] ✅ All commands registered successfully
+ [Extension Host] 🔍 Verifying command registration...
+ [Extension Host] 🧪 Testing direct command execution...
+ [Extension Host] 🎯 Generate PRD command executed!
+ [Extension Host] 🎉 AI PRD Generator extension activation complete!
+ [Extension Host] ✅ Direct command execution successful
+ [Extension Host] 📋 Total registered commands: 2965
+ [Extension Host] ✅ SUCCESS: Command ai-prd-generator.generatePrd is registered and available
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1  Failed to load resource: the server responded with a status of 404 ()
+ [Extension Host] handleWebviewReady called
+ [Extension Host] [Extension] API key detection - apiKey length: 164 hasApiKey: true
+ [Extension Host] [Extension] Sending apiKeyStatus message, hasApiKey: true
+ [Extension Host] [ProjectStateDetector] PRD files found: Array(1)
+ [Extension Host] [ProjectStateDetector] Context Card files found: Array(9)
+ [Extension Host] [ProjectStateDetector] Context Template files found: Array(4)
+console.ts:137 [Extension Host] [ProjectStateDetector] CCS files found: Array(3)
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Detection results:
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasDataFlowDiagram: false
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasComponentHierarchy: false
+console.ts:137 [Extension Host] [WebviewReady] Detected project state: Object
+console.ts:137 [Extension Host] 🎯 Generate PRD command executed!
+console.ts:137 [Extension Host] handleWebviewReady called
+console.ts:137 [Extension Host] [Extension] API key detection - apiKey length: 164 hasApiKey: true
+console.ts:137 [Extension Host] [Extension] Sending apiKeyStatus message, hasApiKey: true
+console.ts:137 [Extension Host] [ProjectStateDetector] PRD files found: Array(1)
+console.ts:137 [Extension Host] [ProjectStateDetector] Context Card files found: Array(9)
+console.ts:137 [Extension Host] [ProjectStateDetector] Context Template files found: Array(4)
+console.ts:137 [Extension Host] [ProjectStateDetector] CCS files found: Array(3)
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Detection results:
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasDataFlowDiagram: false
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasComponentHierarchy: false
+console.ts:137 [Extension Host] [WebviewReady] Detected project state: Object
+console.ts:137 [Extension Host] Failed to check type definitions: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.checkTypeDefinitions (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15599:23)
+    at async Promise.all (index 2)
+    at CodebaseAnalysisService.detectQualityIndicators (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15757:75)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15736:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16924:34
+Tds @ console.ts:137
+console.ts:137 [Extension Host] Failed to read directory undefined: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.readDirectorySafe (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15683:14)
+    at CodebaseAnalysisService.scanDirectory (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15803:23)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15737:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16924:34
+Tds @ console.ts:137
+log.ts:460   ERR [Extension Host] Error calling OpenAI API: Error: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+    at _APIError.generate (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:8353:14)
+    at OpenAI.makeStatusError (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14262:21)
+    at OpenAI.makeRequest (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14397:24)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at OpenAiService.baseApiCall (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14655:24)
+    at OpenAiService.generateText (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14696:22)
+    at ConfigurableCcsDocumentationHandler.generateContent (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:17160:12)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16931:25
+error @ log.ts:460
+console.ts:137 [Extension Host] Error calling OpenAI API: Error: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+    at _APIError.generate (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:8353:14)
+    at OpenAI.makeStatusError (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14262:21)
+    at OpenAI.makeRequest (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14397:24)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at OpenAiService.baseApiCall (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14655:24)
+    at OpenAiService.generateText (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14696:22)
+    at ConfigurableCcsDocumentationHandler.generateContent (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:17160:12)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16931:25
+Tds @ console.ts:137
+notificationsAlerts.ts:42 Error calling OpenAI API: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+c @ notificationsAlerts.ts:42
+log.ts:460   ERR [Extension Host] [Extension] Error in README.md generation | Message: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys. Object
+error @ log.ts:460
+console.ts:137 [Extension Host] [Extension] Error in README.md generation | Message: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys. Object
+Tds @ console.ts:137
+notificationsAlerts.ts:42 Failed to readme.md generation: Please check your OpenAI API key configuration.
+c @ notificationsAlerts.ts:42
+api.github.com/copilot_internal/user:1 
+            
+            
+           Failed to load resource: net::ERR_INTERNET_DISCONNECTED
+log.ts:460   ERR [chat entitlement] request: error Offline: Offline
+error @ log.ts:460
+console.ts:137 [Extension Host] ApplicationInsights:Sender Array(2)
+Tds @ console.ts:137
+log.ts:440  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+log.ts:440  INFO Started local extension host with pid 98569.
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 ()
+log.ts:460   ERR [Extension Host] (node:98569) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+error @ log.ts:460
+console.ts:137 [Extension Host] (node:98569) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+Tds @ console.ts:137
+console.ts:137 [Extension Host] NODE_ENV undefined
+log.ts:450  WARN Authentication provider continue was not declared in the Extension Manifest.
+warn @ log.ts:450
+log.ts:460   ERR [Extension Host] (node:98569) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+error @ log.ts:460
+console.ts:137 [Extension Host] (node:98569) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Tds @ console.ts:137
+console.ts:137 [Extension Host] ChatGPT extension is now active!
+console.ts:137 [Extension Host] Wrote payload to /Users/Jammie/Library/Application Support/com.openai.chat/app_pairing_extensions/Visual Studio Code-633ae1da-807e-45a2-bc80-174b762cff0a
+console.ts:137 [Extension Host] Registered
+console.ts:137 [Extension Host] Server listening on UNIX domain socket: /tmp/Visual Studio Code-633ae1da-807e-45a2-bc80-174b762cff0a.sock
+log.ts:460   ERR [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+error @ log.ts:460
+console.ts:137 [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+Tds @ console.ts:137
+console.ts:137 [Extension Host] Figma for VS Code started activation
+console.ts:137 [Extension Host] Client connected
+console.ts:137 [Extension Host] Client message received: {"payload":{},"command":"ping"}
+console.ts:137 [Extension Host] Client connected
+console.ts:137 [Extension Host] Client message received: {"command":"ping","payload":{}}
+console.ts:137 [Extension Host] Found ChatGPT app info: {"isInstalled":true,"installPath":"/Applications/ChatGPT.app","bundleID":"com.openai.chat","version":{"options":{},"loose":false,"includePrerelease":false,"raw":"1.2025.196","major":1,"minor":2025,"patch":196,"prerelease":[],"build":[],"version":"1.2025.196"}}. Supports pairing: true
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+localProcessExtensionHost.ts:279 Extension Host
+localProcessExtensionHost.ts:280 {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+console.ts:137 [Extension Host] Unable to read plugin config file plugin_dev_settings.json Error: ENOENT: no such file or directory, open '/Users/Jammie/Library/Application Support/Code/User/globalStorage/figma.figma-vscode-extension/plugin_dev_settings.json'
+    at readFileSync (node:fs:443:20)
+    at t.readFileSync (node:electron/js2c/node_init:2:10960)
+    at Object.g [as read] (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31740:4527)
+    at TQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:2253)
+    at CQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:1276)
+    at db.n (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13386)
+    at db.m (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13349)
+    at db.l (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:12805)
+console.ts:137 [Extension Host] Figma for VS Code active
+log.ts:440  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+console.ts:137 [Extension Host] 🚀 AI PRD Generator extension is activating...
+console.ts:137 [Extension Host] 📍 Extension ID: jammie-anson.ai-prd-generator
+console.ts:137 [Extension Host] 📍 Extension path: /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11
+console.ts:137 [Extension Host] 🔧 About to register all commands...
+console.ts:137 [Extension Host] 🔧 Registering ai-prd-generator.generatePrd command...
+console.ts:137 [Extension Host] ✅ ai-prd-generator.generatePrd command registered successfully
+console.ts:137 [Extension Host] ✅ All commands registered successfully
+console.ts:137 [Extension Host] 🔍 Verifying command registration...
+console.ts:137 [Extension Host] 🧪 Testing direct command execution...
+console.ts:137 [Extension Host] 🎯 Generate PRD command executed!
+console.ts:137 [Extension Host] 🎉 AI PRD Generator extension activation complete!
+console.ts:137 [Extension Host] ✅ Direct command execution successful
+console.ts:137 [Extension Host] 📋 Total registered commands: 2965
+console.ts:137 [Extension Host] ✅ SUCCESS: Command ai-prd-generator.generatePrd is registered and available
+VM7:2 Inline script executing
+VM7:3 Script URI: https://file%2B.vscode-resource.vscode-cdn.net/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/media/main.js
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 ()
+main.js:470 Webview main.ts loaded
+main.js:471 Sending webviewReady message
+console.ts:137 [Extension Host] handleWebviewReady called
+console.ts:137 [Extension Host] [Extension] API key detection - apiKey length: 164 hasApiKey: true
+console.ts:137 [Extension Host] [Extension] Sending apiKeyStatus message, hasApiKey: true
+main.js:479 [UI] API key status received: true
+main.js:141 [UI] updateApiKeyDisplay called with hasApiKey: true
+main.js:142 [UI] Elements found: Object
+main.js:148 [UI] Setting API key display to show obfuscated key
+main.js:482 [UI] Updated API key display with hasApiKey: true
+console.ts:137 [Extension Host] [ProjectStateDetector] PRD files found: Array(1)
+console.ts:137 [Extension Host] [ProjectStateDetector] Context Card files found: Array(9)
+console.ts:137 [Extension Host] [ProjectStateDetector] Context Template files found: Array(4)
+console.ts:137 [Extension Host] [ProjectStateDetector] CCS files found: Array(3)
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: data_flow_diagram.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking diagram: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Full path: /Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] ❌ Diagram file not found: component_hierarchy.md
+console.ts:137 [Extension Host] [ProjectStateDetector] Detection results:
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasDataFlowDiagram: false
+console.ts:137 [Extension Host] [ProjectStateDetector] - hasComponentHierarchy: false
+console.ts:137 [Extension Host] [WebviewReady] Detected project state: Object
+main.js:192 [UI] Project state received: Object
+main.js:200 [UI] Showing post-generation controls (artifacts detected)
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+localProcessExtensionHost.ts:279 Extension Host
+localProcessExtensionHost.ts:280 {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+console.ts:137 [Extension Host] Failed to check type definitions: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.checkTypeDefinitions (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15599:23)
+    at async Promise.all (index 2)
+    at CodebaseAnalysisService.detectQualityIndicators (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15757:75)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15736:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16924:34
+Tds @ console.ts:137
+console.ts:137 [Extension Host] Failed to read directory undefined: Error (FileSystemError): [UriError]: Scheme contains illegal characters.
+    at as.e (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:18864)
+    at Object.readDirectory (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:16205)
+    at FileSystemUtils.readDirectorySafe (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15683:14)
+    at CodebaseAnalysisService.scanDirectory (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15803:23)
+    at CodebaseAnalysisService.analyzeWorkspace (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:15737:7)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16924:34
+Tds @ console.ts:137
+log.ts:460   ERR [Extension Host] Error calling OpenAI API: Error: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+    at _APIError.generate (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:8353:14)
+    at OpenAI.makeStatusError (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14262:21)
+    at OpenAI.makeRequest (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14397:24)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at OpenAiService.baseApiCall (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14655:24)
+    at OpenAiService.generateText (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14696:22)
+    at ConfigurableCcsDocumentationHandler.generateContent (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:17160:12)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16931:25
+error @ log.ts:460
+console.ts:137 [Extension Host] Error calling OpenAI API: Error: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+    at _APIError.generate (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:8353:14)
+    at OpenAI.makeStatusError (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14262:21)
+    at OpenAI.makeRequest (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14397:24)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at OpenAiService.baseApiCall (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14655:24)
+    at OpenAiService.generateText (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:14696:22)
+    at ConfigurableCcsDocumentationHandler.generateContent (/Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:17160:12)
+    at /Users/Jammie/.vscode/extensions/jammie-anson.ai-prd-generator-0.1.11/dist/extension.js:16931:25
+Tds @ console.ts:137
+notificationsAlerts.ts:42 Error calling OpenAI API: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys.
+c @ notificationsAlerts.ts:42
+log.ts:460   ERR [Extension Host] [Extension] Error in README.md generation | Message: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys. Object
+error @ log.ts:460
+console.ts:137 [Extension Host] [Extension] Error in README.md generation | Message: 401 Incorrect API key provided: [object ***ect]. You can find your API key at https://platform.openai.com/account/api-keys. Object
+Tds @ console.ts:137
+notificationsAlerts.ts:42 Failed to readme.md generation: Please check your OpenAI API key configuration.
+c @ notificationsAlerts.ts:42
+main.js:522 [ERROR] Failed to readme.md generation: Please check your OpenAI API key configuration.
+(anonymous) @ main.js:522

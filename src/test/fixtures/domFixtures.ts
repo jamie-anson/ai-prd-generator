@@ -261,12 +261,12 @@ export class DOMFixtureFactory {
 
         if (projectState.hasContextCards) {
             const generateBtn = document.getElementById('generate-context-cards');
-            if (generateBtn) generateBtn.textContent = 'Regenerate Context Cards';
+            if (generateBtn) {generateBtn.textContent = 'Regenerate Context Cards';}
         }
 
         if (projectState.hasContextTemplates) {
             const generateBtn = document.getElementById('generate-context-templates');
-            if (generateBtn) generateBtn.textContent = 'Regenerate Context Templates';
+            if (generateBtn) {generateBtn.textContent = 'Regenerate Context Templates';}
         }
 
         if (projectState.hasCCS) {

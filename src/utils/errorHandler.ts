@@ -167,25 +167,44 @@ function formatErrorMessage(error: any, context: ErrorContext): string {
  * @param context The error context information
  * @returns User-friendly error message string
  */
-function formatUserMessage(error: any, context: ErrorContext): string {
-    const operation = (context.operation || 'operation').toLowerCase();
+function formatUserMessage(error: any, context?: ErrorContext): string {
+    // Safely get operation from context with fallback
+    const operation = (context?.operation || 'complete the operation').toLowerCase();
     const baseMessage = `Failed to ${operation}`;
     
-    // Logic Step: Provide specific guidance based on error type
-    if (error?.message?.includes('API key')) {
-        return `${baseMessage}: Please check your OpenAI API key configuration.`;
+    // If no error object is provided, return a generic message
+    if (!error) {
+        return `${baseMessage}: An unknown error occurred.`;
+    }
+
+    // Handle error as string
+    if (typeof error === 'string') {
+        return `${baseMessage}: ${error}`;
     }
     
-    if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
-        return `${baseMessage}: Network error. Please check your internet connection.`;
+    // Handle error objects with message property
+        if (error?.message && typeof error.message === 'string') {
+                const errorMessage = error.message?.toLowerCase() || '';
+        
+        // Logic Step: Provide specific guidance based on error type
+        if (errorMessage.includes('api key') || errorMessage.includes('apikey')) {
+            return `${baseMessage}: Please check your OpenAI API key configuration.`;
+        }
+        
+        if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('econnrefused')) {
+            return `${baseMessage}: Network error. Please check your internet connection.`;
+        }
+        
+        if (errorMessage.includes('permission') || errorMessage.includes('access') || errorMessage.includes('eacces')) {
+            return `${baseMessage}: Permission denied. Please check file permissions.`;
+        }
+        
+        // Return the error message if we have one
+        return `${baseMessage}: ${error.message}`;
     }
     
-    if (error?.message?.includes('permission') || error?.message?.includes('access')) {
-        return `${baseMessage}: Permission denied. Please check file permissions.`;
-    }
-    
-    // Logic Step: Return generic message with error details
-    return `${baseMessage}: ${error?.message || 'Unknown error occurred'}`;
+    // Fallback for any other error type
+    return `${baseMessage}: An unexpected error occurred.`;
 }
 
 /**
@@ -198,13 +217,26 @@ function formatUserMessage(error: any, context: ErrorContext): string {
  */
 export async function withErrorHandling<T>(
     operation: () => Promise<T>,
-    context: ErrorContext,
+    contextOrOperation: ErrorContext | string,
     webview?: vscode.Webview
 ): Promise<T | undefined> {
+    // Handle case where context is passed as a string (just the operation name)
+    const context = typeof contextOrOperation === 'string' 
+        ? { operation: contextOrOperation } 
+        : contextOrOperation;
+
     try {
         return await operation();
     } catch (error) {
-        handleError(error, context, webview);
+        // Ensure we have at least an operation name for error handling
+        const safeContext: ErrorContext = {
+            operation: context.operation || 'perform operation',
+            component: context.component,
+            filePath: context.filePath,
+            additionalInfo: context.additionalInfo
+        };
+        
+        handleError(error, safeContext, webview);
         return undefined;
     }
 }

@@ -13,6 +13,7 @@
 
 import * as vscode from 'vscode';
 import { getMermaidViewerWebviewContent } from '../utils/webview';
+import { registerCommandOnce } from './commandRegistry';
 
 /**
  * Logic Step: Register the viewDiagram command for visual diagram rendering.
@@ -21,7 +22,7 @@ import { getMermaidViewerWebviewContent } from '../utils/webview';
  * @param context The extension context for command registration and resource management
  */
 export function registerViewDiagramCommand(context: vscode.ExtensionContext) {
-    const command = vscode.commands.registerCommand('ai-prd-generator.viewDiagram', async (filePath: string, diagramType: 'data-flow' | 'component-hierarchy') => {
+    registerCommandOnce('ai-prd-generator.viewDiagram', async (filePath: string, diagramType: 'data-flow' | 'component-hierarchy') => {
         if (!filePath) {
             vscode.window.showErrorMessage('No diagram file path provided.');
             return;
@@ -75,9 +76,7 @@ export function registerViewDiagramCommand(context: vscode.ExtensionContext) {
             console.error('Error reading diagram file:', error);
             vscode.window.showErrorMessage(`Failed to open diagram viewer: ${error.message}`);
         }
-    });
-
-    context.subscriptions.push(command);
+    }, context);
 }
 
 /**
