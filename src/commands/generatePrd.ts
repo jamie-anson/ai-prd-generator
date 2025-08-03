@@ -12,12 +12,8 @@ import { registerCommandOnce } from './commandRegistry';
  * This function sets up the panel manager and message router.
  * @param context The extension context provided by VS Code.
  */
-export function registerGeneratePrdCommand(context: vscode.ExtensionContext) {
-    const messageHandler = createPrdMessageHandler();
-    const panelManager = new PanelManager(context, messageHandler);
-
+export function registerGeneratePrdCommand(context: vscode.ExtensionContext, panelManager: PanelManager) {
     registerCommandOnce('ai-prd-generator.generatePrd', () => {
-        console.log('🎯 Generate PRD command executed!');
         panelManager.createAndShowPanel();
     }, context);
 }

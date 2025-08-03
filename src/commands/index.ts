@@ -12,11 +12,14 @@
  */
 
 import * as vscode from 'vscode';
+import { PanelManager } from './prdGeneration/panelManager';
+import { createPrdMessageHandler } from './prdGeneration/messageHandlers';
 import { registerGeneratePrdCommand } from './generatePrd';
 import { registerViewPrdCommand } from './viewPrd';
 import { registerViewDiagramCommand } from './viewDiagram';
 import { registerGenerateContextCardsCommand } from './generateContextCards';
 import { registerViewContextCardsCommand } from './viewContextCards';
+import { registerGenerateHandoverCommand } from './generateHandover';
 
 /**
  * Logic Step: Register all extension commands with VS Code.
@@ -27,9 +30,16 @@ import { registerViewContextCardsCommand } from './viewContextCards';
  * @param context The VS Code extension context for command registration and resource management
  */
 export function registerAllCommands(context: vscode.ExtensionContext) {
-    registerGeneratePrdCommand(context);
+    // Logic Step 1: Create a single message handler and panel manager instance.
+    // This ensures all commands interact with the same webview panel, preventing conflicts.
+    const messageHandler = createPrdMessageHandler();
+    const panelManager = new PanelManager(context, messageHandler);
+
+    // Logic Step 2: Register all commands, passing the shared panel manager instance to them.
+    registerGeneratePrdCommand(context, panelManager);
     registerViewPrdCommand(context);
     registerViewDiagramCommand(context);
     registerGenerateContextCardsCommand(context);
     registerViewContextCardsCommand(context);
+    registerGenerateHandoverCommand(context, panelManager);
 }

@@ -27,7 +27,41 @@ import {
  * Logic Step: Initialize UI elements with type safety and null checking.
  * Uses the type-safe initialization utility to prevent runtime errors.
  */
-export const elements: Partial<UIElements> = initializeUIElements();
+export let elements: Partial<UIElements> = {};
+
+/**
+ * Logic Step: Initialize UI elements with retry mechanism for cross-platform compatibility.
+ * Handles different loading scenarios across VS Code variants (VS Code, Cursor, Windsurf, etc.)
+ */
+function initializeElementsWithRetry(attempt: number = 1): void {
+    console.log(`[UI] Initializing UI elements (attempt ${attempt})...`);
+    console.log('[UI] DOM ready state:', document.readyState);
+    
+    const initialized = initializeUIElements();
+    const criticalElements = {
+        generationControls: !!initialized.generationControls,
+        postGenerationControls: !!initialized.postGenerationControls,
+        generatePrdButton: !!initialized.generatePrdButton,
+        apiKeyDisplay: !!initialized.apiKeyDisplay
+    };
+    
+    console.log('[UI] Elements initialized:', criticalElements);
+    
+    const criticalElementsFound = Object.values(criticalElements).filter(Boolean).length;
+    const totalCriticalElements = Object.keys(criticalElements).length;
+    
+    if (criticalElementsFound < totalCriticalElements && attempt < 5) {
+        console.log(`[UI] Only ${criticalElementsFound}/${totalCriticalElements} critical elements found, retrying in ${attempt * 100}ms...`);
+        setTimeout(() => initializeElementsWithRetry(attempt + 1), attempt * 100);
+        return;
+    }
+    
+    elements = initialized;
+    console.log(`[UI] Element initialization complete (${criticalElementsFound}/${totalCriticalElements} critical elements found)`);
+}
+
+// Initialize elements when module loads
+initializeElementsWithRetry();
 
 // --- Type-Safe UI Update Functions ---
 
@@ -63,6 +97,25 @@ export function updateApiKeyDisplay(hasApiKey: boolean): void {
  * Transitions from generation input to post-generation action buttons.
  */
 export function showPostGenerationControls(): void {
+    console.log('[UI] showPostGenerationControls called');
+    console.log('[UI] elements.generationControls:', elements.generationControls);
+    console.log('[UI] elements.postGenerationControls:', elements.postGenerationControls);
+    
+    // Check if elements exist before trying to toggle them
+    if (!elements.generationControls) {
+        console.error('[UI] generationControls element not found!');
+        // Try to find it directly
+        const directElement = document.getElementById('generation-controls');
+        console.log('[UI] Direct lookup of generation-controls:', directElement);
+    }
+    
+    if (!elements.postGenerationControls) {
+        console.error('[UI] postGenerationControls element not found!');
+        // Try to find it directly
+        const directElement = document.getElementById('post-generation-controls');
+        console.log('[UI] Direct lookup of post-generation-controls:', directElement);
+    }
+    
     toggleVisibility(elements.generationControls, false);
     toggleVisibility(elements.postGenerationControls, true);
 }
@@ -157,6 +210,7 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
     updateContextCardsSection(projectState);
     updateDiagramSection(projectState);
     updateCCSSection(projectState);
+    updateHandoverSection(projectState);
 }
 
 /**
@@ -175,13 +229,13 @@ function updateContextTemplatesSection(projectState: ProjectState): void {
         };
         
         updateButton(elements.generateContextTemplatesButton, buttonConfig);
-        updateSection('context-templates-section', {
-            sectionId: 'context-templates-section',
+        updateSection('context-templates-container', {
+            sectionId: 'context-templates-container',
             visible: true
         });
     } else {
-        updateSection('context-templates-section', {
-            sectionId: 'context-templates-section',
+        updateSection('context-templates-container', {
+            sectionId: 'context-templates-container',
             visible: false
         });
     }
@@ -203,13 +257,13 @@ function updateContextCardsSection(projectState: ProjectState): void {
         };
         
         updateButton(elements.bulkGenerateContextCardsButton, buttonConfig);
-        updateSection('context-cards-section', {
-            sectionId: 'context-cards-section',
+        updateSection('context-cards-container', {
+            sectionId: 'context-cards-container',
             visible: true
         });
     } else {
-        updateSection('context-cards-section', {
-            sectionId: 'context-cards-section',
+        updateSection('context-cards-container', {
+            sectionId: 'context-cards-container',
             visible: false
         });
     }
@@ -298,6 +352,24 @@ function updateDiagramSection(projectState: ProjectState): void {
  * Updates button text to indicate regeneration if CCS analysis already exists.
  * @param projectState Typed object containing project artifact detection results
  */
+function updateHandoverSection(projectState: ProjectState): void {
+    const isEnabled = projectState.hasCCS;
+    updateSection('document-section', {
+        sectionId: 'document-section',
+        visible: projectState.hasPRD // Handover should be enabled if PRD exists
+    });
+
+    const buttonConfig: ButtonConfig = {
+        text: projectState.hasHandover ? 'Regenerate Handover Document' : 'Generate Handover Document',
+        title: isEnabled 
+            ? (projectState.hasHandover ? 'Regenerate the handover document from the latest CCS analysis' : 'Generate a handover document from the CCS analysis')
+            : 'Generate a CCS score first to enable handover document generation',
+        enabled: isEnabled,
+        visible: true
+    };
+    updateButton(elements.generateHandoverFileButton, buttonConfig);
+}
+
 function updateCCSSection(projectState: ProjectState): void {
     const buttonConfig: ButtonConfig = {
         text: projectState.hasCCS ? 'Regenerate CCS Score' : 'Generate CCS Score',
@@ -307,9 +379,9 @@ function updateCCSSection(projectState: ProjectState): void {
     };
     
     updateButton(elements.generateCCSButton, buttonConfig);
-    updateSection('ccs-section', {
-        sectionId: 'ccs-section',
-        visible: true
+    updateSection('test-section', {
+        sectionId: 'test-section',
+        visible: projectState.hasPRD // CCS analysis should be enabled if PRD exists
     });
 }
 

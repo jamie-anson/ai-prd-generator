@@ -2,7 +2,7 @@
   "name": "ai-prd-generator",
   "displayName": "Mise-en-Place",
   "description": "AI-Powered PRD Generator",
-  "version": "0.1.11",
+  "version": "0.1.17",
   "publisher": "jammie-anson",
   "engines": {
     "vscode": "^1.89.0"
@@ -56,6 +56,7 @@
     "compile:extension": "node esbuild.js",
     "compile:tests": "tsc -p . --outDir out",
     "build": "npm run clean && npm run lint && npm run check-types && npm run compile:tests && npm run compile:extension",
+    "pretest": "npm run clean && npm run compile:extension && npm run compile:tests",
     "test": "node scripts/run-tests.js",
     "package": "npm run build && vsce package --no-dependencies",
     "watch:esbuild": "node esbuild.js --watch",

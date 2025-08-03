@@ -1,7 +1,5 @@
-import * as vscode from 'vscode';
-import { disposeAllCommands } from '../../commands/commandRegistry';
 import * as path from 'path';
-import Mocha = require('mocha');
+import Mocha from 'mocha';
 import { glob } from 'glob';
 
 export function run(): Promise<void> {
@@ -9,16 +7,13 @@ export function run(): Promise<void> {
   const mocha = new Mocha({
     ui: 'bdd',
     color: true,
-    timeout: 30000 // Increased timeout for slower CI environments
+    timeout: 15000 // Increased timeout for extension tests
   });
-
-  // Add a global afterEach hook to clean up command registrations
-  mocha.suite.afterEach(disposeAllCommands);
 
   const testsRoot = path.resolve(__dirname, '..');
 
   return new Promise((c, e) => {
-    glob('**/**.test.js', { cwd: testsRoot, ignore: 'suite/extension.test.js' })
+    glob('**/**.test.js', { cwd: testsRoot })
       .then(files => {
         // Add files to the test suite
         files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));

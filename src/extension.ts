@@ -8,51 +8,24 @@ import { registerAllCommands } from './commands';
  */
 export function activate(context: vscode.ExtensionContext) {
     console.log('🚀 AI PRD Generator extension is activating...');
-    console.log('📍 Extension ID:', context.extension.id);
-    console.log('📍 Extension path:', context.extensionPath);
-    
+
     try {
-        // Register commands with detailed logging
-        console.log('🔧 About to register all commands...');
+        // Logic Step 1: Register all commands for the extension.
+        // This is the main entry point for all functionality.
         registerAllCommands(context);
-        console.log('✅ All commands registered successfully');
-        
-        // Immediate command verification
-        console.log('🔍 Verifying command registration...');
-        const commands = vscode.commands.getCommands(true);
-        Promise.resolve(commands).then(commandList => {
-            console.log('📋 Total registered commands:', commandList.length);
-            const ourCommand = commandList.find(cmd => cmd === 'ai-prd-generator.generatePrd');
-            if (ourCommand) {
-                console.log('✅ SUCCESS: Command ai-prd-generator.generatePrd is registered and available');
-            } else {
-                console.error('❌ FAILURE: Command ai-prd-generator.generatePrd NOT found in registered commands');
-                console.log('🔍 Available commands containing "ai-prd":', 
-                    commandList.filter(cmd => cmd.includes('ai-prd')));
-            }
-        }).catch((error: any) => {
-            console.error('❌ Error getting command list:', error);
-        });
-        
-        // Test command registration directly
-        console.log('🧪 Testing direct command execution...');
-        Promise.resolve(vscode.commands.executeCommand('ai-prd-generator.generatePrd')).then(() => {
-            console.log('✅ Direct command execution successful');
-        }).catch((error: any) => {
-            console.error('❌ Direct command execution failed:', error);
-        });
-        
     } catch (error) {
-        console.error('❌ CRITICAL ERROR during extension activation:', error);
-        console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-        
-        // Show user-visible error
-        vscode.window.showErrorMessage(
-            `AI PRD Generator extension failed to activate: ${error instanceof Error ? error.message : 'Unknown error'}`
-        );
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+        console.error('❌ CRITICAL ERROR during extension activation:', errorMessage, error);
+        vscode.window.showErrorMessage(`AI PRD Generator extension failed to activate: ${errorMessage}`);
     }
-    
+
     console.log('🎉 AI PRD Generator extension activation complete!');
 }
 
-export function deactivate() {}
+/**
+ * This method is called when the extension is deactivated.
+ * It's used for cleanup tasks.
+ */
+export function deactivate() {
+    console.log('👋 AI PRD Generator extension is deactivating...');
+}

@@ -58,6 +58,9 @@ export async function handleGenerateContextTemplates(context: vscode.ExtensionCo
             }
             
             const outputDir = getContextTemplateOutputPath(workspaceFolders[0].uri);
+            if (!outputDir) {
+                throw new Error('Could not determine context template output path. Is a workspace open?');
+            }
             await ensureOutputDirectory(outputDir);
 
             const increment = 80 / features.length;

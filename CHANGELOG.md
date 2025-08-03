@@ -1,5 +1,74 @@
 # Change Log
 
+## [0.1.14] - 2025-08-03
+
+### 🌐 Cross-Platform Compatibility & Bug Fixes
+
+**Major Improvements:**
+- **Enhanced Workspace Detection**: Added multiple fallback strategies for reliable workspace detection across all VS Code variants (VS Code, VS Code Insiders, Cursor, Windsurf, etc.)
+- **Robust DOM Initialization**: Implemented retry mechanism for DOM element discovery with cross-platform timing compatibility
+- **Fixed Critical Bug**: Resolved `ReferenceError: prdFiles is not defined` in ProjectStateDetector that was preventing project state detection
+- **Cross-Platform Path Handling**: Updated all path operations to use VS Code URI APIs for Windows, macOS, and Linux compatibility
+- **Enhanced Error Handling**: Added comprehensive error logging with VS Code variant detection for better debugging
+
+**Technical Details:**
+- Added `getWorkspaceUri()` with multiple detection strategies (workspace folders, active editor, workspace file)
+- Implemented `initializeElementsWithRetry()` for robust DOM element initialization
+- Fixed variable scope issue in `ProjectStateDetector.findPRDFiles` method
+- Added DOM ready state checking and DOMContentLoaded event handling
+- Enhanced error logging with structured context including VS Code variant information
+
+**Compatibility:**
+- ✅ VS Code (all versions)
+- ✅ VS Code Insiders
+- ✅ Cursor
+- ✅ Windsurf
+- ✅ Other VS Code-based editors
+- ✅ Windows, macOS, Linux
+- ✅ Any project workspace configuration
+
+## [0.1.13] - 2025-08-03
+
+### Added
+- **Enhanced CCS Backend Infrastructure**: Complete backend implementation for semantic-powered Code Comprehension Score analysis
+  - `CodebaseLensIntegrationService`: Integrates with Codebase Lens extension for semantic search capabilities
+  - `EnhancedCcsService`: Weighted scoring algorithm using semantic metrics (25% documentation, 20% code quality, 20% testing, 15% architecture, 10% debt penalty, 10% structure)
+  - `EnhancedCodebaseAnalysis` interfaces: Comprehensive type definitions for enhanced analysis, score breakdowns, and comparison reports
+  - `handleGenerateEnhancedCCS`: Webview handler for enhanced CCS generation with progress reporting
+  - `EnhancedCCSPromptTemplate`: AI prompt generation leveraging semantic search results
+
+### Enhanced
+- **CCS Scoring Range**: Expanded from 30-70% (basic analysis) to 15-95% (semantic analysis) for more nuanced assessment
+- **Semantic Analysis Capabilities**: 
+  - Documentation quality assessment beyond file existence
+  - Technical debt quantification (TODO/FIXME tracking, known issues, legacy code indicators)
+  - Architecture pattern recognition (auth systems, data flow, API design, database modeling)
+  - Code quality indicators (testing maturity, security practices, performance considerations)
+
+### Technical
+- **Fallback Mechanisms**: Graceful degradation when Codebase Lens extension unavailable
+- **Command Registration**: Added `GENERATE_ENHANCED_CCS` command for enhanced analysis
+- **Type Safety**: Fixed TypeScript compilation errors in test fixtures for ProjectState interface
+- **Error Handling**: Comprehensive error handling and user feedback for semantic analysis
+
+### Notes
+- Enhanced CCS backend infrastructure complete (Phase 1)
+- UI integration for enhanced CCS pending (Phase 2)
+- Maintains full backward compatibility with existing basic CCS analysis
+
+## [0.1.12] - 2025-07-30
+
+### Fixed
+- Resolved an issue with the "Generate Handover Document" command by ensuring it uses the shared `PanelManager` instance correctly, preventing UI conflicts.
+- Added the missing command registration for handover document generation in the message handler.
+
+### Changed
+- Refactored the test runner to execute the entire test suite, not just a single file, by creating a centralized test suite entry point.
+- Improved and standardized documentation for `codebaseAnalysisService.ts` and `fileSystemUtils.ts` for better clarity and maintainability.
+
+### Added
+- Created a new test suite entry point (`src/test/suite/index.ts`) to discover and run all tests dynamically.
+
 All notable changes to the "ai-prd-generator" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.

@@ -5,7 +5,7 @@ async function main() {
     console.log('🚀 Starting test runner...');
     try {
         const extensionDevelopmentPath = path.resolve(__dirname, '..');
-        const extensionTestsPath = path.resolve(__dirname, '../out/test/suite/extension.test.js');
+        const extensionTestsPath = path.resolve(__dirname, '../out/test/suite/index.js');
 
         console.log(`Extension Dev Path: ${extensionDevelopmentPath}`);
         console.log(`Extension Test Path: ${extensionTestsPath}`);

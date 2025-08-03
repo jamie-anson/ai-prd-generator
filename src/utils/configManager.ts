@@ -23,17 +23,30 @@ export interface ExtensionConfig {
     contextCardOutputPath: string;
     contextTemplateOutputPath: string;
     ccsOutputPath: string;
+    handoverOutputPath: string;
 }
 
 /**
  * Default configuration values used as fallbacks
+ * Updated to match button names for consistency
  */
 const DEFAULT_CONFIG: ExtensionConfig = {
     openAiModel: 'gpt-4o',
     prdOutputPath: 'mise-en-place-output/prd',
-    contextCardOutputPath: 'mise-en-place-output/context-cards',
-    contextTemplateOutputPath: 'mise-en-place-output/context-templates',
-    ccsOutputPath: 'mise-en-place-output/ccs'
+    contextCardOutputPath: 'mise-en-place-output/development-guidelines',
+    contextTemplateOutputPath: 'mise-en-place-output/code-templates',
+    ccsOutputPath: 'mise-en-place-output/ccs-score',
+    handoverOutputPath: 'mise-en-place-output/handover-document'
+};
+
+/**
+ * Legacy folder names for backward compatibility
+ */
+const LEGACY_FOLDER_NAMES = {
+    contextCards: ['context-cards', 'development-guidelines'],
+    contextTemplates: ['context-templates', 'code-templates'],
+    ccs: ['ccs', 'ccs-score'],
+    handover: ['handover', 'handover-document']
 };
 
 /**
@@ -44,8 +57,36 @@ const CONFIG_KEYS = {
     prdOutputPath: 'aiPrdGenerator.prdOutput.prdPath',
     contextCardOutputPath: 'aiPrdGenerator.contextCardOutput.contextCardPath',
     contextTemplateOutputPath: 'aiPrdGenerator.contextTemplateOutput.contextTemplatePath',
-    ccsOutputPath: 'aiPrdGenerator.ccsOutput.ccsPath'
+    ccsOutputPath: 'aiPrdGenerator.ccsOutput.ccsPath',
+    handoverOutputPath: 'aiPrdGenerator.handoverOutput.handoverPath'
 } as const;
+
+/**
+ * Logic Step: Get the active workspace URI.
+ * Throws an error if no workspace folder is open.
+ * @returns The URI of the first workspace folder.
+ */
+export function getWorkspaceUri(): vscode.Uri | null {
+    // First, try to get the workspace folder
+    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+        return vscode.workspace.workspaceFolders[0].uri;
+    }
+
+    // Fallback: try to get the URI from the active editor
+    if (vscode.window.activeTextEditor) {
+        const editorUri = vscode.window.activeTextEditor.document.uri;
+        // For file URIs, get the directory containing the file
+        if (editorUri.scheme === 'file') {
+            return vscode.Uri.joinPath(editorUri, '..');
+        }
+        // For other schemes, return the URI directly if it's container-like
+        return editorUri;
+    }
+
+    // If no workspace or active editor, return null
+    console.warn('[ConfigManager] Could not determine workspace URI. No workspace folder or active editor found.');
+    return null;
+}
 
 /**
  * Logic Step: Get the complete extension configuration with defaults.
@@ -61,7 +102,8 @@ export function getExtensionConfig(): ExtensionConfig {
         prdOutputPath: config.get<string>(CONFIG_KEYS.prdOutputPath) || DEFAULT_CONFIG.prdOutputPath,
         contextCardOutputPath: config.get<string>(CONFIG_KEYS.contextCardOutputPath) || DEFAULT_CONFIG.contextCardOutputPath,
         contextTemplateOutputPath: config.get<string>(CONFIG_KEYS.contextTemplateOutputPath) || DEFAULT_CONFIG.contextTemplateOutputPath,
-        ccsOutputPath: config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath
+        ccsOutputPath: config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath,
+        handoverOutputPath: config.get<string>(CONFIG_KEYS.handoverOutputPath) || DEFAULT_CONFIG.handoverOutputPath
     };
 }
 
@@ -81,20 +123,15 @@ export function getOpenAiModel(): string {
  * @param workspaceUri Optional workspace URI for path resolution
  * @returns Absolute URI for PRD output directory
  */
-export function getPrdOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
-    const config = vscode.workspace.getConfiguration();
-    const relativePath = config.get<string>(CONFIG_KEYS.prdOutputPath) || DEFAULT_CONFIG.prdOutputPath;
-    
-    if (workspaceUri) {
-        return vscode.Uri.joinPath(workspaceUri, relativePath);
+export function getPrdOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const config = vscode.workspace.getConfiguration();
+        const prdPath = config.get<string>(CONFIG_KEYS.prdOutputPath) || DEFAULT_CONFIG.prdOutputPath;
+        const baseUri = workspaceUri || getWorkspaceUri();
+        return vscode.Uri.joinPath(baseUri, prdPath);
+    } catch (error) {
+        return null;
     }
-    
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        return vscode.Uri.joinPath(workspaceFolders[0].uri, relativePath);
-    }
-    
-    throw new Error('No workspace folder found for PRD output path resolution');
 }
 
 /**
@@ -103,20 +140,15 @@ export function getPrdOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
  * @param workspaceUri Optional workspace URI for path resolution
  * @returns Absolute URI for context cards output directory
  */
-export function getContextCardOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
-    const config = vscode.workspace.getConfiguration();
-    const relativePath = config.get<string>(CONFIG_KEYS.contextCardOutputPath) || DEFAULT_CONFIG.contextCardOutputPath;
-    
-    if (workspaceUri) {
-        return vscode.Uri.joinPath(workspaceUri, relativePath);
+export function getContextCardOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const config = vscode.workspace.getConfiguration();
+        const cardPath = config.get<string>(CONFIG_KEYS.contextCardOutputPath) || DEFAULT_CONFIG.contextCardOutputPath;
+        const baseUri = workspaceUri || getWorkspaceUri();
+        return vscode.Uri.joinPath(baseUri, cardPath);
+    } catch (error) {
+        return null;
     }
-    
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        return vscode.Uri.joinPath(workspaceFolders[0].uri, relativePath);
-    }
-    
-    throw new Error('No workspace folder found for context card output path resolution');
 }
 
 /**
@@ -125,20 +157,15 @@ export function getContextCardOutputPath(workspaceUri?: vscode.Uri): vscode.Uri 
  * @param workspaceUri Optional workspace URI for path resolution
  * @returns Absolute URI for context templates output directory
  */
-export function getContextTemplateOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
-    const config = vscode.workspace.getConfiguration();
-    const relativePath = config.get<string>(CONFIG_KEYS.contextTemplateOutputPath) || DEFAULT_CONFIG.contextTemplateOutputPath;
-    
-    if (workspaceUri) {
-        return vscode.Uri.joinPath(workspaceUri, relativePath);
+export function getContextTemplateOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const config = vscode.workspace.getConfiguration();
+        const templatePath = config.get<string>(CONFIG_KEYS.contextTemplateOutputPath) || DEFAULT_CONFIG.contextTemplateOutputPath;
+        const baseUri = workspaceUri || getWorkspaceUri();
+        return vscode.Uri.joinPath(baseUri, templatePath);
+    } catch (error) {
+        return null;
     }
-    
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        return vscode.Uri.joinPath(workspaceFolders[0].uri, relativePath);
-    }
-    
-    throw new Error('No workspace folder found for context template output path resolution');
 }
 
 /**
@@ -147,32 +174,66 @@ export function getContextTemplateOutputPath(workspaceUri?: vscode.Uri): vscode.
  * @param workspaceUri Optional workspace URI for path resolution
  * @returns Absolute URI for CCS output directory
  */
-export function getCcsOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
-    const config = vscode.workspace.getConfiguration();
-    const relativePath = config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath;
-    
-    if (workspaceUri) {
-        return vscode.Uri.joinPath(workspaceUri, relativePath);
+export function getHandoverOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const config = vscode.workspace.getConfiguration();
+        const handoverPath = config.get<string>(CONFIG_KEYS.handoverOutputPath) || DEFAULT_CONFIG.handoverOutputPath;
+        const baseUri = workspaceUri || getWorkspaceUri();
+        return vscode.Uri.joinPath(baseUri, handoverPath);
+    } catch (error) {
+        return null;
     }
-    
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        return vscode.Uri.joinPath(workspaceFolders[0].uri, relativePath);
+}
+
+export function getCcsOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const config = vscode.workspace.getConfiguration();
+        const ccsPath = config.get<string>(CONFIG_KEYS.ccsOutputPath) || DEFAULT_CONFIG.ccsOutputPath;
+        const baseUri = workspaceUri || getWorkspaceUri();
+        return vscode.Uri.joinPath(baseUri, ccsPath);
+    } catch (error) {
+        return null;
     }
-    
-    throw new Error('No workspace folder found for CCS output path resolution');
 }
 
 /**
  * Logic Step: Get output directory for diagram files.
  * Returns the path where diagram files (data flow, component hierarchy) should be stored
- * Uses the context template output path as diagrams are related to context documentation
+ * Uses a dedicated diagrams folder for better organization
  * @param workspaceUri Optional workspace URI for path resolution
  * @returns Absolute URI for diagram output directory
  */
-export function getDiagramOutputPath(workspaceUri?: vscode.Uri): vscode.Uri {
-    // Logic Step: Use context template path as diagrams are part of context documentation
-    return getContextTemplateOutputPath(workspaceUri);
+export function getDiagramOutputPath(workspaceUri?: vscode.Uri): vscode.Uri | null {
+    try {
+        const baseUri = workspaceUri || getWorkspaceUri();
+        // Diagrams have a dedicated, non-configurable subfolder for better organization
+        return vscode.Uri.joinPath(baseUri, 'mise-en-place-output', 'diagrams');
+    } catch (error) {
+        return null;
+    }
+}
+
+/**
+ * Logic Step: Get all possible folder names for a given artifact type.
+ * Returns both current and legacy folder names for backward compatibility
+ * @param artifactType The type of artifact (contextCards, contextTemplates, etc.)
+ * @returns Array of possible folder names to check
+ */
+export function getPossibleFolderNames(artifactType: keyof typeof LEGACY_FOLDER_NAMES): string[] {
+    return LEGACY_FOLDER_NAMES[artifactType];
+}
+
+/**
+ * Logic Step: Check if a folder path matches any known patterns for an artifact type.
+ * Supports both current and legacy folder naming conventions
+ * @param folderPath The folder path to check
+ * @param artifactType The artifact type to match against
+ * @returns True if the folder path matches the artifact type
+ */
+export function isFolderForArtifactType(folderPath: string, artifactType: keyof typeof LEGACY_FOLDER_NAMES): boolean {
+    const possibleNames = getPossibleFolderNames(artifactType);
+    const folderName = path.basename(folderPath);
+    return possibleNames.includes(folderName);
 }
 
 /**
@@ -201,13 +262,54 @@ export function getAllOutputPaths(workspaceUri?: vscode.Uri): {
     contextTemplates: vscode.Uri;
     diagrams: vscode.Uri;
     ccs: vscode.Uri;
+    handover: vscode.Uri;
 } {
     return {
         prd: getPrdOutputPath(workspaceUri),
         contextCards: getContextCardOutputPath(workspaceUri),
         contextTemplates: getContextTemplateOutputPath(workspaceUri),
         diagrams: getDiagramOutputPath(workspaceUri),
-        ccs: getCcsOutputPath(workspaceUri)
+        ccs: getCcsOutputPath(workspaceUri),
+        handover: getHandoverOutputPath(workspaceUri)
+    };
+}
+
+/**
+ * Logic Step: Get all possible output paths including legacy locations.
+ * Returns arrays of possible paths to check for backward compatibility
+ * @param workspaceUri Optional workspace URI for path resolution
+ * @returns Object containing arrays of possible paths for each artifact type
+ */
+export function getAllPossibleOutputPaths(workspaceUri?: vscode.Uri): {
+    contextCards: vscode.Uri[];
+    contextTemplates: vscode.Uri[];
+    ccs: vscode.Uri[];
+    handover: vscode.Uri[];
+} {
+    const baseUri = workspaceUri || getWorkspaceUri();
+    
+    if (!baseUri) {
+        return {
+            contextCards: [],
+            contextTemplates: [],
+            ccs: [],
+            handover: []
+        };
+    }
+
+    return {
+        contextCards: LEGACY_FOLDER_NAMES.contextCards.map(name => 
+            vscode.Uri.joinPath(baseUri, 'mise-en-place-output', name)
+        ),
+        contextTemplates: LEGACY_FOLDER_NAMES.contextTemplates.map(name => 
+            vscode.Uri.joinPath(baseUri, 'mise-en-place-output', name)
+        ),
+        ccs: LEGACY_FOLDER_NAMES.ccs.map(name => 
+            vscode.Uri.joinPath(baseUri, 'mise-en-place-output', name)
+        ),
+        handover: LEGACY_FOLDER_NAMES.handover.map(name => 
+            vscode.Uri.joinPath(baseUri, 'mise-en-place-output', name)
+        )
     };
 }
 
@@ -240,6 +342,10 @@ export function validateConfiguration(): string[] {
     
     if (!config.ccsOutputPath || config.ccsOutputPath.trim() === '') {
         errors.push('CCS output path configuration is required');
+    }
+
+    if (!config.handoverOutputPath || config.handoverOutputPath.trim() === '') {
+        errors.push('Handover output path configuration is required');
     }
     
     return errors;

@@ -133,4 +133,11 @@ export function initializeEventHandlers(vscode: any): void {
             vscode.postMessage({ command: COMMANDS.GENERATE_ALL_CCS_DOCS });
         });
     }
+
+    // Generate Handover Document button
+    if (elements.generateHandoverFileButton) {
+        elements.generateHandoverFileButton.addEventListener('click', () => {
+            vscode.postMessage({ command: COMMANDS.GENERATE_HANDOVER_FILE });
+        });
+    }
 }

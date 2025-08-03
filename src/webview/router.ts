@@ -47,10 +47,13 @@ export class MessageRouter {
         context: vscode.ExtensionContext,
         webview: vscode.Webview
     ): Promise<any> {
+        console.log(`[MessageRouter] Routing command: ${message.command}`);
         const handler = this.handlers.get(message.command);
         if (handler) {
+            console.log(`[MessageRouter] Handler found for command: ${message.command}`);
             return handler(message, context, webview);
         }
+        console.warn(`[MessageRouter] No handler registered for command: ${message.command}`);
         console.warn(`No handler registered for command: ${message.command}`);
         return null;
     }

@@ -55,6 +55,13 @@ export interface ProjectState {
     ccsFiles: Array<{ fsPath: string }>;
     /** Number of CCS analysis files found */
     ccsCount: number;
+
+    /** Whether a handover document exists in the workspace */
+    hasHandover: boolean;
+    /** Array of URIs pointing to detected handover documents */
+    handoverFiles: Array<{ fsPath: string }>;
+    /** Number of handover documents found */
+    handoverCount: number;
 }
 
 // --- UI Element Types ---
@@ -107,6 +114,8 @@ export interface UIElements {
     generateTestingFrameworkButton: HTMLButtonElement;
     generateAiPromptingGuideButton: HTMLButtonElement;
     generateAllCcsDocsButton: HTMLButtonElement;
+    generateHandoverFileButton: HTMLButtonElement;
+    handoverDocumentSection: HTMLDivElement;
 }
 
 /**

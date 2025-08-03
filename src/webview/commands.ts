@@ -43,6 +43,7 @@ export const COMMANDS = {
 
     // Code Comprehension Score
     GENERATE_CCS: 'generate-ccs',
+    GENERATE_ENHANCED_CCS: 'generate-enhanced-ccs',
 
     // CCS Documentation & Testing
     GENERATE_COMPREHENSIVE_README: 'generate-comprehensive-readme',
@@ -50,4 +51,7 @@ export const COMMANDS = {
     GENERATE_TESTING_FRAMEWORK: 'generate-testing-framework',
     GENERATE_AI_PROMPTING_GUIDE: 'generate-ai-prompting-guide',
     GENERATE_ALL_CCS_DOCS: 'generate-all-ccs-docs',
+
+    // Handover document generation
+    GENERATE_HANDOVER_FILE: 'generate-handover-file',
 };

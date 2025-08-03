@@ -55,6 +55,14 @@ export async function handleGeneratePrd(message: any, context: vscode.ExtensionC
             // Logic Step: Use configuration manager for output path
             const workspaceUri = workspaceFolders[0].uri;
             const outputDir = getPrdOutputPath(workspaceUri);
+            if (!outputDir) {
+                handleGenerationError(
+                    new Error('Could not determine PRD output path. Is a workspace open?'),
+                    'PRD generation',
+                    webview
+                );
+                return;
+            }
             await ensureOutputDirectory(outputDir);
 
             const safeTitle = (prdOutput.json.title || 'untitled').replace(/[^a-z0-9_\-]+/gi, '-').toLowerCase();

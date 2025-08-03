@@ -122,6 +122,8 @@ export function initializeUIElements(): Partial<UIElements> {
         generateTestingFrameworkButton: safeGetElement('generate-testing-framework', isButton) || undefined,
         generateAiPromptingGuideButton: safeGetElement('generate-ai-prompting-guide', isButton) || undefined,
         generateAllCcsDocsButton: safeGetElement('generate-all-ccs-docs', isButton) || undefined,
+        generateHandoverFileButton: safeGetElement('generate-handover-file', isButton) || undefined,
+        handoverDocumentSection: safeGetElement('handover-document-section', isDiv) || undefined,
     };
 }
 

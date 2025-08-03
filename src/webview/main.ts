@@ -35,17 +35,33 @@ const vscode = (window as any).acquireVsCodeApi();
 
 (function() {
     console.log('Webview main.ts loaded');
+    console.log('VS Code API available:', !!vscode);
+    console.log('Document ready state:', document.readyState);
     
-    // Notify the extension that the webview is ready.
-    console.log('Sending webviewReady message');
-    vscode.postMessage({ command: 'webviewReady' });
+    // Logic Step: Ensure DOM is ready before initializing (cross-platform compatibility)
+    function initializeWhenReady() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeWhenReady);
+            return;
+        }
+        
+        console.log('DOM ready, initializing webview...');
+        
+        // Notify the extension that the webview is ready.
+        console.log('Sending webviewReady message');
+        vscode.postMessage({ command: 'webviewReady' });
 
-    // Set up all event listeners for user interactions.
-    initializeEventHandlers(vscode);
+        // Set up all event listeners for user interactions.
+        initializeEventHandlers(vscode);
+    }
+    
+    // Start initialization
+    initializeWhenReady();
 
     // Logic Step: Listen for messages from the extension with type safety
     window.addEventListener('message', (event: MessageEvent<ExtensionToWebviewMessage>) => {
         const message = event.data;
+        console.log('Received message from extension:', message);
         
         try {
             switch (message.command) {
