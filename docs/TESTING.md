@@ -7,6 +7,7 @@ The ai-prd-generator extension uses a comprehensive testing framework built on M
 ## Framework Architecture
 
 ### Test Structure
+
 ```
 src/test/
 ├── test.config.ts          # Centralized test configuration
@@ -46,6 +47,7 @@ export const testConfig = {
 The framework provides comprehensive mocks for:
 
 #### VS Code API Mocks
+
 ```typescript
 VSCodeMocks.workspace.getConfiguration()
 VSCodeMocks.window.showInformationMessage()
@@ -53,12 +55,14 @@ VSCodeMocks.commands.registerCommand()
 ```
 
 #### OpenAI API Mocks
+
 ```typescript
 OpenAIMocks.mockPRDResponse('Mock PRD Content')
 OpenAIMocks.mockDiagramResponse('graph TD\nA --> B')
 ```
 
 #### File System Mocks
+
 ```typescript
 FileSystemMocks.mockProjectFiles({
     hasPRD: true,
@@ -177,6 +181,7 @@ suite('Service Integration Tests', () => {
 ### Coverage Exclusions
 
 The following are excluded from coverage requirements:
+
 - Test files (`src/test/**/*`)
 - Type definitions (`src/**/*.d.ts`)
 - Build outputs (`dist/**/*`, `out/**/*`)
@@ -184,24 +189,28 @@ The following are excluded from coverage requirements:
 ## Best Practices
 
 ### Test Organization
+
 1. Group related tests in suites
 2. Use descriptive test names
 3. Follow AAA pattern (Arrange, Act, Assert)
 4. Keep tests focused and atomic
 
 ### Mocking Strategy
+
 1. Mock external dependencies consistently
 2. Use factory methods for test data
 3. Reset mocks between tests
 4. Verify mock interactions when relevant
 
 ### Error Testing
+
 1. Test both success and failure paths
 2. Verify error handling and recovery
 3. Test edge cases and boundary conditions
 4. Ensure graceful degradation
 
 ### Performance Considerations
+
 1. Use appropriate timeouts for test types
 2. Mock expensive operations
 3. Avoid real file system operations
@@ -216,6 +225,7 @@ npm run test:ci
 ```
 
 This command:
+
 1. Compiles TypeScript
 2. Runs type checking
 3. Executes linting
@@ -234,6 +244,7 @@ This command:
 ### Debug Mode
 
 Run tests with debug output:
+
 ```bash
 npm run test:watch
 ```
@@ -243,6 +254,7 @@ This provides real-time feedback during development.
 ## Future Enhancements
 
 Planned improvements:
+
 - E2E test automation
 - Visual regression testing
 - Performance benchmarking

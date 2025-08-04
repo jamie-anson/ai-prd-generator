@@ -4,4 +4,4 @@ This file contains links to external documentation and resources that are useful
 
 ## Vector Database
 
-*   **ChromaDB Documentation:** [https://docs.trychroma.com/docs/overview/introduction](https://docs.trychroma.com/docs/overview/introduction)
+* **ChromaDB Documentation:** [https://docs.trychroma.com/docs/overview/introduction](https://docs.trychroma.com/docs/overview/introduction)
