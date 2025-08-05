@@ -60,7 +60,9 @@ export interface ProjectState {
     /** Array of URIs pointing to detected handover documents */
     handoverFiles: vscode.Uri[];
     /** Number of handover documents found */
-    handoverCount: number;
+        handoverCount: number;
+    /** The workspace URI that this state was detected in. */
+    workspaceUri: vscode.Uri | null;
 }
 
 /**
@@ -69,11 +71,53 @@ export interface ProjectState {
  * PRD files, Context Cards, and Context Templates.
  */
 export class ProjectStateDetector {
+    private static _instance: ProjectStateDetector;
+    private _panel: vscode.WebviewPanel | undefined;
+    private _disposables: vscode.Disposable[] = [];
+
+    private constructor() {
+        vscode.window.onDidChangeActiveTextEditor(editor => {
+            if (editor) {
+                console.log('[ProjectStateDetector] Active editor changed, re-detecting project state.');
+                this.detectAndNotify();
+            }
+        }, null, this._disposables);
+    }
+
+    public static getInstance(): ProjectStateDetector {
+        if (!ProjectStateDetector._instance) {
+            ProjectStateDetector._instance = new ProjectStateDetector();
+        }
+        return ProjectStateDetector._instance;
+    }
+
+    public registerPanelAndDetectState(panel: vscode.WebviewPanel) {
+        this._panel = panel;
+        this.detectAndNotify();
+        panel.onDidDispose(() => {
+            this.dispose();
+        });
+    }
+
+    private async detectAndNotify() {
+        if (!this._panel) {
+            return;
+        }
+
+        const state = await this.detectProjectState();
+        this._panel.webview.postMessage({ command: 'updateState', state });
+    }
+
+    public dispose() {
+        ProjectStateDetector._instance = undefined;
+        this._disposables.forEach(d => d.dispose());
+        this._disposables = [];
+    }
     /**
      * Overrides the default dependencies with mock versions for testing.
      * @param newDependencies The mock dependencies to use.
      */
-    public static setDependencies(newDependencies: Partial<typeof deps>) {
+        public setDependencies(newDependencies: Partial<typeof deps>) {
         deps = { ...deps, ...newDependencies };
     }
 
@@ -82,13 +126,16 @@ export class ProjectStateDetector {
      * This is the main entry point that orchestrates the detection of all artifact types.
      * @returns ProjectState object containing detection results and file counts
      */
-    public static async detectProjectState(): Promise<ProjectState> {
+        public async detectProjectState(): Promise<ProjectState> {
+        console.log('[ProjectStateDetector] Starting project state detection.');
         // Logic Step: Get workspace URI with multiple fallback strategies for different VS Code variants
         const workspaceUri = await deps.getWorkspaceUri();
         if (!workspaceUri) {
-            console.log('[ProjectStateDetector] No workspace detected, returning empty state');
+            console.error('[ProjectStateDetector] CRITICAL: No workspace detected. Returning empty state.');
             return this.getEmptyProjectState();
         }
+
+        console.log(`[ProjectStateDetector] Workspace URI detected: ${workspaceUri.fsPath}`);
 
         console.log(`[ProjectStateDetector] Workspace URI: ${workspaceUri.fsPath}`);
         console.log(`[ProjectStateDetector] Workspace scheme: ${workspaceUri.scheme}`);
@@ -96,25 +143,32 @@ export class ProjectStateDetector {
         console.log(`[ProjectStateDetector] VS Code version: ${vscode.version}`);
 
         try {
-            const [
-                prdFiles,
-                contextCardFiles,
-                contextTemplateFiles,
-                ccsFiles,
-                handoverFiles,
-                hasDataFlowDiagram,
-                hasComponentHierarchy
-            ] = await Promise.all([
-                this.findPRDFiles(workspaceUri),
-                this.findContextCardFiles(workspaceUri),
-                this.findContextTemplateFiles(workspaceUri),
-                this.findCCSFiles(workspaceUri),
-                this.findHandoverFiles(workspaceUri),
-                this.checkDiagramExists(workspaceUri, 'data-flow-diagram.json'),
-                this.checkDiagramExists(workspaceUri, 'component-hierarchy-diagram.json')
-            ]);
+            console.log('[ProjectStateDetector] Searching for PRD files...');
+            const prdFiles = await this.findPRDFiles(workspaceUri);
+            console.log(`[ProjectStateDetector] Found ${prdFiles.length} PRD files.`);
 
-            return {
+            console.log('[ProjectStateDetector] Searching for Context Card files...');
+            const contextCardFiles = await this.findContextCardFiles(workspaceUri);
+            console.log(`[ProjectStateDetector] Found ${contextCardFiles.length} Context Card files.`);
+
+            console.log('[ProjectStateDetector] Searching for Context Template files...');
+            const contextTemplateFiles = await this.findContextTemplateFiles(workspaceUri);
+            console.log(`[ProjectStateDetector] Found ${contextTemplateFiles.length} Context Template files.`);
+
+            console.log('[ProjectStateDetector] Searching for CCS files...');
+            const ccsFiles = await this.findCCSFiles(workspaceUri);
+            console.log(`[ProjectStateDetector] Found ${ccsFiles.length} CCS files.`);
+
+            console.log('[ProjectStateDetector] Searching for Handover files...');
+            const handoverFiles = await this.findHandoverFiles(workspaceUri);
+            console.log(`[ProjectStateDetector] Found ${handoverFiles.length} Handover files.`);
+
+            console.log('[ProjectStateDetector] Checking for diagram files...');
+            const hasDataFlowDiagram = await this.checkDiagramExists(workspaceUri, 'data-flow-diagram.json');
+            const hasComponentHierarchy = await this.checkDiagramExists(workspaceUri, 'component-hierarchy-diagram.json');
+            console.log(`[ProjectStateDetector] Diagram check complete. DFD: ${hasDataFlowDiagram}, CH: ${hasComponentHierarchy}`);
+
+            const finalState = {
                 hasPRD: prdFiles.length > 0,
                 prdFiles,
                 prdCount: prdFiles.length,
@@ -131,10 +185,13 @@ export class ProjectStateDetector {
                 ccsCount: ccsFiles.length,
                 hasHandover: handoverFiles.length > 0,
                 handoverFiles,
-                handoverCount: handoverFiles.length,
-                dataFlowDiagramFiles: hasDataFlowDiagram ? [{ fsPath: vscode.Uri.joinPath(getDiagramOutputPath(workspaceUri), 'data-flow-diagram.json').fsPath }] : [],
-                componentHierarchyFiles: hasComponentHierarchy ? [{ fsPath: vscode.Uri.joinPath(getDiagramOutputPath(workspaceUri), 'component-hierarchy-diagram.json').fsPath }] : [],
+                            handoverCount: handoverFiles.length,
+            workspaceUri,
+                dataFlowDiagramFiles: hasDataFlowDiagram ? [{ fsPath: vscode.Uri.joinPath(configManager.getDiagramOutputPath(workspaceUri), 'data-flow-diagram.json').fsPath }] : [],
+                componentHierarchyFiles: hasComponentHierarchy ? [{ fsPath: vscode.Uri.joinPath(configManager.getDiagramOutputPath(workspaceUri), 'component-hierarchy-diagram.json').fsPath }] : [],
             };
+            console.log('[ProjectStateDetector] Final state computed:', JSON.stringify(finalState, null, 2));
+            return finalState;
         } catch (error) {
             console.error('Error detecting project state:', error);
             // Return a default empty state in case of unexpected errors
@@ -147,7 +204,7 @@ export class ProjectStateDetector {
      * Handles different workspace configurations and VS Code variants (VS Code, Cursor, Windsurf, etc.)
      * @returns Workspace URI or null if no workspace is available
      */
-    private static async getWorkspaceUri(): Promise<vscode.Uri | null> {
+        private async getWorkspaceUri(): Promise<vscode.Uri | null> {
         try {
             // Strategy 1: Standard workspace folders (works in most VS Code variants)
             const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -204,7 +261,8 @@ export class ProjectStateDetector {
             contextCardCount: 0,
             contextTemplateCount: 0,
             ccsCount: 0,
-            handoverCount: 0,
+                    handoverCount: 0,
+        workspaceUri: null,
             dataFlowDiagramFiles: [],
             componentHierarchyFiles: []
         };
@@ -216,7 +274,7 @@ export class ProjectStateDetector {
      * @param workspaceUri The root URI of the current workspace
      * @returns Array of URIs pointing to detected PRD files
      */
-    private static async findPRDFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        private async findPRDFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         const searchPromises: Promise<vscode.Uri[]>[] = [];
 
         // Logic Step 1: Search in the officially configured PRD output path.
@@ -250,9 +308,10 @@ export class ProjectStateDetector {
      * @param workspaceUri The root URI of the current workspace
      * @returns Array of URIs pointing to detected Context Card files
      */
-    private static async findContextCardFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
-        const possiblePaths = configManager.getAllPossibleOutputPaths(workspaceUri).contextCards;
-        const searchPromises = possiblePaths.map(uri => this.findFiles(uri, '**/*.md'));
+        private async findContextCardFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
+        if (!pathConfig || !pathConfig.contextCards) return [];
+        const searchPromises = pathConfig.contextCards.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
 
@@ -262,9 +321,10 @@ export class ProjectStateDetector {
      * @param workspaceUri The root URI of the current workspace
      * @returns Array of URIs pointing to detected Context Template files
      */
-    private static async findContextTemplateFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
-        const possiblePaths = configManager.getAllPossibleOutputPaths(workspaceUri).contextTemplates;
-        const searchPromises = possiblePaths.map(uri => this.findFiles(uri, '**/*.md'));
+        private async findContextTemplateFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
+        if (!pathConfig || !pathConfig.contextTemplates) return [];
+        const searchPromises = pathConfig.contextTemplates.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
 
@@ -274,9 +334,10 @@ export class ProjectStateDetector {
      * @param workspaceUri The root URI of the current workspace
      * @returns Array of URIs pointing to detected CCS analysis files
      */
-    private static async findCCSFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
-        const possiblePaths = configManager.getAllPossibleOutputPaths(workspaceUri).ccs;
-        const searchPromises = possiblePaths.map(uri => this.findFiles(uri, '**/*.md'));
+        private async findCCSFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
+        if (!pathConfig || !pathConfig.ccs) return [];
+        const searchPromises = pathConfig.ccs.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
 
@@ -285,9 +346,10 @@ export class ProjectStateDetector {
      * @param workspaceUri The root URI of the current workspace
      * @returns Array of URIs pointing to detected Handover files
      */
-    private static async findHandoverFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
-        const possiblePaths = configManager.getAllPossibleOutputPaths(workspaceUri).handover;
-        const searchPromises = possiblePaths.map(uri => this.findFiles(uri, '**/*.md'));
+        private async findHandoverFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
+        const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
+        if (!pathConfig || !pathConfig.handover) return [];
+        const searchPromises = pathConfig.handover.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
 
@@ -297,7 +359,7 @@ export class ProjectStateDetector {
      * @param pattern The glob pattern to match.
      * @returns An array of found file URIs.
      */
-    private static async findFiles(uri: vscode.Uri | null, pattern: string): Promise<vscode.Uri[]> {
+        private async findFiles(uri: vscode.Uri | null, pattern: string): Promise<vscode.Uri[]> {
         if (!uri) {
             return [];
         }
@@ -315,7 +377,7 @@ export class ProjectStateDetector {
      * @param fileName The name of the diagram file.
      * @returns A boolean indicating if the file exists.
      */
-    private static async checkDiagramExists(workspaceUri: vscode.Uri, fileName: string): Promise<boolean> {
+        private async checkDiagramExists(workspaceUri: vscode.Uri, fileName: string): Promise<boolean> {
         const diagramDir = configManager.getDiagramOutputPath(workspaceUri);
         if (!diagramDir) {
             return false; // If the base directory path is null, the file can't exist.

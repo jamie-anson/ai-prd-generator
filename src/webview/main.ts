@@ -33,33 +33,18 @@ declare global {
 // Ensure vscode API is available
 const vscode = (window as any).acquireVsCodeApi();
 
-(function() {
-    console.log('Webview main.ts loaded');
-    console.log('VS Code API available:', !!vscode);
-    console.log('Document ready state:', document.readyState);
-    
-    // Logic Step: Ensure DOM is ready before initializing (cross-platform compatibility)
-    function initializeWhenReady() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeWhenReady);
-            return;
-        }
-        
-        console.log('DOM ready, initializing webview...');
-        
-        // Notify the extension that the webview is ready.
-        console.log('Sending webviewReady message');
-        vscode.postMessage({ command: 'webviewReady' });
+function initializeWebview() {
+    console.log('DOM fully loaded and parsed');
 
-        // Set up all event listeners for user interactions.
-        initializeEventHandlers(vscode);
-    }
-    
-    // Start initialization
-    initializeWhenReady();
+    // Notify the extension that the webview is ready.
+    console.log('Sending webviewReady message');
+    vscode.postMessage({ command: 'webviewReady' });
+
+    // Set up all event listeners for user interactions.
+    initializeEventHandlers(vscode);
 
     // Logic Step: Listen for messages from the extension with type safety
-    window.addEventListener('message', (event: MessageEvent<ExtensionToWebviewMessage>) => {
+    window.addEventListener('message', async (event: MessageEvent<ExtensionToWebviewMessage>) => {
         const message = event.data;
         console.log('Received message from extension:', message);
         
@@ -68,36 +53,36 @@ const vscode = (window as any).acquireVsCodeApi();
                 case 'apiKeyStatus':
                     console.log('[UI] API key status received:', message.hasApiKey);
                     if (typeof message.hasApiKey === 'boolean') {
-                        updateApiKeyDisplay(message.hasApiKey);
+                        await updateApiKeyDisplay(message.hasApiKey);
                         console.log('[UI] Updated API key display with hasApiKey:', message.hasApiKey);
                     } else {
                         console.error('Invalid api-key-status message format:', message);
-                        displayErrorMessage('Invalid API key status received', 'validation');
+                        await displayErrorMessage('Invalid API key status received', 'validation');
                     }
                     break;
                     
                 case 'project-state-update':
                     if (validateProjectState(message.projectState)) {
-                        updateUIBasedOnProjectState(message.projectState as ProjectState);
+                        await updateUIBasedOnProjectState(message.projectState as ProjectState);
                     } else {
                         console.error('Invalid project-state-update message format:', message);
-                        displayErrorMessage('Invalid project state data received', 'validation');
+                        await displayErrorMessage('Invalid project state data received', 'validation');
                     }
                     break;
                     
                 case 'ccsGenerated':
                     if (message.analysis && typeof message.analysis === 'string') {
-                        displayCCSResults(message.analysis);
+                        await displayCCSResults(message.analysis);
                     } else {
                         console.error('Invalid ccsGenerated message format:', message);
-                        displayErrorMessage('Invalid CCS analysis data received', 'validation');
+                        await displayErrorMessage('Invalid CCS analysis data received', 'validation');
                     }
                     break;
                     
                 case 'info':
                     if (message.text && typeof message.text === 'string') {
                         console.log('[INFO]', message.text);
-                        displayInfoMessage(message.text);
+                        await displayInfoMessage(message.text);
                     } else {
                         console.error('Invalid info message format:', message);
                     }
@@ -106,7 +91,7 @@ const vscode = (window as any).acquireVsCodeApi();
                 case 'success':
                     if (message.text && typeof message.text === 'string') {
                         console.log('[SUCCESS]', message.text);
-                        displaySuccessMessage(message.text);
+                        await displaySuccessMessage(message.text);
                     } else {
                         console.error('Invalid success message format:', message);
                     }
@@ -115,10 +100,10 @@ const vscode = (window as any).acquireVsCodeApi();
                 case 'error':
                     if (message.text && typeof message.text === 'string') {
                         console.error('[ERROR]', message.text);
-                        displayErrorMessage(message.text, 'generation');
+                        await displayErrorMessage(message.text, 'generation');
                     } else {
                         console.error('Invalid error message format:', message);
-                        displayErrorMessage('Unknown error occurred', 'generation');
+                        await displayErrorMessage('Unknown error occurred', 'generation');
                     }
                     break;
                     
@@ -127,7 +112,17 @@ const vscode = (window as any).acquireVsCodeApi();
             }
         } catch (error) {
             console.error('Error processing message:', error, message);
-            displayErrorMessage('Error processing extension message', 'validation');
+            await displayErrorMessage('Error processing extension message', 'validation');
         }
     });
-})();
+}
+
+// Logic Step: Ensure DOM is ready before initializing (cross-platform compatibility)
+if (document.readyState === 'loading') {
+    console.log('Webview main.ts loaded, waiting for DOMContentLoaded...');
+    document.addEventListener('DOMContentLoaded', initializeWebview);
+} else {
+    // The DOM is already ready, so we can initialize immediately.
+    console.log('Webview main.ts loaded, DOM is already ready.');
+    initializeWebview();
+}

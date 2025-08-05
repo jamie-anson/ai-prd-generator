@@ -25,7 +25,7 @@ const HANDOVER_FILENAME = 'handover.md';
  */
 async function updateProjectState(webview: vscode.Webview) {
   try {
-    const projectState = await ProjectStateDetector.detectProjectState();
+        const projectState = await ProjectStateDetector.getInstance().detectProjectState();
     webview.postMessage({ 
       command: 'project-state-update', 
       projectState

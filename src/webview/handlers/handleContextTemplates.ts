@@ -12,7 +12,7 @@ import { ProjectStateDetector } from '../../utils/projectStateDetector';
  */
 export async function handleGenerateContextTemplates(context: vscode.ExtensionContext, webview?: vscode.Webview) {
     // Logic Step: Use ProjectStateDetector to find existing PRDs
-    const projectState = await ProjectStateDetector.detectProjectState();
+        const projectState = await ProjectStateDetector.getInstance().detectProjectState();
     
     if (!projectState.hasPRD || projectState.prdFiles.length === 0) {
         handleGenerationError(

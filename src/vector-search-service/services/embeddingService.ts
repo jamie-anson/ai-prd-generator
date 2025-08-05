@@ -2,7 +2,7 @@
 
 import * as tf from '@tensorflow/tfjs-node';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
-import { config } from '../config';
+import { config } from '../config.js';
 
 /**
  * @file Manages the generation of vector embeddings from text.

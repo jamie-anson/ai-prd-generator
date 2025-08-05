@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { getWebviewContent } from '../../utils/webview';
+import { ProjectStateDetector } from '../../utils/projectStateDetector';
 import { MessageRouter } from '../../webview/router';
 
 /**
@@ -44,6 +45,10 @@ export class PanelManager {
                 retainContextWhenHidden: true,
             }
         );
+
+                // Logic Step: Register the panel with the ProjectStateDetector singleton to enable event-driven updates.
+        const projectStateDetector = ProjectStateDetector.getInstance();
+        projectStateDetector.registerPanelAndDetectState(this.currentPanel);
 
         await this.setupWebview();
     }

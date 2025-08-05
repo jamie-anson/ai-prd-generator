@@ -44,7 +44,7 @@ export async function handleWebviewReady(
     
     // Detect project state and send to webview
     try {
-        const projectState = await ProjectStateDetector.detectProjectState();
+                const projectState = await ProjectStateDetector.getInstance().detectProjectState();
         console.log('[WebviewReady] Detected project state:', {
             hasPRD: projectState.hasPRD,
             hasContextCards: projectState.hasContextCards,

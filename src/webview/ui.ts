@@ -27,41 +27,43 @@ import {
  * Logic Step: Initialize UI elements with type safety and null checking.
  * Uses the type-safe initialization utility to prevent runtime errors.
  */
-export let elements: Partial<UIElements> = {};
+export let elements: UIElements;
 
-/**
- * Logic Step: Initialize UI elements with retry mechanism for cross-platform compatibility.
- * Handles different loading scenarios across VS Code variants (VS Code, Cursor, Windsurf, etc.)
- */
+let resolveUiReady: (value: UIElements) => void;
+export const uiReady = new Promise<UIElements>(resolve => {
+    resolveUiReady = resolve;
+});
+
 function initializeElementsWithRetry(attempt: number = 1): void {
-    console.log(`[UI] Initializing UI elements (attempt ${attempt})...`);
-    console.log('[UI] DOM ready state:', document.readyState);
-    
     const initialized = initializeUIElements();
     const criticalElements = {
-        generationControls: !!initialized.generationControls,
-        postGenerationControls: !!initialized.postGenerationControls,
-        generatePrdButton: !!initialized.generatePrdButton,
-        apiKeyDisplay: !!initialized.apiKeyDisplay
+        generationControls: initialized.generationControls,
+        postGenerationControls: initialized.postGenerationControls,
+        generatePrdButton: initialized.generatePrdButton,
+        apiKeyDisplay: initialized.apiKeyDisplay
     };
     
-    console.log('[UI] Elements initialized:', criticalElements);
-    
-    const criticalElementsFound = Object.values(criticalElements).filter(Boolean).length;
-    const totalCriticalElements = Object.keys(criticalElements).length;
-    
-    if (criticalElementsFound < totalCriticalElements && attempt < 5) {
-        console.log(`[UI] Only ${criticalElementsFound}/${totalCriticalElements} critical elements found, retrying in ${attempt * 100}ms...`);
-        setTimeout(() => initializeElementsWithRetry(attempt + 1), attempt * 100);
-        return;
+    const allCriticalElementsFound = Object.values(criticalElements).every(el => el !== null);
+
+    if (allCriticalElementsFound) {
+        console.log('[UI] All critical elements found. UI is ready.');
+        elements = initialized as UIElements;
+        resolveUiReady(elements);
+    } else if (attempt < 10) { // Increased retry attempts
+        console.log(`[UI] Critical elements not yet found, retrying in ${attempt * 50}ms...`);
+        setTimeout(() => initializeElementsWithRetry(attempt + 1), attempt * 50);
+    } else {
+        console.error('[UI] Failed to initialize critical UI elements after multiple attempts.');
+        // Optionally, reject the promise or display a permanent error message
     }
-    
-    elements = initialized;
-    console.log(`[UI] Element initialization complete (${criticalElementsFound}/${totalCriticalElements} critical elements found)`);
 }
 
-// Initialize elements when module loads
-initializeElementsWithRetry();
+// Start the initialization process as soon as the DOM is interactive
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initializeElementsWithRetry());
+} else {
+    initializeElementsWithRetry();
+}
 
 // --- Type-Safe UI Update Functions ---
 
@@ -70,7 +72,8 @@ initializeElementsWithRetry();
  * Uses type-safe utilities to manage element visibility and content updates.
  * @param hasApiKey Whether an API key is currently set
  */
-export function updateApiKeyDisplay(hasApiKey: boolean): void {
+export async function updateApiKeyDisplay(hasApiKey: boolean): Promise<void> {
+    const elements = await uiReady;
     const { apiKeyDisplay, apiKeyInputContainer, apiKeyObfuscated } = elements;
     
     console.log('[UI] updateApiKeyDisplay called with hasApiKey:', hasApiKey);
@@ -96,7 +99,8 @@ export function updateApiKeyDisplay(hasApiKey: boolean): void {
  * Logic Step: Show post-generation controls with type safety.
  * Transitions from generation input to post-generation action buttons.
  */
-export function showPostGenerationControls(): void {
+export async function showPostGenerationControls(): Promise<void> {
+    const elements = await uiReady;
     console.log('[UI] showPostGenerationControls called');
     console.log('[UI] elements.generationControls:', elements.generationControls);
     console.log('[UI] elements.postGenerationControls:', elements.postGenerationControls);
@@ -126,7 +130,8 @@ export function showPostGenerationControls(): void {
  * @param errorMessage Error message to display
  * @param errorType Optional error type for styling (defaults to 'generation')
  */
-export function displayErrorMessage(errorMessage: string, errorType: UIError['type'] = 'generation'): void {
+export async function displayErrorMessage(errorMessage: string, errorType: UIError['type'] = 'generation'): Promise<void> {
+    const elements = await uiReady;
     const error: UIError = {
         message: errorMessage,
         type: errorType
@@ -139,7 +144,8 @@ export function displayErrorMessage(errorMessage: string, errorType: UIError['ty
  * Shows informational messages like progress updates during generation.
  * @param infoMessage Info message to display
  */
-export function displayInfoMessage(infoMessage: string): void {
+export async function displayInfoMessage(infoMessage: string): Promise<void> {
+    const elements = await uiReady;
     if (elements.errorContainer) {
         elements.errorContainer.innerHTML = `<div class="info-message" style="color: #0078d4; background: #f3f9ff; border: 1px solid #0078d4; padding: 8px; border-radius: 4px; margin: 8px 0;">${infoMessage}</div>`;
         elements.errorContainer.style.display = 'block';
@@ -151,7 +157,8 @@ export function displayInfoMessage(infoMessage: string): void {
  * Shows success messages when operations complete successfully.
  * @param successMessage Success message to display
  */
-export function displaySuccessMessage(successMessage: string): void {
+export async function displaySuccessMessage(successMessage: string): Promise<void> {
+    const elements = await uiReady;
     if (elements.errorContainer) {
         elements.errorContainer.innerHTML = `<div class="success-message" style="color: #107c10; background: #f3fff3; border: 1px solid #107c10; padding: 8px; border-radius: 4px; margin: 8px 0;">${successMessage}</div>`;
         elements.errorContainer.style.display = 'block';
@@ -162,7 +169,8 @@ export function displaySuccessMessage(successMessage: string): void {
  * Logic Step: Clear any displayed error messages.
  * Hides error container and clears its content safely.
  */
-export function clearErrorMessage(): void {
+export async function clearErrorMessage(): Promise<void> {
+    const elements = await uiReady;
     clearError(elements.errorContainer);
 }
 
@@ -173,7 +181,8 @@ export function clearErrorMessage(): void {
  * options for their current workflow stage.
  * @param projectState Typed object containing project artifact detection results
  */
-export function updateUIBasedOnProjectState(projectState: ProjectState): void {
+export async function updateUIBasedOnProjectState(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     // Logic Step: Validate project state structure before processing
     if (!isValidProjectState(projectState)) {
         console.error('Invalid project state received:', projectState);
@@ -219,7 +228,8 @@ export function updateUIBasedOnProjectState(projectState: ProjectState): void {
  * Updates button text to indicate regeneration if templates already exist.
  * @param projectState Typed object containing project artifact detection results
  */
-function updateContextTemplatesSection(projectState: ProjectState): void {
+async function updateContextTemplatesSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     if (projectState.hasPRD) {
         const buttonConfig: ButtonConfig = {
             text: projectState.hasContextTemplates ? 'Regenerate Code Templates' : 'Generate Code Templates',
@@ -247,7 +257,8 @@ function updateContextTemplatesSection(projectState: ProjectState): void {
  * Updates button text to indicate regeneration if context cards already exist.
  * @param projectState Typed object containing project artifact detection results
  */
-function updateContextCardsSection(projectState: ProjectState): void {
+async function updateContextCardsSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     if (projectState.hasPRD) {
         const buttonConfig: ButtonConfig = {
             text: projectState.hasContextCards ? 'Regenerate Development Guidelines' : 'Generate Development Guidelines',
@@ -274,7 +285,8 @@ function updateContextCardsSection(projectState: ProjectState): void {
  * Shows generate buttons if PRD exists but diagrams don't, or view buttons if diagrams exist.
  * @param projectState Typed object containing project artifact detection results
  */
-function updateDiagramSection(projectState: ProjectState): void {
+async function updateDiagramSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     // Logic Step: Only show diagram options if PRD exists
     if (!projectState.hasPRD) {
         // Hide all diagram buttons if no PRD
@@ -352,7 +364,8 @@ function updateDiagramSection(projectState: ProjectState): void {
  * Updates button text to indicate regeneration if CCS analysis already exists.
  * @param projectState Typed object containing project artifact detection results
  */
-function updateHandoverSection(projectState: ProjectState): void {
+async function updateHandoverSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     const isEnabled = projectState.hasCCS;
     updateSection('document-section', {
         sectionId: 'document-section',
@@ -370,7 +383,8 @@ function updateHandoverSection(projectState: ProjectState): void {
     updateButton(elements.generateHandoverFileButton, buttonConfig);
 }
 
-function updateCCSSection(projectState: ProjectState): void {
+async function updateCCSSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
     const buttonConfig: ButtonConfig = {
         text: projectState.hasCCS ? 'Regenerate CCS Score' : 'Generate CCS Score',
         title: projectState.hasCCS ? 'CCS analysis already exists. Click to regenerate it.' : 'Analyze codebase comprehension score',
@@ -390,7 +404,8 @@ function updateCCSSection(projectState: ProjectState): void {
  * Updates the CCS results container with the analysis content and converts markdown to HTML.
  * @param analysis The CCS analysis text to display
  */
-export function displayCCSResults(analysis: string): void {
+export async function displayCCSResults(analysis: string): Promise<void> {
+    const elements = await uiReady;
     const resultsContainer = elements.ccsResults;
     if (resultsContainer) {
         // Convert markdown-style formatting to HTML for better display

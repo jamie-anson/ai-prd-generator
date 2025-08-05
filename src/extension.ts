@@ -12,7 +12,9 @@ export function activate(context: vscode.ExtensionContext) {
     try {
         // Logic Step 1: Register all commands for the extension.
         // This is the main entry point for all functionality.
+        console.log('Registering all commands...');
         registerAllCommands(context);
+        console.log('All commands registered successfully.');
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
         console.error('❌ CRITICAL ERROR during extension activation:', errorMessage, error);

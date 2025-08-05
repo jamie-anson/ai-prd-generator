@@ -1,6 +1,6 @@
 // src/vector-search-service/services/chunkingService.ts
 
-import { config } from '../config';
+import { config } from '../config.js';
 
 /**
  * @file Implements the logic for splitting text into chunks.

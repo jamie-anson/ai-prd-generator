@@ -1,6 +1,6 @@
-import { ChunkingService } from './chunkingService';
-import { EmbeddingService } from './embeddingService';
-import { VectorDbService } from './vectorDbService';
+import { ChunkingService } from './chunkingService.js';
+import { EmbeddingService } from './embeddingService.js';
+import { VectorDbService } from './vectorDbService.js';
 import * as fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 

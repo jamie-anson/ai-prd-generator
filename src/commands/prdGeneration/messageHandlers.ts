@@ -1,5 +1,5 @@
 import { MessageRouter } from '../../webview/router';
-import { handleApiKey } from '../../webview/handlers/handleApiKey';
+import { handleSaveApiKey } from '../../webview/handlers/handleSaveApiKey';
 import { handleViewCommands } from '../../webview/handlers/handleViewCommands';
 import { handleContextCards } from '../../webview/handlers/handleContextCards';
 import { handleGeneratePrd } from '../../webview/handlers/handleGeneratePrd';
@@ -28,8 +28,7 @@ export function createPrdMessageHandler(): MessageRouter {
 
     // Logic Step 1: Register webview lifecycle and API key handlers.
     router.register(COMMANDS.WEBVIEW_READY, handleWebviewReady);
-    router.register(COMMANDS.GET_API_KEY, handleApiKey);
-    router.register(COMMANDS.SAVE_API_KEY, handleApiKey);
+    router.register(COMMANDS.SAVE_API_KEY, handleSaveApiKey);
 
     // Logic Step 2: Register core content generation handlers.
     router.register(COMMANDS.GENERATE_PRD, (message, context, webview) => {

@@ -67,24 +67,22 @@ const CONFIG_KEYS = {
  * @returns The URI of the first workspace folder.
  */
 export function getWorkspaceUri(): vscode.Uri | null {
-    // First, try to get the workspace folder
+    // Priority 1: Use the active text editor to find the relevant workspace.
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor) {
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditor.document.uri);
+        if (workspaceFolder) {
+            return workspaceFolder.uri;
+        }
+    }
+
+    // Priority 2: Fallback to the first workspace folder if no active editor or if the active file is not in a workspace.
     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
         return vscode.workspace.workspaceFolders[0].uri;
     }
 
-    // Fallback: try to get the URI from the active editor
-    if (vscode.window.activeTextEditor) {
-        const editorUri = vscode.window.activeTextEditor.document.uri;
-        // For file URIs, get the directory containing the file
-        if (editorUri.scheme === 'file') {
-            return vscode.Uri.joinPath(editorUri, '..');
-        }
-        // For other schemes, return the URI directly if it's container-like
-        return editorUri;
-    }
-
-    // If no workspace or active editor, return null
-    console.warn('[ConfigManager] Could not determine workspace URI. No workspace folder or active editor found.');
+    // If no workspace can be determined, return null.
+    console.warn('[ConfigManager] Could not determine workspace URI. No workspace folder found.');
     return null;
 }
 

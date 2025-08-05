@@ -24,7 +24,7 @@ import { getPrdOutputPath } from '../../utils/configManager';
  */
 export async function handleViewCommands(message: any): Promise<boolean> {
     // Logic Step: Get current project state to find available files
-    const projectState = await ProjectStateDetector.detectProjectState();
+        const projectState = await ProjectStateDetector.getInstance().detectProjectState();
     if (message.command === 'view-prd') {
         /**
          * Logic Step: Handle view-prd command using ProjectStateDetector.

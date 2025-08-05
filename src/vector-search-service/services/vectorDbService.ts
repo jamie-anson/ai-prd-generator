@@ -1,8 +1,8 @@
 // src/vector-search-service/services/vectorDbService.ts
 
 import { ChromaClient, Collection } from 'chromadb';
-import { config } from '../config';
-import { EmbeddingService } from './embeddingService';
+import { config } from '../config.js';
+import { EmbeddingService } from './embeddingService.js';
 
 /**
  * @file Manages interactions with the ChromaDB vector store.

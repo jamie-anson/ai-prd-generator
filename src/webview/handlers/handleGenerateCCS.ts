@@ -17,6 +17,7 @@ import { getCcsOutputPath, ensureOutputDirectory } from '../../utils/configManag
 import { CodebaseAnalysisService } from '../../services/codebaseAnalysisService';
 import { CCSPromptTemplate } from '../../templates/ccsPromptTemplate';
 import { MarkdownFormatterService } from '../../services/markdownFormatterService';
+import { ProjectStateDetector } from '../../utils/projectStateDetector';
 
 /**
  * Logic Step: Handles the 'generate-ccs' message from the webview to generate a Code Comprehension Score analysis.
@@ -139,12 +140,12 @@ async function validatePrerequisites(context: vscode.ExtensionContext, webview: 
         return null;
     }
 
-    // Logic Step: Check for workspace
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) {
+    // Logic Step: Use ProjectStateDetector to get the correct workspace URI
+    const projectState = await ProjectStateDetector.getInstance().detectProjectState();
+    if (!projectState.workspaceUri) {
         handleGenerationError(
-            new Error('No workspace folder found'), 
-            'CCS generation', 
+            new Error('Could not determine the workspace. Please open a file in the desired project.'),
+            'CCS generation',
             webview
         );
         return null;
@@ -152,7 +153,7 @@ async function validatePrerequisites(context: vscode.ExtensionContext, webview: 
 
     return {
         apiKey,
-        workspaceUri: workspaceFolders[0].uri
+        workspaceUri: projectState.workspaceUri
     };
 }
 

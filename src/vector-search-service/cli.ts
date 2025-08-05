@@ -2,10 +2,10 @@
 
 import '@tensorflow/tfjs-node';
 import { Command } from 'commander';
-import { OrchestratorService } from './services/orchestratorService';
-import { ChunkingService } from './services/chunkingService';
-import { EmbeddingService } from './services/embeddingService';
-import { VectorDbService } from './services/vectorDbService';
+import { OrchestratorService } from './services/orchestratorService.js';
+import { ChunkingService } from './services/chunkingService.js';
+import { EmbeddingService } from './services/embeddingService.js';
+import { VectorDbService } from './services/vectorDbService.js';
 
 /**
  * @file Provides a command-line interface for the vector search service.

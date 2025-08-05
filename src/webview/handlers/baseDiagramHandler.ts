@@ -54,7 +54,7 @@ export abstract class BaseDiagramHandler {
         const diagramConfig = config || this.getDefaultConfig();
         
         // Logic Step: Use ProjectStateDetector to find existing PRDs
-        const projectState = await ProjectStateDetector.detectProjectState();
+                const projectState = await ProjectStateDetector.getInstance().detectProjectState();
         
         if (!projectState.hasPRD || projectState.prdFiles.length === 0) {
             handleGenerationError(
@@ -117,7 +117,7 @@ export abstract class BaseDiagramHandler {
             // Logic Step: Send updated project state to webview to refresh UI
             if (webview) {
                 try {
-                    const updatedProjectState = await ProjectStateDetector.detectProjectState();
+                                        const updatedProjectState = await ProjectStateDetector.getInstance().detectProjectState();
                     webview.postMessage({
                         command: 'project-state-update',
                         projectState: updatedProjectState
