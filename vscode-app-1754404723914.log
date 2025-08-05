@@ -1,0 +1,501 @@
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-vsliveshare.vsliveshare' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.gather' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.vscode-pylance' wants API proposal 'mcpConfigurationProvider' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  INFO Started local extension host with pid 70266.
+log.ts:440  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+log.ts:440  INFO Settings Sync: Account status changed from uninitialized to unavailable
+log.ts:460   ERR [Extension Host] (node:70266) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+error @ log.ts:460
+console.ts:137 [Extension Host] (node:70266) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+Tds @ console.ts:137
+log.ts:440  INFO [perf] Render performance baseline is 12ms
+console.ts:137 [Extension Host] NODE_ENV undefined
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 ()
+log.ts:450  WARN Authentication provider continue was not declared in the Extension Manifest.
+warn @ log.ts:450
+log.ts:460   ERR [Extension Host] (node:70266) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+error @ log.ts:460
+console.ts:137 [Extension Host] (node:70266) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Tds @ console.ts:137
+console.ts:137 [Extension Host] ChatGPT extension is now active!
+console.ts:137 [Extension Host] Wrote payload to /Users/Jammie/Library/Application Support/com.openai.chat/app_pairing_extensions/Visual Studio Code-ac721016-f954-4dae-acc8-978d11d864f2
+console.ts:137 [Extension Host] Registered
+console.ts:137 [Extension Host] Server listening on UNIX domain socket: /tmp/Visual Studio Code-ac721016-f954-4dae-acc8-978d11d864f2.sock
+log.ts:460   ERR [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+error @ log.ts:460
+console.ts:137 [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+Tds @ console.ts:137
+console.ts:137 [Extension Host] Figma for VS Code started activation
+console.ts:137 [Extension Host] Client connected
+console.ts:137 [Extension Host] Client message received: {"payload":{},"command":"ping"}
+console.ts:137 [Extension Host] Client connected
+console.ts:137 [Extension Host] Client message received: {"payload":{},"command":"ping"}
+console.ts:137 [Extension Host] Found ChatGPT app info: {"isInstalled":true,"installPath":"/Applications/ChatGPT.app","bundleID":"com.openai.chat","version":{"options":{},"loose":false,"includePrerelease":false,"raw":"1.2025.203","major":1,"minor":2025,"patch":203,"prerelease":[],"build":[],"version":"1.2025.203"}}. Supports pairing: true
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+console.ts:137 [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+localProcessExtensionHost.ts:279 Extension Host
+localProcessExtensionHost.ts:280 {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+console.ts:137 [Extension Host] Unable to read plugin config file plugin_dev_settings.json Error: ENOENT: no such file or directory, open '/Users/Jammie/Library/Application Support/Code/User/globalStorage/figma.figma-vscode-extension/plugin_dev_settings.json'
+    at readFileSync (node:fs:443:20)
+    at t.readFileSync (node:electron/js2c/node_init:2:10960)
+    at Object.g [as read] (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31740:4527)
+    at TQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:2253)
+    at CQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:1276)
+    at db.n (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13386)
+    at db.m (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13349)
+    at db.l (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:12805)
+console.ts:137 [Extension Host] Figma for VS Code active
+console.ts:137 [Extension Host] 🚀 AI PRD Generator extension is activating...
+console.ts:137 [Extension Host] Registering all commands...
+console.ts:137 [Extension Host] All commands registered successfully.
+console.ts:137 [Extension Host] 🎉 AI PRD Generator extension activation complete!
+webviewElement.ts:483 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+mountTo @ webviewElement.ts:483
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 9 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 6 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 5 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/New Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": true,
+  "contextCardFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/deployment-guide.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/deployment-guide.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/context-summary.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/context-summary.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/testing-strategy.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/testing-strategy.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/component-structure.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/component-structure.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/architecture-overview.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/architecture-overview.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/project-glossary.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/project-glossary.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/security-considerations.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/security-considerations.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/code-standards.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/code-standards.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/user-flows.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/user-flows.md",
+      "scheme": "file"
+    }
+  ],
+  "contextCardCount": 9,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/profile_management_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/profile_management_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/component_hierarchy.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/reviews_and_ratings_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/reviews_and_ratings_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/order_and_payment_system_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/order_and_payment_system_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/data_flow_diagram.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/menu_creation_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/menu_creation_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 6,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": true,
+  "ccsFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T16-02-31-109Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T16-02-31-109Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T21-47-41-172Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T21-47-41-172Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-27T14-57-14-831Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-27T14-57-14-831Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T16-27-47-466Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T16-27-47-466Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T17-10-12-955Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T17-10-12-955Z.md",
+      "scheme": "file"
+    }
+  ],
+  "ccsCount": 5,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/New Project",
+    "external": "file:///Users/Jammie/Code/New%20Project",
+    "path": "/Users/Jammie/Code/New Project",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+main.js:595 [Webview] Initializing for the first time using IIFE pattern
+main.js:597 [Webview] 🚀 Starting IIFE initialization
+main.js:603 [Webview] ✅ VS Code API acquired successfully
+main.js:605 [Webview] 🔍 VS Code API validation passed
+main.js:808 [Webview] DOM loading, waiting for DOMContentLoaded...
+main.js:191 [UI] ✅ All critical elements found. UI is ready.
+main.js:194 [UI] 🎯 UI elements initialized, main.ts will handle webview-ready signal
+main.js:643 [Webview] Initializing webview components...
+main.js:646 [Webview] Sending webview-ready signal to extension...
+main.js:655 [Webview] 🔧 Setting up enhanced message listener with timeout handling...
+main.js:679 [Webview] 📨 Message #1 received: Object
+main.js:637 [Webview] State saved: Object
+main.js:740 [Webview] 🔄 Project state update received
+main.js:742 [Webview] ❌ Message missing projectState field: Object
+processMessage @ main.js:742
+main.js:693 [Webview] ✅ Message processed successfully: updateState
+console.ts:137 [Extension Host] [MessageRouter] Routing command: webview-ready
+console.ts:137 [Extension Host] [MessageRouter] Handler found for command: webview-ready
+console.ts:137 [Extension Host] [Extension] 🚀 Webview readiness signal received: webview-ready
+console.ts:137 [Extension Host] [Extension] 🔄 Legacy uiReady signal detected (backward compatibility)
+console.ts:137 [Extension Host] [Extension] 🔍 Detecting project state...
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/New Project
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 9 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 6 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 5 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/New Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/prd/local-home-cooked-meals-platform.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": true,
+  "contextCardFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/testing-strategy.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/testing-strategy.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/component-structure.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/component-structure.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/architecture-overview.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/architecture-overview.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/security-considerations.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/security-considerations.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/code-standards.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/code-standards.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/user-flows.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/user-flows.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/deployment-guide.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/deployment-guide.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/project-glossary.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/project-glossary.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-cards/context-summary.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-cards/context-summary.md",
+      "scheme": "file"
+    }
+  ],
+  "contextCardCount": 9,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/component_hierarchy.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/component_hierarchy.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/order_and_payment_system_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/order_and_payment_system_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/profile_management_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/profile_management_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/data_flow_diagram.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/data_flow_diagram.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/menu_creation_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/menu_creation_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/context-templates/reviews_and_ratings_context.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/context-templates/reviews_and_ratings_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 6,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": true,
+  "ccsFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T17-10-12-955Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T17-10-12-955Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T16-02-31-109Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T16-02-31-109Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T21-47-41-172Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-28T21-47-41-172Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-27T14-57-14-831Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-27T14-57-14-831Z.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/New%20Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T16-27-47-466Z.md",
+      "path": "/Users/Jammie/Code/New Project/mise-en-place-output/ccs/ccs-analysis-2025-07-29T16-27-47-466Z.md",
+      "scheme": "file"
+    }
+  ],
+  "ccsCount": 5,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/New Project",
+    "external": "file:///Users/Jammie/Code/New%20Project",
+    "path": "/Users/Jammie/Code/New Project",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+console.ts:137 [Extension Host] [Extension] 📊 Project state detected: Object
+console.ts:137 [Extension Host] [Extension] 📤 Sending project state update: Object
+main.js:679 [Webview] 📨 Message #2 received: Object
+main.js:637 [Webview] State saved: Object
+main.js:740 [Webview] 🔄 Project state update received
+main.js:751 [Webview] 🔍 Validating project state: Object
+main.js:121 [Validation] Validating project state: Object
+main.js:155 [Validation] ✅ Project state validation passed
+main.js:121 [Validation] Validating project state: Object
+main.js:155 [Validation] ✅ Project state validation passed
+main.js:284 [UI] Project state received: Object
+main.js:292 [UI] Showing post-generation controls (artifacts detected)
+main.js:233 [UI] showPostGenerationControls called
+main.js:234 [UI] elements.generationControls: <div id=​"generation-controls" class=​"hidden">​…​</div>​
+main.js:235 [UI] elements.postGenerationControls: <div id=​"post-generation-controls" class>​…​</div>​
+main.js:66 Attempted to update null/undefined button
+updateButton @ main.js:66
+main.js:758 [Webview] ✅ UI updated with project state
+main.js:693 [Webview] ✅ Message processed successfully: updateState
+console.ts:137 [Extension Host] [MessageRouter] Routing command: save-api-key
+console.ts:137 [Extension Host] [MessageRouter] Handler found for command: save-api-key
+console.ts:137 [Extension Host] [Extension] 💾 Saving API key: Object
+console.ts:137 [Extension Host] [Extension] ✅ API key saved successfully
+main.js:679 [Webview] 📨 Message #3 received: Object
+console.ts:137 [Extension Host] [Extension] 📤 API key status sent to webview
+main.js:637 [Webview] State saved: Object
+main.js:730 [Webview] 🔑 API key status received: true
+main.js:214 [UI] updateApiKeyDisplay called with hasApiKey: true
+main.js:215 [UI] Elements found: Object
+main.js:221 [UI] Setting API key display to show obfuscated key
+main.js:733 [Webview] ✅ Updated API key display
+main.js:693 [Webview] ✅ Message processed successfully: apiKeyStatus
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}

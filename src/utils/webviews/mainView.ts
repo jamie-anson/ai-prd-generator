@@ -64,6 +64,8 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 <textarea id="prd-prompt" placeholder="Describe the product you want to build..."></textarea>
                 <div class="button-group">
                     <button id="generate-prd">Generate PRD</button>
+                    <button id="view-prd" class="hidden">View PRD</button>
+                    <button id="view-graph" class="hidden">View Project Graph</button>
                 </div>
             </div>
 
@@ -84,6 +86,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Development Guidelines</h3>
                     <div class="button-group">
                         <button id="generate-context-cards">Generate Dev Guidelines</button>
+                        <button id="bulk-generate-context-cards" class="hidden">Bulk Generate Context Cards</button>
                     </div>
                 </div>
                 
@@ -128,6 +131,17 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Project Documentation</h3>
                     <div class="button-group">
                         <button id="generate-handover-file">Generate Handover Document</button>
+                        <button id="generate-comprehensive-readme">Generate Comprehensive README</button>
+                        <button id="generate-codebase-map">Generate Codebase Map</button>
+                        <button id="generate-ai-prompting-guide">Generate AI Prompting Guide</button>
+                        <button id="generate-all-ccs-docs">Generate All CCS Docs</button>
+                    </div>
+                </div>
+                
+                <div id="handover-document-section" style="margin-bottom: 20px;">
+                    <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Knowledge Transfer</h3>
+                    <div class="button-group">
+                        <!-- Additional handover document controls will be added here -->
                     </div>
                 </div>
             </div>

@@ -18,9 +18,13 @@ import * as vscode from 'vscode';
  * @param webview The webview instance to post messages back to.
  */
 export async function handleSaveApiKey(message: any, context: vscode.ExtensionContext, webview: vscode.Webview) {
-    if (message.command === 'saveApiKey') {
+    // PHASE 5: Critical fix - handle both command formats for compatibility
+    if (message.command === 'saveApiKey' || message.command === 'save-api-key') {
+        console.log('[Extension] 💾 Saving API key:', { hasKey: !!message.apiKey, keyLength: message.apiKey?.length || 0 });
         await context.secrets.store('openAiApiKey', message.apiKey);
+        console.log('[Extension] ✅ API key saved successfully');
         await webview.postMessage({ command: 'apiKeyStatus', hasApiKey: !!message.apiKey });
+        console.log('[Extension] 📤 API key status sent to webview');
         return true; // Command was handled
     }
     return false; // Command was not handled

@@ -48,8 +48,22 @@ export async function handleUiReady(
         console.log('[Extension] 🔄 Legacy uiReady signal detected (backward compatibility)');
     }
     
-    // PHASE 2: Detect and send project state now that webview is confirmed ready
+    // PHASE 5: CRITICAL FIX - Send API key status first, then project state
     try {
+        // Check and send API key status
+        console.log('[Extension] 🔑 Checking API key status...');
+        const apiKey = await context.secrets.get('openAiApiKey');
+        const hasApiKey = !!apiKey;
+        console.log('[Extension] 📤 Sending API key status:', { hasApiKey, keyLength: apiKey?.length || 0 });
+        
+        await webview.postMessage({
+            command: 'apiKeyStatus',
+            hasApiKey: hasApiKey,
+            timestamp: Date.now(),
+            source: 'webview-ready-handler'
+        });
+        
+        // Then detect and send project state
         console.log('[Extension] 🔍 Detecting project state...');
         const projectStateDetector = ProjectStateDetector.getInstance();
         const projectState = await projectStateDetector.detectProjectState();

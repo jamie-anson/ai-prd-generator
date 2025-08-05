@@ -104,8 +104,14 @@ export class ProjectStateDetector {
             return;
         }
 
-        const state = await this.detectProjectState();
-        this._panel.webview.postMessage({ command: 'updateState', state });
+        const projectState = await this.detectProjectState();
+        // CRITICAL FIX: Use 'projectState' field name to match webview expectations
+        this._panel.webview.postMessage({ 
+            command: 'updateState', 
+            projectState: projectState,
+            timestamp: Date.now(),
+            source: 'project-state-detector'
+        });
     }
 
     public dispose() {

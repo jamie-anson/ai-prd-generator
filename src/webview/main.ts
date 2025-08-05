@@ -111,13 +111,15 @@ if (window.__webviewInitialized) {
             // Restore any previous state
             const previousState = restoreWebviewState();
             
+            // PHASE 5: Critical bug fix - pass vscode API to event handlers
             // Initialize event handlers for UI interactions
-            initializeEventHandlers();
+            initializeEventHandlers(vscode);
             
             // PHASE 2: Send webview-ready signal instead of uiReady
             console.log('[Webview] Sending webview-ready signal to extension...');
+            // PHASE 5: Critical fix - use 'command' instead of 'type' for message routing
             vscode.postMessage({ 
-                type: 'webview-ready',
+                command: 'webview-ready',
                 timestamp: Date.now(),
                 previousState: previousState 
             });
@@ -141,11 +143,31 @@ if (window.__webviewInitialized) {
                 const timeSinceLastMessage = currentTime - lastMessageTime;
                 lastMessageTime = currentTime;
                 
+                // PHASE 5: Critical bug fix - validate message structure before processing
+                if (!message || typeof message !== 'object') {
+                    console.error(`[Webview] ❌ Invalid message received:`, message);
+                    await displayErrorMessage('Invalid message format received', 'validation');
+                    return;
+                }
+                
+                // PHASE 5: Critical bug fix - ensure command is defined
+                if (!message.command || typeof message.command !== 'string') {
+                    console.error(`[Webview] ❌ Message missing command field:`, {
+                        message: message,
+                        messageKeys: Object.keys(message || {}),
+                        commandValue: message.command,
+                        commandType: typeof message.command
+                    });
+                    await displayErrorMessage('Message missing command field', 'validation');
+                    return;
+                }
+                
                 console.log(`[Webview] 📨 Message #${messageCount} received:`, {
                     command: message.command,
                     timeSinceLastMessage: `${timeSinceLastMessage}ms`,
                     timestamp: currentTime,
-                    messageSize: JSON.stringify(message).length
+                    messageSize: JSON.stringify(message).length,
+                    messageKeys: Object.keys(message)
                 });
                 
                 // PHASE 4: Message processing with timeout
@@ -213,11 +235,34 @@ if (window.__webviewInitialized) {
                     
                 case 'updateState':
                     console.log('[Webview] 🔄 Project state update received');
+                    
+                    // PHASE 5: Critical bug fix - validate projectState exists before processing
+                    if (!message.projectState) {
+                        console.error('[Webview] ❌ Message missing projectState field:', {
+                            message: message,
+                            messageKeys: Object.keys(message),
+                            projectStateValue: message.projectState,
+                            projectStateType: typeof message.projectState
+                        });
+                        await displayErrorMessage('Message missing project state data', 'validation');
+                        break;
+                    }
+                    
+                    console.log('[Webview] 🔍 Validating project state:', {
+                        projectStateKeys: Object.keys(message.projectState),
+                        hasPRD: message.projectState.hasPRD,
+                        workspaceUri: message.projectState.workspaceUri?.fsPath
+                    });
+                    
                     if (validateProjectState(message.projectState)) {
                         await updateUIBasedOnProjectState(message.projectState as ProjectState);
                         console.log('[Webview] ✅ UI updated with project state');
                     } else {
-                        console.error('[Webview] ❌ Invalid project state format:', message);
+                        console.error('[Webview] ❌ Invalid project state format:', {
+                            message: message,
+                            projectState: message.projectState,
+                            projectStateKeys: Object.keys(message.projectState || {})
+                        });
                         await displayErrorMessage('Invalid project state data received', 'validation');
                     }
                     break;

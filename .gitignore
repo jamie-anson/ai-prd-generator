@@ -4,8 +4,8 @@ node_modules
 .vscode-test/
 *.vsix
 
-# Log files
-*.log
+# Log files (temporarily commented out for testing)
+# *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
