@@ -1,0 +1,822 @@
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-vsliveshare.vsliveshare' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.gather' wants API proposal 'notebookCellExecutionState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  WARN Via 'product.json#extensionEnabledApiProposals' extension 'ms-python.vscode-pylance' wants API proposal 'mcpConfigurationProvider' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+warn @ workbench.desktop.main.js:35
+  INFO Started local extension host with pid 5804.
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+  INFO Settings Sync: Account status changed from uninitialized to unavailable
+  WARN No search provider registered for scheme: file, waiting
+warn @ workbench.desktop.main.js:35
+   ERR [Extension Host] (node:5804) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:5804) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `Code Helper (Plugin) --trace-warnings ...` to show where the warning was created)
+Tds @ workbench.desktop.main.js:518
+  INFO [perf] Render performance baseline is 12ms
+ [Extension Host] NODE_ENV undefined
+  WARN Authentication provider continue was not declared in the Extension Manifest.
+warn @ workbench.desktop.main.js:35
+   ERR [Extension Host] (node:5804) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+error @ workbench.desktop.main.js:35
+ [Extension Host] (node:5804) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] ChatGPT extension is now active!
+ [Extension Host] Wrote payload to /Users/Jammie/Library/Application Support/com.openai.chat/app_pairing_extensions/Visual Studio Code-cdf40d0c-0ce9-4bd4-99ed-1e685485f9bb
+ [Extension Host] Registered
+ [Extension Host] Server listening on UNIX domain socket: /tmp/Visual Studio Code-cdf40d0c-0ce9-4bd4-99ed-1e685485f9bb.sock
+   ERR [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+error @ workbench.desktop.main.js:35
+ [Extension Host] Failed to register Continue config.yaml schema, most likely, YAML extension is not installed CodeExpectedError: Unable to write to User Settings because yaml.schemas is not a registered configuration.
+    at uyt.z (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:6793)
+    at uyt.F (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:9281)
+    at uyt.o (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3874)
+    at Object.factory (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3774)
+    at Sv.j (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75430)
+    at vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75342
+    at new Promise (<anonymous>)
+    at Sv.queue (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:30:75284)
+    at uyt.writeConfiguration (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:3743)
+    at Arn.Hb (vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js:3360:42739)
+Tds @ workbench.desktop.main.js:518
+ [Extension Host] Client connected
+ [Extension Host] Figma for VS Code started activation
+ [Extension Host] Client message received: {"command":"ping","payload":{}}
+marketplace.visualstudio.com/_apis/public/gallery/vscode/ms-ossdata/vscode-postgresql/latest:1  Failed to load resource: the server responded with a status of 404 ()
+ [Extension Host] Client connected
+ [Extension Host] Client message received: {"command":"ping","payload":{}}
+ [Extension Host] Found ChatGPT app info: {"isInstalled":true,"installPath":"/Applications/ChatGPT.app","bundleID":"com.openai.chat","version":{"options":{},"loose":false,"includePrerelease":false,"raw":"1.2025.203","major":1,"minor":2025,"patch":203,"prerelease":[],"build":[],"version":"1.2025.203"}}. Supports pairing: true
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+{"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+ [Extension Host] Unable to read plugin config file plugin_dev_settings.json Error: ENOENT: no such file or directory, open '/Users/Jammie/Library/Application Support/Code/User/globalStorage/figma.figma-vscode-extension/plugin_dev_settings.json'
+    at readFileSync (node:fs:443:20)
+    at t.readFileSync (node:electron/js2c/node_init:2:10960)
+    at Object.g [as read] (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31740:4527)
+    at TQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:2253)
+    at CQi (/Users/Jammie/.vscode/extensions/figma.figma-vscode-extension-0.4.1/out/figma-for-vs-code.js:31752:1276)
+    at db.n (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13386)
+    at db.m (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:13349)
+    at db.l (file:///Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/workbench/api/node/extensionHostProcess.js:112:12805)
+ [Extension Host] Figma for VS Code active
+  INFO [Continue.continue]: Command `continue.focusContinueInput` already registered by Continue - open-source AI code assistant (Continue.continue)
+marketplace.visualstudio.com/_apis/public/gallery/vscode/jammie-anson/ai-prd-generator/latest:1  Failed to load resource: the server responded with a status of 404 ()
+ [Extension Host] 🚀 AI PRD Generator extension is activating...
+ [Extension Host] Registering all commands...
+ [Extension Host] All commands registered successfully.
+ [Extension Host] 🎉 AI PRD Generator extension activation complete!
+ An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+mountTo @ workbench.desktop.main.js:3651
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 0 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+ [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+ [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": false,
+  "prdFiles": [],
+  "prdCount": 0,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": false,
+  "contextTemplateFiles": [],
+  "contextTemplateCount": 0,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+ [Extension Host] [MessageRouter] Routing command: webview-ready
+ [Extension Host] [MessageRouter] Handler found for command: webview-ready
+ [Extension Host] [Extension] 🚀 Webview readiness signal received: webview-ready
+ [Extension Host] [Extension] 🔄 Legacy uiReady signal detected (backward compatibility)
+ [Extension Host] [Extension] 🔑 Checking API key status...
+ [Extension Host] [Extension] 📤 Sending API key status: Object
+ [Extension Host] [Extension] 🔍 Detecting project state...
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 0 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+ [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+ [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": false,
+  "prdFiles": [],
+  "prdCount": 0,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": false,
+  "contextTemplateFiles": [],
+  "contextTemplateCount": 0,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+ [Extension Host] [Extension] 📊 Project state detected: Object
+ [Extension Host] [Extension] 📤 Sending project state update: Object
+ [Extension Host] [MessageRouter] Routing command: generate-prd
+ [Extension Host] [MessageRouter] Handler found for command: generate-prd
+ [Extension Host] {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+ Extension Host
+ {"0":{"fatal":false,"message":"Model provider 'free-trial' is no longer supported, will be ignored"},"level":"warn","message":"Errors loading config: "}
+
+ An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+mountTo @ workbench.desktop.main.js:3651
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+ [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+ [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": false,
+  "contextTemplateFiles": [],
+  "contextTemplateCount": 0,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+ [Webview] Initializing for the first time using IIFE pattern
+ [Webview] 🚀 Starting IIFE initialization
+ [Webview] ✅ VS Code API acquired successfully
+ [Webview] 🔍 VS Code API validation passed
+ [Webview] DOM loading, waiting for DOMContentLoaded...
+ [UI] ✅ All critical elements found. UI is ready.
+ [UI] 🎯 UI elements initialized, main.ts will handle webview-ready signal
+ [Webview] Initializing webview components...
+ [Webview] Sending webview-ready signal to extension...
+ [Webview] 🔧 Setting up enhanced message listener with timeout handling...
+ [Extension Host] [MessageRouter] Routing command: webview-ready
+ [Webview] 📨 Message #1 received: Object
+ [Extension Host] [MessageRouter] Handler found for command: webview-ready
+ [Extension Host] [Extension] 🚀 Webview readiness signal received: webview-ready
+ [Webview] State saved: Object
+ [Extension Host] [Extension] 🔄 Legacy uiReady signal detected (backward compatibility)
+ [Webview] 🔄 Project state update received
+ [Webview] 🔍 Validating project state: Object
+ [Extension Host] [Extension] 🔑 Checking API key status...
+ [Validation] Validating project state: Object
+ [Validation] ✅ Project state validation passed
+ [Validation] Validating project state: Object
+ [Validation] ✅ Project state validation passed
+ [UI] Project state received: Object
+ [UI] Showing post-generation controls (artifacts detected)
+ [UI] showPostGenerationControls called
+ [UI] elements.generationControls: 
+ [UI] elements.postGenerationControls: 
+ [Webview] ✅ UI updated with project state
+ [Webview] ✅ Message processed successfully: updateState
+ [Extension Host] [Extension] 📤 Sending API key status: Object
+ [Webview] 📨 Message #2 received: Object
+ [Webview] State saved: Object
+ [Webview] 🔑 API key status received: true
+ [UI] updateApiKeyDisplay called with hasApiKey: true
+ [UI] Elements found: Object
+ [UI] Setting API key display to show obfuscated key
+ [Extension Host] [Extension] 🔍 Detecting project state...
+ [Webview] ✅ Updated API key display
+ [Webview] ✅ Message processed successfully: apiKeyStatus
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+ [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+ [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": false,
+  "contextTemplateFiles": [],
+  "contextTemplateCount": 0,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+ [Extension Host] [Extension] 📊 Project state detected: Object
+ [Extension Host] [Extension] 📤 Sending project state update: Object
+ [Webview] 📨 Message #3 received: Object
+ [Webview] State saved: Object
+ [Webview] 🔄 Project state update received
+ [Webview] 🔍 Validating project state: Object
+ [Validation] Validating project state: Object
+ [Validation] ✅ Project state validation passed
+ [Validation] Validating project state: Object
+ [Validation] ✅ Project state validation passed
+ [UI] Project state received: Object
+ [UI] Showing post-generation controls (artifacts detected)
+ [UI] showPostGenerationControls called
+ [UI] elements.generationControls: 
+ [UI] elements.postGenerationControls: 
+ [Webview] ✅ UI updated with project state
+ [Webview] ✅ Message processed successfully: updateState
+ [Extension Host] [MessageRouter] Routing command: generate-context-templates
+ [Extension Host] [MessageRouter] Handler found for command: generate-context-templates
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+ [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+ [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": false,
+  "contextTemplateFiles": [],
+  "contextTemplateCount": 0,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+ [Webview] 📊 Communication health: Object
+ [Webview] State saved: Object
+ [Extension Host] [MessageRouter] Routing command: generate-data-flow-diagram
+ [Extension Host] [MessageRouter] Handler found for command: generate-data-flow-diagram
+ [Extension Host] [ProjectStateDetector] Starting project state detection.
+ [Extension Host] [ConfigManager] Available workspaces (1):
+ [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+ [Extension Host] [ProjectStateDetector] Workspace scheme: file
+ [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+ [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+ [Extension Host] [ProjectStateDetector] Searching for PRD files...
+ [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+ [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+ [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+ [Extension Host] [ProjectStateDetector] Found 2 Context Template files.
+ [Extension Host] [ProjectStateDetector] Searching for CCS files...
+ [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+ [Extension Host] [ProjectStateDetector] Searching for Handover files...
+ [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+ [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 2,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 2 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 2,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+main.js:708 [Webview] 📨 Message #4 received: Object
+main.js:666 [Webview] State saved: Object
+main.js:833 [Webview] ❓ Unknown message command: project-state-update
+main.js:722 [Webview] ✅ Message processed successfully: project-state-update
+main.js:740 [Webview] 📊 Communication health: Object
+main.js:666 [Webview] State saved: Object
+console.ts:137 [Extension Host] [MessageRouter] Routing command: generate-component-hierarchy
+console.ts:137 [Extension Host] [MessageRouter] Handler found for command: generate-component-hierarchy
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 2 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 2,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using first workspace: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 2 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 2,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+main.js:708 [Webview] 📨 Message #5 received: Object
+main.js:666 [Webview] State saved: Object
+main.js:833 [Webview] ❓ Unknown message command: project-state-update
+main.js:722 [Webview] ✅ Message processed successfully: project-state-update
+console.ts:137 [Extension Host] [ProjectStateDetector] Active editor changed, re-detecting project state.
+console.ts:137 [Extension Host] [ProjectStateDetector] Starting project state detection.
+console.ts:137 [Extension Host] [ConfigManager] Available workspaces (1):
+console.ts:137 [Extension Host] [ConfigManager]   0: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ConfigManager] Checking active editor: /Users/Jammie/Code/Code Comms/mise-en-place-output/diagrams/component_hierarchy.md
+console.ts:137 [Extension Host] [ConfigManager] ✅ Using active editor workspace: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI detected: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace URI: /Users/Jammie/Code/Code Comms
+console.ts:137 [Extension Host] [ProjectStateDetector] Workspace scheme: file
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code variant: Visual Studio Code
+console.ts:137 [Extension Host] [ProjectStateDetector] VS Code version: 1.102.3
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for PRD files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 1 PRD files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Card files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Context Card files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Context Template files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 2 Context Template files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for CCS files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 CCS files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Searching for Handover files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Found 0 Handover files.
+console.ts:137 [Extension Host] [ProjectStateDetector] Checking for diagram files...
+console.ts:137 [Extension Host] [ProjectStateDetector] Diagram check complete. DFD: false, CH: false
+console.ts:137 [Extension Host] [ProjectStateDetector] Final state computed: {
+  "hasPRD": true,
+  "prdFiles": [
+    {
+      "$mid": 1,
+      "fsPath": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/prd/ai-communication-extension-for-vs-code.md",
+      "scheme": "file"
+    }
+  ],
+  "prdCount": 1,
+  "hasContextCards": false,
+  "contextCardFiles": [],
+  "contextCardCount": 0,
+  "hasContextTemplates": true,
+  "contextTemplateFiles": [
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/ai_agent_selector_context.md",
+      "scheme": "file"
+    },
+    {
+      "$mid": 1,
+      "external": "file:///Users/Jammie/Code/Code%20Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "path": "/Users/Jammie/Code/Code Comms/mise-en-place-output/context-templates/communication_channel_context.md",
+      "scheme": "file"
+    }
+  ],
+  "contextTemplateCount": 2,
+  "hasDataFlowDiagram": false,
+  "hasComponentHierarchy": false,
+  "hasCCS": false,
+  "ccsFiles": [],
+  "ccsCount": 0,
+  "hasHandover": false,
+  "handoverFiles": [],
+  "handoverCount": 0,
+  "workspaceUri": {
+    "$mid": 1,
+    "fsPath": "/Users/Jammie/Code/Code Comms",
+    "external": "file:///Users/Jammie/Code/Code%20Comms",
+    "path": "/Users/Jammie/Code/Code Comms",
+    "scheme": "file"
+  },
+  "dataFlowDiagramFiles": [],
+  "componentHierarchyFiles": []
+}
+main.js:708 [Webview] 📨 Message #6 received: Object
+main.js:666 [Webview] State saved: Object
+main.js:769 [Webview] 🔄 Project state update received
+main.js:780 [Webview] 🔍 Validating project state: Object
+main.js:121 [Validation] Validating project state: Object
+main.js:155 [Validation] ✅ Project state validation passed
+main.js:121 [Validation] Validating project state: Object
+main.js:155 [Validation] ✅ Project state validation passed
+main.js:284 [UI] Project state received: Object
+main.js:292 [UI] Showing post-generation controls (artifacts detected)
+main.js:233 [UI] showPostGenerationControls called
+main.js:234 [UI] elements.generationControls: <div id=​"generation-controls" class=​"hidden">​…​</div>​
+main.js:235 [UI] elements.postGenerationControls: <div id=​"post-generation-controls" class>​…​</div>​
+main.js:787 [Webview] ✅ UI updated with project state
+main.js:722 [Webview] ✅ Message processed successfully: updateState
+main.js:740 [Webview] 📊 Communication health: Object
+main.js:666 [Webview] State saved: Object
+main.js:740 [Webview] 📊 Communication health: Object
+main.js:666 [Webview] State saved: Object
+main.js:740 [Webview] 📊 Communication health: Object
+main.js:666 [Webview] State saved: Object

@@ -33,7 +33,7 @@ export interface ExtensionConfig {
 const DEFAULT_CONFIG: ExtensionConfig = {
     openAiModel: 'gpt-4o',
     prdOutputPath: 'mise-en-place-output/prd',
-    contextCardOutputPath: 'mise-en-place-output/development-guidelines',
+    contextCardOutputPath: 'mise-en-place-output/dev-guidelines',
     contextTemplateOutputPath: 'mise-en-place-output/code-templates',
     ccsOutputPath: 'mise-en-place-output/ccs-score',
     handoverOutputPath: 'mise-en-place-output/handover-document'
@@ -43,7 +43,7 @@ const DEFAULT_CONFIG: ExtensionConfig = {
  * Legacy folder names for backward compatibility
  */
 const LEGACY_FOLDER_NAMES = {
-    contextCards: ['context-cards', 'development-guidelines'],
+    contextCards: ['context-cards', 'development-guidelines', 'dev-guidelines'],
     contextTemplates: ['context-templates', 'code-templates'],
     ccs: ['ccs', 'ccs-score'],
     handover: ['handover', 'handover-document']

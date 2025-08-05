@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getPrdOutputPath } from './configManager';
 
 /**
  * Creates or updates an AI manifest file in the workspace to track generated artifacts.
@@ -10,13 +11,17 @@ export async function updateAiManifest(context: vscode.ExtensionContext, newArti
     if (!workspaceFolders) { return; }
 
     const workspaceUri = workspaceFolders[0].uri;
-    const aiDir = vscode.Uri.joinPath(workspaceUri, '.ai');
-    const manifestFile = vscode.Uri.joinPath(aiDir, 'manifest.json');
+    const prdOutputDir = getPrdOutputPath(workspaceUri);
+    if (!prdOutputDir) {
+        console.error('Could not determine PRD output path for manifest.json');
+        return;
+    }
+    const manifestFile = vscode.Uri.joinPath(prdOutputDir, 'manifest.json');
 
     let manifest: { artifacts: any[] } = { artifacts: [] };
 
     try {
-        await vscode.workspace.fs.createDirectory(aiDir);
+        await vscode.workspace.fs.createDirectory(prdOutputDir);
         const fileContent = await vscode.workspace.fs.readFile(manifestFile);
         manifest = JSON.parse(Buffer.from(fileContent).toString('utf-8'));
     } catch (error) {

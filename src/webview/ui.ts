@@ -225,11 +225,48 @@ export async function updateUIBasedOnProjectState(projectState: ProjectState): P
     }
 
     // Logic Step: Update individual sections based on project state
+    updatePRDViewSection(projectState);
     updateContextTemplatesSection(projectState);
     updateContextCardsSection(projectState);
     updateDiagramSection(projectState);
     updateCCSSection(projectState);
     updateHandoverSection(projectState);
+}
+
+/**
+ * Logic Step: Update the PRD view section visibility and button text with type safety.
+ * Shows view buttons when PRD exists, hides them when PRD doesn't exist.
+ * @param projectState Typed object containing project artifact detection results
+ */
+async function updatePRDViewSection(projectState: ProjectState): Promise<void> {
+    const elements = await uiReady;
+    
+    // Logic Step: Show view buttons if PRD exists
+    if (projectState.hasPRD) {
+        updateButton(elements.viewPrdButton, {
+            text: 'View PRD',
+            title: 'Open the generated PRD in a new tab',
+            enabled: true,
+            visible: true
+        });
+        updateButton(elements.viewGraphButton, {
+            text: 'View Project Graph',
+            title: 'Open the project graph visualization',
+            enabled: true,
+            visible: true
+        });
+    } else {
+        updateButton(elements.viewPrdButton, {
+            text: 'View PRD',
+            enabled: false,
+            visible: false
+        });
+        updateButton(elements.viewGraphButton, {
+            text: 'View Project Graph',
+            enabled: false,
+            visible: false
+        });
+    }
 }
 
 /**

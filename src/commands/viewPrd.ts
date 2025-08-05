@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getPrdOutputPath } from '../utils/configManager';
 import { PrdJson } from '../utils/types';
 import { getStyledPrdWebviewContent, getStyledMdViewerWebviewContent, getGraphViewerWebviewContent } from '../utils/webview';
 import { registerCommandOnce } from './commandRegistry';
@@ -11,7 +12,11 @@ export function registerViewPrdCommand(context: vscode.ExtensionContext) {
                 vscode.window.showErrorMessage('No workspace folder open.');
                 return;
             }
-            const prdDir = vscode.Uri.joinPath(workspaceFolders[0].uri, 'mise-en-place-output', 'prd');
+            const prdDir = getPrdOutputPath(workspaceFolders[0].uri);
+            if (!prdDir) {
+                vscode.window.showErrorMessage('Could not determine PRD output path. Is a workspace open?');
+                return;
+            }
             try {
                 const files = await vscode.workspace.fs.readDirectory(prdDir);
                 const prdFiles = files.filter(f => f[1] === vscode.FileType.File && f[0].endsWith('.json')).map(f => f[0]);
@@ -23,7 +28,7 @@ export function registerViewPrdCommand(context: vscode.ExtensionContext) {
 
                 const selectedFile = await vscode.window.showQuickPick(prdFiles, { placeHolder: 'Select a PRD to view' });
                 if (!selectedFile) { return; }
-                filePath = vscode.Uri.joinPath(prdDir, selectedFile).fsPath;
+                filePath = vscode.Uri.joinPath(prdDir!, selectedFile).fsPath;
             } catch (e) {
                 vscode.window.showInformationMessage('No PRDs have been generated yet.');
                 return;

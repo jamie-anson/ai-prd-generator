@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getContextCardOutputPath } from '../utils/configManager';
 import { registerCommandOnce } from './commandRegistry';
 
 export function registerViewContextCardsCommand(context: vscode.ExtensionContext) {
@@ -9,7 +10,11 @@ export function registerViewContextCardsCommand(context: vscode.ExtensionContext
             return;
         }
         const workspaceUri = workspaceFolders[0].uri;
-        const contextCardDir = vscode.Uri.joinPath(workspaceUri, 'mise-en-place-output', 'context-cards');
+        const contextCardDir = getContextCardOutputPath(workspaceUri);
+        if (!contextCardDir) {
+            vscode.window.showErrorMessage('Could not determine context card output path. Is a workspace open?');
+            return;
+        }
         try {
             const files = await vscode.workspace.fs.readDirectory(contextCardDir);
             const cardFiles = files.filter(f => f[1] === vscode.FileType.File && f[0].endsWith('.md')).map(f => f[0]);
@@ -21,7 +26,7 @@ export function registerViewContextCardsCommand(context: vscode.ExtensionContext
 
             const selectedFile = await vscode.window.showQuickPick(cardFiles, { placeHolder: 'Select a context card to view' });
             if (selectedFile) {
-                const fileUri = vscode.Uri.joinPath(contextCardDir, selectedFile);
+                const fileUri = vscode.Uri.joinPath(contextCardDir!, selectedFile);
                 const document = await vscode.workspace.openTextDocument(fileUri);
                 await vscode.window.showTextDocument(document);
             }

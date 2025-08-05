@@ -65,9 +65,10 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 <div class="button-group">
                     <button id="generate-prd">Generate PRD</button>
                     <button id="view-prd" class="hidden">View PRD</button>
-                    <button id="view-graph" class="hidden">View Project Graph</button>
+                    <button id="view-project-graph" class="hidden">View Project Graph</button>
                 </div>
             </div>
+        </div>
 
         <div id="post-generation-controls" class="hidden">
             <!-- BUILD PHASE -->
@@ -75,14 +76,14 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 <h2>🏗️ Build</h2>
                 <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Generate boilerplate, templates, and diagrams from the PRD</p>
                 
-                <div id="context-templates-container" style="margin-bottom: 20px;">
+                <div id="context-templates-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Code Templates</h3>
                     <div class="button-group">
                         <button id="generate-context-templates">Generate Code Templates</button>
                     </div>
                 </div>
                 
-                <div id="context-cards-container" style="margin-bottom: 20px;">
+                <div id="context-cards-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Development Guidelines</h3>
                     <div class="button-group">
                         <button id="generate-context-cards">Generate Dev Guidelines</button>
@@ -90,7 +91,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     </div>
                 </div>
                 
-                <div style="margin-bottom: 20px;">
+                <div id="diagram-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Diagrams</h3>
                     <div class="button-group">
                         <button id="generate-data-flow-diagram">Generate Data Flow Diagram</button>
@@ -106,7 +107,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 <h2>🧪 Test</h2>
                 <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Analyze code quality and generate testing frameworks</p>
                 
-                <div id="ccs-analysis-section" style="margin-bottom: 20px;">
+                <div id="ccs-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Code Comprehension Score</h3>
                     <div class="button-group">
                         <button id="generate-ccs">Generate CCS Score</button>
@@ -114,7 +115,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                     <div id="ccs-results" class="hidden ccs-results"></div>
                 </div>
                 
-                <div style="margin-bottom: 20px;">
+                <div id="testing-framework-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Testing Framework</h3>
                     <div class="button-group">
                         <button id="generate-testing-framework">Generate Testing Framework</button>
@@ -127,7 +128,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 <h2>📚 Document</h2>
                 <p style="margin: 8px 0 15px 0; color: var(--vscode-descriptionForeground); font-size: 0.9em;">Generate comprehensive documentation and knowledge transfer materials</p>
                 
-                <div style="margin-bottom: 20px;">
+                <div id="handover-document-section" style="margin-bottom: 20px;">
                     <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Project Documentation</h3>
                     <div class="button-group">
                         <button id="generate-handover-file">Generate Handover Document</button>
@@ -137,15 +138,8 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                         <button id="generate-all-ccs-docs">Generate All CCS Docs</button>
                     </div>
                 </div>
-                
-                <div id="handover-document-section" style="margin-bottom: 20px;">
-                    <h3 style="margin: 10px 0 8px 0; font-size: 1.1em;">Knowledge Transfer</h3>
-                    <div class="button-group">
-                        <!-- Additional handover document controls will be added here -->
-                    </div>
-                </div>
             </div>
-            </div>
+        </div>
         </div>
 
         <script nonce="${nonce}" src="${scriptUri}"></script>
