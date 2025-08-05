@@ -67,6 +67,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                 </div>
             </div>
 
+        <div id="post-generation-controls" class="hidden">
             <!-- BUILD PHASE -->
             <div id="build-section" class="controls-section">
                 <h2>🏗️ Build</h2>
@@ -129,6 +130,7 @@ export function getWebviewContent(scriptUri: vscode.Uri, webview: vscode.Webview
                         <button id="generate-handover-file">Generate Handover Document</button>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 

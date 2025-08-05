@@ -63,27 +63,37 @@ const CONFIG_KEYS = {
 
 /**
  * Logic Step: Get the active workspace URI.
- * Throws an error if no workspace folder is open.
- * @returns The URI of the first workspace folder.
+ * Works with any workspace - no specific folder requirements.
+ * @returns The URI of the current workspace folder.
  */
 export function getWorkspaceUri(): vscode.Uri | null {
+    // First, check if we have any workspace folders at all
+    if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
+        console.warn('[ConfigManager] No workspace folder found.');
+        return null;
+    }
+    
+    // Log all available workspaces for debugging
+    console.log(`[ConfigManager] Available workspaces (${vscode.workspace.workspaceFolders.length}):`);
+    vscode.workspace.workspaceFolders.forEach((folder, index) => {
+        console.log(`[ConfigManager]   ${index}: ${folder.uri.fsPath}`);
+    });
+    
     // Priority 1: Use the active text editor to find the relevant workspace.
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor) {
+        console.log(`[ConfigManager] Checking active editor: ${activeEditor.document.uri.fsPath}`);
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditor.document.uri);
         if (workspaceFolder) {
+            console.log(`[ConfigManager] ✅ Using active editor workspace: ${workspaceFolder.uri.fsPath}`);
             return workspaceFolder.uri;
         }
     }
 
-    // Priority 2: Fallback to the first workspace folder if no active editor or if the active file is not in a workspace.
-    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-        return vscode.workspace.workspaceFolders[0].uri;
-    }
-
-    // If no workspace can be determined, return null.
-    console.warn('[ConfigManager] Could not determine workspace URI. No workspace folder found.');
-    return null;
+    // Priority 2: Use the first workspace folder (works for any project)
+    const firstWorkspace = vscode.workspace.workspaceFolders[0];
+    console.log(`[ConfigManager] ✅ Using first workspace: ${firstWorkspace.uri.fsPath}`);
+    return firstWorkspace.uri;
 }
 
 /**

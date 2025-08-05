@@ -310,7 +310,7 @@ export class ProjectStateDetector {
      */
         private async findContextCardFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
-        if (!pathConfig || !pathConfig.contextCards) return [];
+        if (!pathConfig || !pathConfig.contextCards) {return [];}
         const searchPromises = pathConfig.contextCards.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
@@ -323,7 +323,7 @@ export class ProjectStateDetector {
      */
         private async findContextTemplateFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
-        if (!pathConfig || !pathConfig.contextTemplates) return [];
+        if (!pathConfig || !pathConfig.contextTemplates) {return [];}
         const searchPromises = pathConfig.contextTemplates.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
@@ -336,7 +336,7 @@ export class ProjectStateDetector {
      */
         private async findCCSFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
-        if (!pathConfig || !pathConfig.ccs) return [];
+        if (!pathConfig || !pathConfig.ccs) {return [];}
         const searchPromises = pathConfig.ccs.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }
@@ -348,7 +348,7 @@ export class ProjectStateDetector {
      */
         private async findHandoverFiles(workspaceUri: vscode.Uri): Promise<vscode.Uri[]> {
         const pathConfig = configManager.getAllPossibleOutputPaths(workspaceUri);
-        if (!pathConfig || !pathConfig.handover) return [];
+        if (!pathConfig || !pathConfig.handover) {return [];}
         const searchPromises = pathConfig.handover.map(uri => this.findFiles(uri, '**/*.md'));
         return (await Promise.all(searchPromises)).flat();
     }

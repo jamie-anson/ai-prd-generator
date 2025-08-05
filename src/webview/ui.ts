@@ -2,14 +2,16 @@
  * @file ui.ts
  * @description Type-safe UI management module for webview DOM manipulations and state updates.
  * 
- * The logic of this file is to:
- * 1. Provide type-safe access to all DOM elements with proper null checking
- * 2. Implement context-aware UI updates based on project state
- * 3. Ensure consistent error handling and user feedback
- * 4. Maintain separation between UI logic and business logic
+ * PHASE 3: Enhanced State Management
+ * This file now works with the new IIFE pattern and enhanced state persistence:
+ * 1. Provides type-safe access to all DOM elements with proper null checking
+ * 2. Implements context-aware UI updates based on project state
+ * 3. Ensures consistent error handling and user feedback
+ * 4. Maintains separation between UI logic and business logic
+ * 5. Supports enhanced webview state persistence and communication metrics
  */
 
-import { ProjectState, UIElements, UIError, ButtonConfig } from './types';
+import { ProjectState, UIElements, UIError, ButtonConfig, WebviewState } from './types';
 import { 
     initializeUIElements, 
     updateButton, 
@@ -46,15 +48,23 @@ function initializeElementsWithRetry(attempt: number = 1): void {
     const allCriticalElementsFound = Object.values(criticalElements).every(el => el !== null);
 
     if (allCriticalElementsFound) {
-        console.log('[UI] All critical elements found. UI is ready.');
+        console.log('[UI] ✅ All critical elements found. UI is ready.');
         elements = initialized as UIElements;
         resolveUiReady(elements);
+        
+        // PHASE 3: UI initialization is now handled by main.ts IIFE pattern
+        // No need to send uiReady message here - main.ts handles webview-ready signal
+        console.log('[UI] 🎯 UI elements initialized, main.ts will handle webview-ready signal');
     } else if (attempt < 10) { // Increased retry attempts
-        console.log(`[UI] Critical elements not yet found, retrying in ${attempt * 50}ms...`);
+        console.log(`[UI] ⏳ Critical elements not yet found, retrying in ${attempt * 50}ms...`);
         setTimeout(() => initializeElementsWithRetry(attempt + 1), attempt * 50);
     } else {
-        console.error('[UI] Failed to initialize critical UI elements after multiple attempts.');
-        // Optionally, reject the promise or display a permanent error message
+        console.error('[UI] ❌ Failed to initialize critical UI elements after multiple attempts.');
+        // PHASE 3: Enhanced error handling with state tracking
+        console.error('[UI] 📊 Missing elements:', Object.entries(criticalElements)
+            .filter(([_, element]) => !element)
+            .map(([name, _]) => name)
+        );
     }
 }
 

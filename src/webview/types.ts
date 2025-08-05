@@ -133,6 +133,45 @@ export interface UISectionConfig {
     buttonTitle?: string;
 }
 
+// --- PHASE 3: Enhanced State Management Types ---
+
+/**
+ * Webview state that persists across sessions using vscode.getState/setState.
+ * PHASE 3: Community-proven state persistence pattern.
+ */
+export interface WebviewState {
+    /** Last message processed by webview */
+    lastMessage?: string;
+    /** Timestamp of last state update */
+    timestamp?: number;
+    /** Previous project state for comparison */
+    previousProjectState?: ProjectState;
+    /** UI preferences and settings */
+    uiPreferences?: {
+        expandedSections?: string[];
+        lastActiveTab?: string;
+    };
+    /** Communication metrics for debugging */
+    communicationMetrics?: {
+        messagesReceived?: number;
+        lastSuccessfulUpdate?: number;
+        errorCount?: number;
+    };
+}
+
+/**
+ * Enhanced message format for webview-ready signal.
+ * PHASE 2: Message-based initialization pattern.
+ */
+export interface WebviewReadyMessage {
+    /** Message type identifier */
+    type: 'webview-ready';
+    /** Timestamp when webview became ready */
+    timestamp: number;
+    /** Any previous state restored from VS Code */
+    previousState?: WebviewState | null;
+}
+
 // --- Message Types ---
 
 /**
@@ -141,15 +180,24 @@ export interface UISectionConfig {
 export interface BaseMessage {
     /** The command/action type for this message */
     command: string;
+    /** Optional timestamp for latency tracking */
+    timestamp?: number;
+    /** Optional source identifier for debugging */
+    source?: string;
 }
 
 /**
- * Message sent from extension to webview with project state updates.
+ * Enhanced message sent from extension to webview with project state updates.
+ * PHASE 3: Includes timing and source information for debugging.
  */
 export interface ProjectStateUpdateMessage extends BaseMessage {
-    command: 'project-state-update';
+    command: 'updateState';
     /** Current project state data */
     projectState: ProjectState;
+    /** Timestamp when state was detected */
+    timestamp?: number;
+    /** Source of the state update */
+    source?: string;
 }
 
 /**
@@ -193,9 +241,39 @@ export interface ViewMessage extends BaseMessage {
 export type WebviewToExtensionMessage = SetApiKeyMessage | GenerationMessage | ViewMessage;
 
 /**
- * Union type for all possible messages sent from extension to webview.
+ * PHASE 3: Enhanced message types for improved communication.
  */
-export type ExtensionToWebviewMessage = ProjectStateUpdateMessage | ApiKeyStatusMessage;
+export interface InfoMessage extends BaseMessage {
+    command: 'info';
+    text: string;
+}
+
+export interface SuccessMessage extends BaseMessage {
+    command: 'success';
+    text: string;
+}
+
+export interface ErrorMessage extends BaseMessage {
+    command: 'error';
+    text: string;
+}
+
+export interface CCSGeneratedMessage extends BaseMessage {
+    command: 'ccsGenerated';
+    analysis: string;
+}
+
+/**
+ * Union type for all possible messages sent from extension to webview.
+ * PHASE 3: Expanded to include all message types used in the application.
+ */
+export type ExtensionToWebviewMessage = 
+    | ProjectStateUpdateMessage 
+    | ApiKeyStatusMessage 
+    | InfoMessage 
+    | SuccessMessage 
+    | ErrorMessage 
+    | CCSGeneratedMessage;
 
 // --- UI Update Function Types ---
 

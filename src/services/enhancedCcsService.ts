@@ -272,10 +272,10 @@ export class EnhancedCcsService {
         let score = 0;
 
         // Traditional scoring factors
-        if (analysis.hasReadme) score += 10;
-        if (analysis.hasTests) score += 20;
-        if (analysis.hasTypeDefinitions) score += 15;
-        if (analysis.hasDocumentation) score += 15;
+        if (analysis.hasReadme) {score += 10;}
+        if (analysis.hasTests) {score += 20;}
+        if (analysis.hasTypeDefinitions) {score += 15;}
+        if (analysis.hasDocumentation) {score += 15;}
 
         // File structure scoring
         const fileTypeScore = Math.min(Object.keys(analysis.fileTypes).length * 2, 20);

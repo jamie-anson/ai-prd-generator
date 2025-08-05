@@ -14,13 +14,15 @@ import { TestSetup } from '../utils/testSetup';
 describe('ProjectStateDetector Unit Tests', () => {
     let findFilesStub: sinon.SinonStub;
     let getWorkspaceUriStub: sinon.SinonStub;
+    let detector: ProjectStateDetector;
 
     beforeEach(() => {
         TestSetup.beforeEach();
         findFilesStub = sinon.stub(vscode.workspace, 'findFiles');
         getWorkspaceUriStub = sinon.stub(configManager, 'getWorkspaceUri');
+        detector = ProjectStateDetector.getInstance();
 
-        ProjectStateDetector.setDependencies({
+        detector.setDependencies({
             getWorkspaceUri: getWorkspaceUriStub,
         });
     });
@@ -41,7 +43,7 @@ describe('ProjectStateDetector Unit Tests', () => {
 
     afterEach(() => {
         sinon.restore();
-        ProjectStateDetector.setDependencies({
+        detector.setDependencies({
             getWorkspaceUri: configManager.getWorkspaceUri,
         });
     });
@@ -49,9 +51,9 @@ describe('ProjectStateDetector Unit Tests', () => {
     it('should return an empty state when no workspace is open', async () => {
         getWorkspaceUriStub.resolves(null);
 
-        const state = await ProjectStateDetector.detectProjectState();
+                const state = await detector.detectProjectState();
 
-        assert.deepStrictEqual(state, ProjectStateDetector.getEmptyProjectState());
+                        assert.deepStrictEqual(state, ProjectStateDetector.getEmptyProjectState());
     });
 
     it('should detect existing PRD files correctly', async () => {
@@ -76,7 +78,7 @@ describe('ProjectStateDetector Unit Tests', () => {
             }
         ]);
 
-        const state = await ProjectStateDetector.detectProjectState();
+                const state = await detector.detectProjectState();
 
         assert.strictEqual(state.hasPRD, true, 'Should detect that PRD files exist');
         assert.strictEqual(state.prdCount, 1, 'Should count one PRD file');
@@ -121,7 +123,7 @@ describe('ProjectStateDetector Unit Tests', () => {
             },
         ]);
 
-        const state = await ProjectStateDetector.detectProjectState();
+                const state = await detector.detectProjectState();
 
         assert.strictEqual(state.hasPRD, true);
         assert.strictEqual(state.prdCount, 2);
@@ -135,7 +137,7 @@ describe('ProjectStateDetector Unit Tests', () => {
 
         findFilesStub.rejects(new Error('Disk read error'));
 
-        const state = await ProjectStateDetector.detectProjectState();
+                const state = await detector.detectProjectState();
 
         assert.deepStrictEqual(state, ProjectStateDetector.getEmptyProjectState(), 'Should return an empty state on error');
     });

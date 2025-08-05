@@ -5,6 +5,7 @@ import { handleContextCards } from '../../webview/handlers/handleContextCards';
 import { handleGeneratePrd } from '../../webview/handlers/handleGeneratePrd';
 import { handleGenerateContextTemplates } from '../../webview/handlers/handleContextTemplates';
 import { handleWebviewReady } from '../../webview/handlers/handleWebviewReady';
+import { handleUiReady } from '../../webview/handlers/handleUiReady';
 import { handleGenerateDataFlowDiagram } from '../../webview/handlers/handleDataFlowDiagram';
 import { handleGenerateComponentHierarchy } from '../../webview/handlers/handleComponentHierarchy';
 import { handleViewDataFlowDiagram, handleViewComponentHierarchy } from '../../webview/handlers/handleViewDiagrams';
@@ -28,6 +29,8 @@ export function createPrdMessageHandler(): MessageRouter {
 
     // Logic Step 1: Register webview lifecycle and API key handlers.
     router.register(COMMANDS.WEBVIEW_READY, handleWebviewReady);
+    router.register('webview-ready', handleUiReady); // PHASE 2: New message-based initialization pattern
+    router.register('uiReady', handleUiReady); // Backward compatibility during transition
     router.register(COMMANDS.SAVE_API_KEY, handleSaveApiKey);
 
     // Logic Step 2: Register core content generation handlers.

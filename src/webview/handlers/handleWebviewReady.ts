@@ -13,6 +13,7 @@
 import * as vscode from 'vscode';
 import { ProjectStateDetector } from '../../utils/projectStateDetector';
 
+
 /**
  * Logic Step: Handle the 'webviewReady' message from the webview.
  * This function orchestrates the initialization of the webview by sending both
@@ -22,10 +23,13 @@ import { ProjectStateDetector } from '../../utils/projectStateDetector';
  * @param webview The webview instance for posting messages back to the UI
  */
 export async function handleWebviewReady(
+    // @ts-ignore
+    // @ts-nocheck
     message: any,
     context: vscode.ExtensionContext,
     webview: vscode.Webview
 ): Promise<void> {
+        console.log('--- CASCADE IS HERE: Executing latest handleWebviewReady.ts ---');
     console.log('handleWebviewReady called');
     
     // Check API key status with error handling
@@ -41,76 +45,8 @@ export async function handleWebviewReady(
     
     console.log('[Extension] Sending apiKeyStatus message, hasApiKey:', hasApiKey);
     webview.postMessage({ command: 'apiKeyStatus', hasApiKey });
-    
-    // Detect project state and send to webview
-    try {
-                const projectState = await ProjectStateDetector.getInstance().detectProjectState();
-        console.log('[WebviewReady] Detected project state:', {
-            hasPRD: projectState.hasPRD,
-            hasContextCards: projectState.hasContextCards,
-            hasContextTemplates: projectState.hasContextTemplates,
-            hasCCS: projectState.hasCCS,
-            prdCount: projectState.prdCount,
-            contextCardCount: projectState.contextCardCount,
-            contextTemplateCount: projectState.contextTemplateCount,
-            ccsCount: projectState.ccsCount
-        });
-        /**
-         * Logic Step: Send complete project state to webview including diagram detection results.
-         * This message enables context-aware UI behavior by informing the webview about all
-         * detected artifacts. The hasDataFlowDiagram and hasComponentHierarchy fields were
-         * added to fix a bug where diagram files existed but UI buttons remained in "Generate"
-         * mode instead of switching to "View" mode.
-         */
-        webview.postMessage({ 
-            command: 'project-state-update', 
-            projectState: {
-                hasPRD: projectState.hasPRD,
-                hasContextCards: projectState.hasContextCards,
-                hasContextTemplates: projectState.hasContextTemplates,
-                hasDataFlowDiagram: projectState.hasDataFlowDiagram,
-                hasComponentHierarchy: projectState.hasComponentHierarchy,
-                hasCCS: projectState.hasCCS,
-                prdFiles: projectState.prdFiles,
-                contextCardFiles: projectState.contextCardFiles,
-                contextTemplateFiles: projectState.contextTemplateFiles,
-                ccsFiles: projectState.ccsFiles,
-                prdCount: projectState.prdCount,
-                contextCardCount: projectState.contextCardCount,
-                contextTemplateCount: projectState.contextTemplateCount,
-                dataFlowDiagramFiles: projectState.dataFlowDiagramFiles,
-                componentHierarchyFiles: projectState.componentHierarchyFiles,
-                ccsCount: projectState.ccsCount
-            }
-        });
-    } catch (error) {
-        console.error('Error detecting project state:', error);
-        /**
-         * Logic Step: Send fallback project state when detection fails.
-         * This ensures the webview always receives a valid project state object
-         * even when file system errors occur. All artifact flags are set to false
-         * and counts to zero, ensuring UI shows initial generation state.
-         */
-        webview.postMessage({ 
-            command: 'project-state-update', 
-            projectState: {
-                hasPRD: false,
-                hasContextCards: false,
-                hasContextTemplates: false,
-                hasDataFlowDiagram: false,
-                hasComponentHierarchy: false,
-                hasCCS: false,
-                prdFiles: [],
-                contextCardFiles: [],
-                contextTemplateFiles: [],
-                ccsFiles: [],
-                prdCount: 0,
-                contextCardCount: 0,
-                contextTemplateCount: 0,
-                dataFlowDiagramFiles: [],
-                componentHierarchyFiles: [],
-                ccsCount: 0
-            }
-        });
-    }
+
+    // Logic Step: Project state will be sent after UI confirms readiness via 'uiReady' message
+    // This ensures proper coordination and eliminates race conditions
+    console.log('[Extension] Waiting for uiReady message before sending project state...');
 }

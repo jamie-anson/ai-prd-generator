@@ -67,7 +67,7 @@ export class FileSystemUtils {
         try {
             const content = await vscode.workspace.fs.readFile(fileUri);
             const text = content.toString();
-            if (text.length === 0) return 0;
+            if (text.length === 0) {return 0;}
             // Efficiently count newlines without creating a large array.
             return (text.match(/\n/g) || []).length + 1;
         } catch (error) {
@@ -127,7 +127,7 @@ export class FileSystemUtils {
         for (const pattern of TEST_PATTERNS.filter(p => !p.includes('*'))) {
             try {
                 const stat = await vscode.workspace.fs.stat(vscode.Uri.joinPath(workspaceUri, pattern));
-                if (stat.type === vscode.FileType.Directory) return true;
+                if (stat.type === vscode.FileType.Directory) {return true;}
             } catch {}
         }
 
@@ -181,7 +181,7 @@ export class FileSystemUtils {
         for (const pattern of DOCUMENTATION_PATTERNS) {
             try {
                 const stat = await vscode.workspace.fs.stat(vscode.Uri.joinPath(workspaceUri, pattern));
-                if (stat.type === vscode.FileType.Directory) return true;
+                if (stat.type === vscode.FileType.Directory) {return true;}
             } catch {}
         }
         return false;

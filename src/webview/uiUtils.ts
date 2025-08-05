@@ -245,7 +245,9 @@ export function clearError(errorContainer: HTMLDivElement | null | undefined): v
  * @returns True if valid, false otherwise
  */
 export function isValidProjectState(projectState: any): projectState is ProjectState {
-    return projectState &&
+    console.log('[Validation] Validating project state:', projectState);
+    
+    const isValid = projectState &&
            typeof projectState.hasPRD === 'boolean' &&
            Array.isArray(projectState.prdFiles) &&
            typeof projectState.prdCount === 'number' &&
@@ -261,7 +263,37 @@ export function isValidProjectState(projectState: any): projectState is ProjectS
            Array.isArray(projectState.componentHierarchyFiles) &&
            typeof projectState.hasCCS === 'boolean' &&
            Array.isArray(projectState.ccsFiles) &&
-           typeof projectState.ccsCount === 'number';
+           typeof projectState.ccsCount === 'number' &&
+           typeof projectState.hasHandover === 'boolean' &&
+           Array.isArray(projectState.handoverFiles) &&
+           typeof projectState.handoverCount === 'number' &&
+           (projectState.workspaceUri === null || (projectState.workspaceUri && typeof projectState.workspaceUri === 'object'));
+    
+    if (!isValid) {
+        console.log('[Validation] Project state validation failed. Missing or invalid fields:');
+        const requiredFields = [
+            'hasPRD', 'prdFiles', 'prdCount',
+            'hasContextCards', 'contextCardFiles', 'contextCardCount',
+            'hasContextTemplates', 'contextTemplateFiles', 'contextTemplateCount',
+            'hasDataFlowDiagram', 'dataFlowDiagramFiles',
+            'hasComponentHierarchy', 'componentHierarchyFiles',
+            'hasCCS', 'ccsFiles', 'ccsCount',
+            'hasHandover', 'handoverFiles', 'handoverCount',
+            'workspaceUri'
+        ];
+        
+        requiredFields.forEach(field => {
+            if (!(field in projectState)) {
+                console.log(`[Validation]   Missing field: ${field}`);
+            } else {
+                console.log(`[Validation]   Field ${field}: ${typeof projectState[field]} = ${JSON.stringify(projectState[field]).substring(0, 100)}`);
+            }
+        });
+    } else {
+        console.log('[Validation] ✅ Project state validation passed');
+    }
+    
+    return isValid;
 }
 
 // --- Utility Functions ---

@@ -19,6 +19,7 @@ describe('Webview PRD and API Key Detection', () => {
     let mockContext: vscode.ExtensionContext;
     let fileSystemManager: FileSystemManager;
     const originalGetWorkspaceUri = configManager.getWorkspaceUri;
+    let detector: ProjectStateDetector;
 
     beforeEach(() => {
         TestSetup.beforeEach();
@@ -38,7 +39,8 @@ describe('Webview PRD and API Key Detection', () => {
 
         // Stub the getWorkspaceUri function and inject it
         const getWorkspaceUriStub = sinon.stub(configManager, 'getWorkspaceUri').resolves(workspaceRootUri);
-        ProjectStateDetector.setDependencies({
+        detector = ProjectStateDetector.getInstance();
+        detector.setDependencies({
             getWorkspaceUri: getWorkspaceUriStub as any,
         });
     });
@@ -47,7 +49,7 @@ describe('Webview PRD and API Key Detection', () => {
         TestSetup.afterEach();
         sinon.restore();
         fileSystemManager.cleanup();
-        ProjectStateDetector.setDependencies({
+        detector.setDependencies({
             getWorkspaceUri: originalGetWorkspaceUri,
         });
     });

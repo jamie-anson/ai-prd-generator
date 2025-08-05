@@ -2,7 +2,7 @@
   "name": "ai-prd-generator",
   "displayName": "Mise-en-Place",
   "description": "AI-Powered PRD Generator",
-  "version": "0.1.17",
+  "version": "0.1.22",
   "publisher": "jammie-anson",
   "engines": {
     "vscode": "^1.89.0"
@@ -15,7 +15,7 @@
     "url": "https://github.com/johndoe/ai-prd-generator.git"
   },
   "activationEvents": [
-    "*"
+    "onView:prdGenerator"
   ],
   "main": "./dist/extension.js",
   "contributes": {

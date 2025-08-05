@@ -1,5 +1,72 @@
 # Change Log
 
+## [0.1.22] - 2025-08-05
+
+### 🎯 Root Cause Fix - Duplicate Script Execution Prevention
+
+- **Fixed Duplicate Script Loading**: Implemented global flag to prevent webview script from executing multiple times, which was the root cause of VS Code API "already been acquired" errors
+- **Eliminated Race Conditions**: Script now initializes only once, preventing message passing conflicts and state corruption
+- **Resolved Core Architecture Issue**: Addressed the fundamental problem that was causing all previous fixes to fail
+
+## [0.1.21] - 2025-08-05
+
+### 🌍 Universal Workspace Support & Core Messaging Fixes
+
+- **Universal Workspace Support**: Removed workspace-specific detection logic - extension now works in any workspace and any VS Code variant
+- **Robust VS Code API Acquisition**: Implemented comprehensive fallback strategies for `acquireVsCodeApi()` with multiple detection methods and functional fallbacks
+- **Fixed Message Structure Issues**: Added detailed logging and validation to ensure `projectState` is properly structured and sent to webview
+- **Complete Fallback State**: Updated fallback project state to include all required fields for proper validation
+- **Enhanced Error Handling**: Comprehensive error handling and logging throughout the message passing system
+
+## [0.1.20] - 2025-08-05
+
+### 🚨 Critical Bug Fixes - Root Cause Resolution
+
+- **Fixed Workspace Detection Logic**: Added comprehensive logging and improved workspace detection algorithm in `configManager.ts` to properly identify the ai-prd-generator workspace among multiple open workspaces
+- **Resolved VS Code API Acquisition Error**: Implemented robust global singleton pattern for `acquireVsCodeApi()` in `main.ts` with fallback handling to prevent "already been acquired" errors
+- **Fixed Project State Validation**: Updated `isValidProjectState()` function in `uiUtils.ts` to include all required fields (`hasHandover`, `handoverFiles`, `handoverCount`, `workspaceUri`) that were causing validation failures
+- **Enhanced Error Logging**: Added detailed diagnostic logging throughout the workspace detection and validation processes for better debugging
+
+## [0.1.19] - 2025-08-05
+
+### 🐞 Bug Fixes & Stability Improvements
+
+- **Fixed Workspace Detection**: Implemented a more robust workspace detection strategy in `configManager.ts` to correctly identify the `ai-prd-generator` workspace, even when other projects are open or no file is active. This resolves issues with incorrect project state on initial load.
+- **Fixed VS Code API Error**: Resolved the `An instance of the VS Code API has already been acquired` error in the webview by implementing a singleton pattern for `acquireVsCodeApi()` in `main.ts`. This ensures the API is only acquired once, stabilizing webview functionality like setting the API key.
+
+## [0.1.18] - 2025-08-05
+
+### 🏗️ Architectural Redesign - UI Race Condition Fix
+
+**Major Architectural Improvement:**
+
+- **Complete Webview Initialization Redesign**: Implemented comprehensive architectural redesign of webview initialization and message passing system to eliminate recurring UI race conditions
+- **New Coordination Protocol**: Added proper handshake between extension and webview to ensure messages are only sent when UI is truly ready
+- **Fixed Initial Project State Detection**: Project state is now properly detected and sent on panel load, eliminating blank panel issues
+- **Robust Message Sequencing**: API key status is sent immediately, but project state waits for UI confirmation to prevent race conditions
+
+**Technical Implementation:**
+
+- **Added `handleUiReady.ts`**: New handler for UI readiness confirmation from webview
+- **Enhanced `handleWebviewReady.ts`**: Proper coordination protocol that waits for UI confirmation
+- **Updated UI Initialization**: Webview now sends `uiReady` message after DOM elements are confirmed cached
+- **Fixed Missing HTML Elements**: Added required `post-generation-controls` container to webview HTML
+- **Message Router Integration**: Registered new coordination protocol handlers
+
+**New Initialization Flow:**
+1. Webview loads → sends `webviewReady`
+2. Extension responds → sends `apiKeyStatus` immediately
+3. Webview initializes UI → sends `uiReady` when DOM ready
+4. Extension receives `uiReady` → sends `updateState` with project state
+5. Webview processes state → UI updates safely
+
+**Fixes:**
+- ✅ Eliminates recurring UI race conditions
+- ✅ Fixes blank panel on load
+- ✅ Proper initial project state detection
+- ✅ Stable UI behavior across all scenarios
+- ✅ Foundation for future semantic search integration
+
 ## [0.1.14] - 2025-08-03
 
 ### 🌐 Cross-Platform Compatibility & Bug Fixes
